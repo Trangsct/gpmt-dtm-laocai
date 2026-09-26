@@ -5,7 +5,7 @@
   --chu: #1f2328; --nen: #f6f8fa;
 }
 * { box-sizing: border-box; }
-body { margin: 0; font: 15px/1.55 "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif; color: var(--chu); background: var(--nen); display: flex; flex-direction: column; min-height: 100vh; }
+body { margin: 0; font: 16px/1.6 "Be Vietnam Pro", "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif; color: var(--chu); background: var(--nen); display: flex; flex-direction: column; min-height: 100vh; }
 main { flex: 1; width: 100%; }
 a { color: var(--xanh); }
 header.dau { background: var(--xanh); color: #fff; padding: 10px 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
@@ -141,3 +141,14 @@ footer.chan a { color: #cfe0ef; }
 .tc-gp .nhan { align-self: flex-start; margin-top: 4px; }
 .tc-lien-he { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; background: #fff; border: 1px solid var(--vien); border-radius: 16px; padding: 22px; }
 .tc-lien-he ul { padding-left: 18px; }
+
+/* ------------------------------------------------------------------ Cỡ chữ / trình chiếu hội nghị */
+/* zoom phóng cả chữ lẫn bố cục như phím Ctrl+ của trình duyệt; mặc định 1,2 trên màn hình lớn (máy chiếu) */
+html[data-co-chu="1.2"] body { zoom: 1.2; }
+html[data-co-chu="1.4"] body { zoom: 1.4; }
+@media (max-width: 900px) { html[data-co-chu] body { zoom: 1; } .cong-cu { display: none !important; } }
+header.dau .cong-cu { order: 3; display: flex; gap: 4px; align-items: center; font-size: 12px; color: #cfe0ef; }
+header.dau .cong-cu button { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.35); color: #fff; padding: 3px 9px; font-size: 13px; border-radius: 6px; }
+header.dau .cong-cu button.dang-chon { background: #ffd66b; color: #3b2f00; border-color: #ffd66b; font-weight: 700; }
+header.dau .nguoi { order: 2; }
+@media print { .cong-cu { display: none !important; } }

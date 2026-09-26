@@ -12,6 +12,13 @@
 </head>
 <body>
 <header class="dau">
+  <div class="cong-cu" aria-label="Cỡ chữ và trình chiếu">
+    <span>Cỡ chữ</span>
+    <button type="button" data-co="1" title="Chữ thường">A</button>
+    <button type="button" data-co="1.2" title="Chữ lớn">A+</button>
+    <button type="button" data-co="1.4" title="Chữ rất lớn — trình chiếu hội nghị">A++</button>
+    <button type="button" id="toan-man-hinh" title="Toàn màn hình (F11)">⛶ Toàn màn hình</button>
+  </div>
   <a class="ten" href="{{ url_for('main.trang_chu') }}"><img class="logo" src="{{ url_for('static', filename='logo.svg') }}" alt="" width="38" height="38"><span><small>{{ TEN_DON_VI }}</small>Cổng Giấy phép môi trường và ĐTM</span></a>
   {% if not current_user.is_authenticated %}
   <div class="nguoi"><a href="{{ url_for('auth.dang_nhap', next=request.full_path.rstrip('?')) if request.endpoint not in ('auth.dang_nhap', 'auth.cai_dat') else url_for('auth.dang_nhap') }}">Cán bộ đăng nhập</a></div>
@@ -62,14 +69,37 @@
 </main>
 <footer class="chan">
   <div class="chan-trong">
-    <div><b>{{ TEN_DON_VI }}</b><br>Cổng tra cứu Giấy phép môi trường, báo cáo đánh giá tác động môi trường và thủ tục hành chính lĩnh vực môi trường.</div>
+    <div><b>{{ TEN_DON_VI }}</b><br>Cổng tra cứu Giấy phép môi trường, báo cáo đánh giá tác động môi trường và thủ tục hành chính lĩnh vực môi trường.
+      {% if lien_he.dia_chi_tru_so %}<br>Địa chỉ: {{ lien_he.dia_chi_tru_so }}{% endif %}
+      {% if lien_he.dien_thoai %}<br>Điện thoại: {{ lien_he.dien_thoai }}{% if lien_he.fax %} · Fax: {{ lien_he.fax }}{% endif %}{% endif %}
+      {% if lien_he.email %}<br>Email: <a href="mailto:{{ lien_he.email }}">{{ lien_he.email }}</a>{% endif %}
+    </div>
     <div class="chan-lk">
       <a href="{{ url_for('gpmt.danh_sach') }}">Tra cứu GPMT</a>
       <a href="{{ url_for('cong_bo.trang') }}">Thủ tục hành chính</a>
       <a href="{{ url_for('main.bang_dieu_khien') }}">Thống kê</a>
+      {% if lien_he.website %}<a href="{{ lien_he.website }}" target="_blank" rel="noopener">Cổng TTĐT của Sở ↗</a>{% endif %}
       {% if not current_user.is_authenticated %}<a href="{{ url_for('auth.dang_nhap') }}">Cán bộ đăng nhập</a>{% endif %}
     </div>
   </div>
 </footer>
+<script>
+// Cỡ chữ cho trình chiếu hội nghị: ghi nhớ trên máy người xem (không bắt buộc)
+(function () {
+  var goc = document.documentElement;
+  function dat(co) { goc.setAttribute('data-co-chu', co);
+    document.querySelectorAll('.cong-cu [data-co]').forEach(function (b) { b.classList.toggle('dang-chon', b.dataset.co === co); }); }
+  var luu = null;
+  try { luu = localStorage.getItem('co-chu'); } catch (e) {}
+  if (luu) dat(luu); else dat(window.innerWidth >= 1200 ? '1.2' : '1');
+  document.querySelectorAll('.cong-cu [data-co]').forEach(function (b) {
+    b.addEventListener('click', function () { dat(b.dataset.co); try { localStorage.setItem('co-chu', b.dataset.co); } catch (e) {} });
+  });
+  var tm = document.getElementById('toan-man-hinh');
+  if (tm) tm.addEventListener('click', function () {
+    if (document.fullscreenElement) document.exitFullscreen(); else if (goc.requestFullscreen) goc.requestFullscreen();
+  });
+})();
+</script>
 </body>
 </html>

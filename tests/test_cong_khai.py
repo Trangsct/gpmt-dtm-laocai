@@ -68,5 +68,6 @@ def test_trang_chu_gioi_thieu(app, db, du_lieu_that):
     r = app.test_client().get("/")
     assert r.status_code == 200
     for x in ("Sở Nông nghiệp và Môi trường", "Tra cứu", "Thủ tục hành chính", "736/QĐ-UBND", "22 ngày",
-              "2519/GPMT-UBND", "số 64 đường Lý Tự Trọng", "Đang cập nhật"):
+              "2519/GPMT-UBND", "số 64 đường Lý Tự Trọng", "02143.820 062",
+              "contact-snnmt@laocai.gov.vn", "Trần Minh Sáng", "snnmt.laocai.gov.vn", "data-co=\"1.4\""):
         assert x in r.text, x
