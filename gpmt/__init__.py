@@ -1,8 +1,17 @@
 """Ứng dụng quản lý GPMT và báo cáo ĐTM — Sở Nông nghiệp và Môi trường tỉnh Lào Cai."""
+import os
+import time
+
 from flask import Flask
 
-from .config import Config
-from .extensions import db, login_manager
+# Máy chủ Vercel chạy giờ UTC: đặt giờ Việt Nam để "hôm nay" (tính hạn GP), giờ ghi nhật ký, ngày báo cáo đúng
+# với người dùng (7 giờ sáng ở Việt Nam vẫn là hôm trước theo UTC). Đổi được bằng biến TZ.
+os.environ.setdefault("TZ", "Asia/Ho_Chi_Minh")
+if hasattr(time, "tzset"):
+    time.tzset()
+
+from .config import Config  # noqa: E402
+from .extensions import db, login_manager  # noqa: E402
 
 
 def create_app(cau_hinh=None):
