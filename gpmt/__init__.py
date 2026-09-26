@@ -4,9 +4,11 @@ import time
 
 from flask import Flask
 
-# Máy chủ Vercel chạy giờ UTC: đặt giờ Việt Nam để "hôm nay" (tính hạn GP), giờ ghi nhật ký, ngày báo cáo đúng
-# với người dùng (7 giờ sáng ở Việt Nam vẫn là hôm trước theo UTC). Đổi được bằng biến TZ.
-os.environ.setdefault("TZ", "Asia/Ho_Chi_Minh")
+# Máy chủ Vercel (AWS Lambda) tự đặt TZ=:UTC và có thể thiếu tệp múi giờ /usr/share/zoneinfo, nên:
+# - LUÔN ghi đè TZ (setdefault bị bỏ qua vì TZ đã có sẵn — lỗi thấy ngày 27/9/2026);
+# - dùng chuỗi POSIX "ICT-7" (UTC+7) không cần tệp múi giờ.
+# Để "hôm nay" (tính hạn GP), giờ nhật ký, ngày báo cáo khớp giờ Việt Nam. Đổi được bằng biến MUI_GIO.
+os.environ["TZ"] = os.environ.get("MUI_GIO", "ICT-7")
 if hasattr(time, "tzset"):
     time.tzset()
 
