@@ -36,6 +36,16 @@ def dang_ky_views(app):
     from pathlib import Path
     lien_he = json.loads((Path(__file__).resolve().parent.parent / "gioi_thieu.json").read_text(encoding="utf-8"))
 
+    def dem_ra_soat():
+        """Số bản ghi cần rà soát — hiện ở menu cho cán bộ nội bộ."""
+        from ..extensions import db
+        from ..models import Gpmt
+        try:
+            return db.session.query(Gpmt.id).filter(Gpmt.can_ra_soat.is_(True)).count() or None
+        except Exception:
+            return None
+    app.jinja_env.globals["dem_ra_soat"] = dem_ra_soat
+
     @app.context_processor
     def _bien_chung():
         return dict(TEN_DON_VI=app.config["TEN_DON_VI"], VAI_TRO=VAI_TRO, MAU_TRANG_THAI=MAU_TRANG_THAI,

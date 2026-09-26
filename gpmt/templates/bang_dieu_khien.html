@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% from "_macro.html" import nhan_tt, lk_gp with context %}
-{% block title %}Bảng điều khiển{% endblock %}
+{% block title %}Thống kê{% endblock %}
 {% block noi_dung %}
-<h1>{{ 'Bảng điều khiển' if current_user.is_authenticated else 'Tra cứu giấy phép môi trường tỉnh Lào Cai' }}</h1>
+<h1>Thống kê giấy phép môi trường</h1>
 {% if not current_user.is_authenticated %}
 <p class="mo">Trang công khai của {{ TEN_DON_VI }}: tra cứu giấy phép môi trường (GPMT), quyết định phê duyệt ĐTM và đăng ký môi trường trên địa bàn tỉnh. Tìm theo số giấy phép, tên cơ sở, doanh nghiệp hoặc mã số thuế tại mục <a href="{{ url_for('gpmt.danh_sach') }}">Giấy phép môi trường</a>. Dữ liệu đang được cập nhật, rà soát; trạng thái “Chưa xác định” nghĩa là chưa nhập thời hạn của giấy phép.</p>
 {% endif %}

@@ -1,163 +1,162 @@
 {% extends "base.html" %}
-{% from "_macro.html" import nhan_tt, lk_gp with context %}
+{% from "_macro.html" import nhan_tt with context %}
+{% from "_bieu_tuong.html" import bt %}
 {% block title %}Trang chủ{% endblock %}
 
-{% macro bieu_tuong(ten) -%}
-<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-{%- if ten == 'lua' -%}<path d="M12 21V9"/><path d="M12 13c-3 0-5-2-5-5 3 0 5 2 5 5z"/><path d="M12 11c3 0 5-2 5-5-3 0-5 2-5 5z"/><path d="M12 17c-3 0-5-2-5-5 3 0 5 2 5 5z"/><path d="M12 15c3 0 5-2 5-5-3 0-5 2-5 5z"/>
-{%- elif ten == 'rung' -%}<path d="M12 3l6 8h-4l5 7H5l5-7H6z"/><path d="M12 18v3"/>
-{%- elif ten == 'ca' -%}<path d="M3 12c3-5 9-6 14-2l4-3v10l-4-3c-5 4-11 3-14-2z"/><circle cx="8" cy="11" r=".8" fill="currentColor"/>
-{%- elif ten == 'nuoc' -%}<path d="M12 3c4 5 6 8 6 11a6 6 0 0 1-12 0c0-3 2-6 6-11z"/><path d="M9 15a3 3 0 0 0 3 3"/>
-{%- elif ten == 'dat' -%}<path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3z"/><path d="M9 4v13"/><path d="M15 7v13"/>
-{%- elif ten == 'khoang' -%}<path d="M6 21l3-9h6l3 9z"/><path d="M9 12l3-8 3 8"/><path d="M4 21h16"/>
-{%- elif ten == 'moi_truong' -%}<path d="M4 20c0-8 6-14 16-16-2 10-8 16-16 16z"/><path d="M4 20l9-9"/>
-{%- elif ten == 'thoi_tiet' -%}<path d="M7 18h10a4 4 0 0 0 0-8 6 6 0 0 0-11.5 1.5A3.5 3.5 0 0 0 7 18z"/><path d="M9 21l1-2M13 21l1-2"/>
-{%- elif ten == 'giay_phep' -%}<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="m10 14 2 2 4-4"/>
-{%- elif ten == 'dtm' -%}<circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/><path d="M8.5 11.5c1.5-3 4-3 5-1"/>
-{%- elif ten == 'dkmt' -%}<path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/>
-{%- elif ten == 'tthc' -%}<path d="M9 5h11M9 12h11M9 19h11"/><path d="m3 5 1.5 1.5L7 4M3 12l1.5 1.5L7 11M3 19l1.5 1.5L7 18"/>
-{%- elif ten == 'thong_ke' -%}<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>
-{%- elif ten == 'excel' -%}<path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>
-{%- elif ten == 'nong_thon' -%}<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/>
-{%- endif -%}
-</svg>
+{% macro o_so(url, mau, ic, nhan, so, phu) -%}
+<a class="tq-o {{ mau }}" href="{{ url }}">
+  <span class="ic">{{ bt(ic, 26) }}</span>
+  <span class="nhan-o">{{ nhan }}</span>
+  <b>{{ so if so else '—' }}</b>
+  <small>{{ phu }}</small>
+</a>
 {%- endmacro %}
 
-{% block truoc_main %}
-<section class="tc-bia">
-  <svg class="tc-canh" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-    <defs>
-      <linearGradient id="troi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b3d6e"/><stop offset=".55" stop-color="#1f6f8b"/><stop offset="1" stop-color="#6fb7a8"/></linearGradient>
-      <linearGradient id="nui1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f7d6d"/><stop offset="1" stop-color="#1d5a4d"/></linearGradient>
-      <linearGradient id="nui2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d9a5f"/><stop offset="1" stop-color="#276b43"/></linearGradient>
-      <linearGradient id="song" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8fd3f4"/><stop offset="1" stop-color="#4aa3d8"/></linearGradient>
-    </defs>
-    <rect width="1440" height="420" fill="url(#troi)"/>
-    <circle cx="1180" cy="96" r="46" fill="#ffd66b" opacity=".9"/>
-    <circle cx="1180" cy="96" r="72" fill="#ffd66b" opacity=".12"/>
-    <path d="M0 250 L140 150 L230 205 L380 95 L520 200 L640 140 L780 225 L930 120 L1080 210 L1220 150 L1440 240 L1440 420 L0 420Z" fill="url(#nui1)" opacity=".75"/>
-    <path d="M0 300 L180 215 L320 270 L470 200 L640 290 L820 215 L990 285 L1160 210 L1320 265 L1440 235 L1440 420 L0 420Z" fill="url(#nui2)"/>
-    <g fill="none" stroke="#b7e07a" stroke-width="3" opacity=".55">
-      <path d="M0 330 Q180 300 360 322 T720 318 T1080 326 T1440 312"/>
-      <path d="M0 348 Q200 320 380 342 T740 338 T1100 346 T1440 332"/>
-      <path d="M0 366 Q220 340 400 362 T760 358 T1120 366 T1440 352"/>
-    </g>
-    <path d="M0 360 Q300 330 560 370 T1060 372 T1440 350 L1440 420 L0 420Z" fill="#7cbf4a"/>
-    <path d="M-20 405 Q360 372 720 392 T1460 388 L1460 420 L-20 420Z" fill="url(#song)" opacity=".95"/>
-  </svg>
-  <div class="tc-bia-noi-dung">
-    <p class="tc-nhan">Tỉnh Lào Cai · Cổng thông tin chuyên ngành</p>
-    <h1>{{ TEN_DON_VI }}</h1>
-    <p class="tc-khau-hieu">Minh bạch giấy phép môi trường — đồng hành cùng doanh nghiệp, vì một Lào Cai xanh, phát triển bền vững.</p>
-    <form class="tc-tim" action="{{ url_for('gpmt.danh_sach') }}" method="get" role="search">
-      <input type="search" name="q" placeholder="Tìm giấy phép theo số hiệu, tên cơ sở, doanh nghiệp, mã số thuế…" aria-label="Tìm giấy phép môi trường">
-      <button type="submit">Tra cứu</button>
-    </form>
-    <div class="tc-nut">
-      <a class="tc-nut-chinh" href="{{ url_for('gpmt.danh_sach') }}">Danh sách giấy phép môi trường</a>
-      <a class="tc-nut-phu" href="{{ url_for('cong_bo.trang') }}">Thủ tục hành chính</a>
-      {% if lien_he.website %}<a class="tc-nut-phu" href="{{ lien_he.website }}" target="_blank" rel="noopener">Cổng thông tin điện tử của Sở ↗</a>{% endif %}
-    </div>
-  </div>
-</section>
-
-<section class="tc-so-lieu">
-  <div class="tc-khung tc-luoi-so">
-    <a href="{{ url_for('gpmt.danh_sach') }}"><b>{{ tong or '—' }}</b><span>Giấy phép môi trường<br>được lưu và tra cứu</span></a>
-    <a href="{{ url_for('main.bang_dieu_khien') }}"><b>{{ so_nam or '—' }}</b><span>Năm dữ liệu{% if nam_dau %}<br>({{ nam_dau }}–{{ nam_cuoi }}){% endif %}</span></a>
-    <a href="{{ url_for('danh_muc.ds_co_so') }}"><b>{{ so_co_so or '—' }}</b><span>Cơ sở, dự án<br>được cấp phép</span></a>
-    <a href="{{ url_for('gpmt.danh_sach') }}"><b>{{ so_xa or '—' }}</b><span>Xã, phường<br>có cơ sở được cấp phép</span></a>
-    <a href="{{ url_for('cong_bo.trang') }}"><b>{{ so_tthc or '—' }}</b><span>Thủ tục hành chính<br>cấp tỉnh đang áp dụng</span></a>
-  </div>
-</section>
-{% endblock %}
+{% macro viec_mot(xong, tieu_de, mo_ta, url=None, chu_lk=None) -%}
+<li class="{{ 'xong' if xong }}">
+  <span class="dau">{{ bt('xong' if xong else 'cho', 22) }}</span>
+  <span><b>{{ tieu_de }}</b><span>{{ mo_ta }}</span>
+  {% if url and not xong %}<a href="{{ url }}">{{ chu_lk }} →</a>{% endif %}</span>
+</li>
+{%- endmacro %}
 
 {% block noi_dung %}
-<section class="tc-muc tc-gioi-thieu">
-  <div>
-    <p class="tc-nhan-xanh">Giới thiệu</p>
-    <h2>Cơ quan chuyên môn về nông nghiệp và môi trường của tỉnh</h2>
-    <p>Sở Nông nghiệp và Môi trường là cơ quan chuyên môn thuộc Ủy ban nhân dân tỉnh Lào Cai, tham mưu, giúp Ủy ban nhân dân tỉnh quản lý nhà nước về nông nghiệp và môi trường trên địa bàn tỉnh — gồm cả địa bàn tỉnh Yên Bái trước hợp nhất.</p>
-    <p>Trong lĩnh vực môi trường, Sở tiếp nhận, thẩm định hồ sơ đề nghị cấp giấy phép môi trường, thẩm định báo cáo đánh giá tác động môi trường, tổ chức kiểm tra, trình Ủy ban nhân dân tỉnh cấp phép; theo dõi vận hành thử nghiệm công trình xử lý chất thải và việc chấp hành pháp luật về bảo vệ môi trường của các cơ sở.</p>
-    <p>Cổng này công khai danh sách giấy phép môi trường, quyết định phê duyệt kết quả thẩm định báo cáo ĐTM và các thủ tục hành chính, để người dân và doanh nghiệp tra cứu nhanh, thuận tiện.</p>
-  </div>
-  <div class="tc-linh-vuc">
-    {% for ic, ten in [('lua', 'Trồng trọt, chăn nuôi, thú y'), ('rung', 'Lâm nghiệp'), ('ca', 'Thủy sản'), ('nuoc', 'Thủy lợi, tài nguyên nước'), ('dat', 'Đất đai, đo đạc, bản đồ'), ('khoang', 'Địa chất, khoáng sản'), ('moi_truong', 'Bảo vệ môi trường'), ('thoi_tiet', 'Khí tượng thủy văn, biến đổi khí hậu'), ('nong_thon', 'Phát triển nông thôn')] %}
-    <div class="tc-lv"><span class="tc-ic">{{ bieu_tuong(ic) }}</span>{{ ten }}</div>
-    {% endfor %}
-  </div>
-</section>
-
-<section class="tc-muc">
-  <p class="tc-nhan-xanh">Dịch vụ trên cổng</p>
-  <h2>Người dân, doanh nghiệp có thể làm gì ở đây?</h2>
-  <div class="tc-the-luoi">
-    <a class="tc-the" href="{{ url_for('gpmt.danh_sach') }}"><span class="tc-ic">{{ bieu_tuong('giay_phep') }}</span><b>Tra cứu giấy phép môi trường</b><span>Theo số giấy phép, tên cơ sở, doanh nghiệp, mã số thuế, xã/phường, KCN/CCN; xem hiệu lực và giấy phép thay thế.</span></a>
-    <a class="tc-the" href="{{ url_for('danh_muc.ds_bang', loai='dtm') }}"><span class="tc-ic">{{ bieu_tuong('dtm') }}</span><b>Quyết định phê duyệt ĐTM</b><span>Kết quả thẩm định báo cáo đánh giá tác động môi trường của các dự án đầu tư{% if so_dtm %} ({{ so_dtm }} quyết định){% endif %}.</span></a>
-    <a class="tc-the" href="{{ url_for('danh_muc.ds_bang', loai='dang-ky-mt') }}"><span class="tc-ic">{{ bieu_tuong('dkmt') }}</span><b>Đăng ký môi trường</b><span>Cơ sở đã đăng ký môi trường với Ủy ban nhân dân cấp xã.</span></a>
-    <a class="tc-the" href="{{ url_for('cong_bo.trang') }}"><span class="tc-ic">{{ bieu_tuong('tthc') }}</span><b>Thủ tục hành chính</b><span>Danh mục thủ tục, thời gian giải quyết, nơi nộp hồ sơ và toàn văn quyết định công bố.</span></a>
-    <a class="tc-the" href="{{ url_for('main.bang_dieu_khien') }}"><span class="tc-ic">{{ bieu_tuong('thong_ke') }}</span><b>Thống kê</b><span>Số giấy phép theo năm cấp, cơ quan cấp; giấy phép sắp hết hạn.</span></a>
-    <a class="tc-the" href="{{ url_for('main.xuat_excel') }}"><span class="tc-ic">{{ bieu_tuong('excel') }}</span><b>Tải danh sách (Excel)</b><span>Bảng tổng hợp giấy phép môi trường theo mẫu Phụ lục 6.4.</span></a>
+<section class="tq-dau{{ ' gon' if current_user.is_authenticated }}">
+  <p class="tq-duong-dan">{% if current_user.is_authenticated %}Xin chào, {{ current_user.ho_ten }} · {{ VAI_TRO[current_user.vai_tro] }}{% else %}Tỉnh Lào Cai · Cổng tra cứu chuyên ngành môi trường{% endif %}</p>
+  <h1>Tra cứu giấy phép môi trường và quyết định phê duyệt ĐTM</h1>
+  {% if not current_user.is_authenticated %}<p class="tq-mo">Dữ liệu công khai của {{ TEN_DON_VI }} — minh bạch để người dân, doanh nghiệp tra cứu nhanh hiệu lực giấy phép, cơ sở được cấp phép và thủ tục hành chính.</p>{% endif %}
+  <form class="tq-tim" action="{{ url_for('gpmt.danh_sach') }}" method="get" role="search">
+    <input type="search" name="q" placeholder="Nhập số giấy phép, tên cơ sở, doanh nghiệp hoặc mã số thuế…" aria-label="Tìm giấy phép môi trường">
+    <button type="submit">Tra cứu</button>
+  </form>
+  <div class="tq-nut">
+    <a href="{{ url_for('gpmt.danh_sach') }}">Danh sách giấy phép</a>
+    <a href="{{ url_for('cong_bo.trang') }}">Thủ tục hành chính</a>
+    <a href="{{ url_for('main.bang_dieu_khien') }}">Thống kê</a>
+    <a href="{{ url_for('main.xuat_excel') }}">Tải Excel</a>
   </div>
 </section>
 
-<section class="tc-muc">
-  <p class="tc-nhan-xanh">Quy trình</p>
-  <h2>Cấp giấy phép môi trường cấp tỉnh — 5 chặng</h2>
-  <p class="mo">Tóm tắt quy trình nội bộ tại Quyết định số 736/QĐ-UBND ngày 19/3/2026 của Chủ tịch UBND tỉnh, trường hợp dự án, cơ sở phải vận hành thử nghiệm công trình xử lý chất thải: tổng thời gian rút ngắn còn <b>22 ngày</b> (theo quy định 30 ngày), không tính thời gian tổ chức, cá nhân chỉnh sửa, bổ sung hồ sơ và phân tích mẫu chất thải.</p>
-  <ol class="tc-quy-trinh">
-    <li><b>Nộp hồ sơ</b><span>Tại Trung tâm Phục vụ hành chính công tỉnh hoặc trực tuyến; được hướng dẫn nộp phí thẩm định.</span></li>
-    <li><b>Kiểm tra, công khai</b><span>Chi cục Môi trường, Khí tượng thủy văn và Biến đổi khí hậu kiểm tra hồ sơ, công khai báo cáo đề xuất, thành lập Hội đồng thẩm định hoặc Đoàn kiểm tra.</span></li>
-    <li><b>Thẩm định, kiểm tra</b><span>Họp Hội đồng thẩm định / Đoàn kiểm tra thực tế; thông báo kết quả để chủ cơ sở chỉnh sửa, bổ sung.</span></li>
-    <li><b>Sở trình</b><span>Sở Nông nghiệp và Môi trường xem xét hồ sơ đã hoàn thiện, trình Ủy ban nhân dân tỉnh.</span></li>
-    <li><b>Cấp phép, trả kết quả</b><span>Ủy ban nhân dân tỉnh ký giấy phép; trả kết quả tại Trung tâm Phục vụ hành chính công tỉnh.</span></li>
-  </ol>
-  <p><a href="{{ url_for('cong_bo.trang') }}">Xem đầy đủ thủ tục và toàn văn quyết định →</a></p>
+<section class="tq-so">
+  {{ o_so(url_for('gpmt.danh_sach'), 'mau-xanh', 'giay_phep', 'Giấy phép', tong, ('Môi trường, năm ' ~ nam_dau ~ '–' ~ nam_cuoi) if nam_dau else 'Đang cập nhật') }}
+  {{ o_so(url_for('danh_muc.ds_co_so'), 'mau-la', 'co_so', 'Cơ sở, dự án', so_co_so, 'Được cấp giấy phép') }}
+  {{ o_so(url_for('gpmt.danh_sach'), 'mau-ngoc', 'dia_diem', 'Xã, phường', so_xa, 'Có cơ sở được cấp phép') }}
+  {{ o_so(url_for('danh_muc.ds_bang', loai='dtm'), 'mau-tim', 'dtm', 'Quyết định ĐTM', so_dtm, 'Phê duyệt kết quả thẩm định') }}
+  {{ o_so(url_for('cong_bo.trang'), 'mau-cam', 'tthc', 'Thủ tục hành chính', so_tthc, 'Cấp tỉnh đang áp dụng') }}
 </section>
 
-{% if gp_moi %}
-<section class="tc-muc">
-  <p class="tc-nhan-xanh">Mới cập nhật</p>
-  <h2>Giấy phép môi trường cấp gần đây</h2>
-  <div class="tc-gp-luoi">
-    {% for g in gp_moi %}
-    <a class="tc-gp" href="{{ url_for('gpmt.chi_tiet', id=g.id) }}">
-      <span class="tc-gp-so">{{ g.so_hieu }}</span>
-      <span class="mo">{{ g.ngay_ky|ngay }}{% if g.co_quan_cap %} · {{ g.co_quan_cap }}{% endif %}</span>
-      <b>{{ g.co_so.ten if g.co_so }}</b>
-      <span class="mo">{{ g.co_so.chu_the.ten if g.co_so and g.co_so.chu_the }}</span>
-      {{ nhan_tt(g.trang_thai) }}
-    </a>
-    {% endfor %}
-  </div>
-  <p><a href="{{ url_for('gpmt.danh_sach') }}">Xem tất cả giấy phép →</a></p>
+{% if viec %}
+<section class="the">
+  <div class="tq-tieu-de"><h2>Việc cần làm</h2><span class="mo">Cập nhật theo dữ liệu hiện có</span></div>
+  <ul class="tq-viec">
+    {% if current_user.vai_tro == 'quan_tri' %}
+    {{ viec_mot(true, 'Tạo tài khoản quản trị', 'Đã có tài khoản quản trị.') }}
+    {% endif %}
+    {% if current_user.duoc_sua %}
+    {{ viec_mot(viec.da_nhap_so, 'Nhập sổ theo dõi GPMT (Excel)', 'Đã nhập sổ theo dõi.' if viec.da_nhap_so else 'Chưa nhập sổ — tải tệp .xls lên, hệ thống tự đọc và gắn cờ dòng cần rà.', url_for('nhap_du_lieu.trang_chinh'), 'Nhập dữ liệu') }}
+    {% endif %}
+    {{ viec_mot(not viec.ra_soat, 'Rà soát bản ghi', viec.ra_soat ~ ' giấy phép gắn cờ cần đối chiếu bản gốc.' if viec.ra_soat else 'Không còn bản ghi cần rà soát.', url_for('main.ra_soat'), 'Mở danh sách') }}
+    {% if current_user.duoc_sua %}
+    {{ viec_mot(not viec.thieu_thoi_han, 'Bổ sung thời hạn giấy phép', viec.thieu_thoi_han ~ ' giấy phép chưa có thời hạn nên chưa tính được hiệu lực.' if viec.thieu_thoi_han else 'Mọi giấy phép đã có thời hạn.', url_for('nhap_du_lieu.trang_chinh'), 'Tải mẫu bổ sung') }}
+    {% endif %}
+    {% if current_user.vai_tro == 'quan_tri' %}
+    {{ viec_mot(viec.so_tai_khoan > 1, 'Cấp tài khoản cho đồng nghiệp', 'Đã có ' ~ viec.so_tai_khoan ~ ' tài khoản.' if viec.so_tai_khoan > 1 else 'Cán bộ Sở, Ban Quản lý các KCN, UBND xã.', url_for('tai_khoan.danh_sach'), 'Quản lý tài khoản') }}
+    {% endif %}
+    {{ viec_mot(not viec.ho_so, 'Theo dõi hồ sơ đang giải quyết', viec.ho_so ~ ' hồ sơ chưa có kết quả.' if viec.ho_so else 'Không có hồ sơ tồn.', url_for('danh_muc.ds_bang', loai='ho-so'), 'Xem hồ sơ') }}
+    {% if viec.sap_het %}
+    {{ viec_mot(false, 'Giấy phép sắp hết hạn', viec.sap_het ~ ' giấy phép hết hạn trong 12 tháng tới.', url_for('gpmt.danh_sach', trang_thai='Sắp hết hạn'), 'Xem danh sách') }}
+    {% endif %}
+  </ul>
 </section>
 {% endif %}
 
-<section class="tc-muc tc-lien-he">
-  <div>
-    <p class="tc-nhan-xanh">Nộp hồ sơ</p>
-    <h2>Trung tâm Phục vụ hành chính công tỉnh Lào Cai</h2>
-    <p>Quầy giao dịch Sở Nông nghiệp và Môi trường:</p>
-    <ul>
-      <li><b>Cơ sở 1:</b> số 64 đường Lý Tự Trọng, phường Yên Bái, tỉnh Lào Cai</li>
-      <li><b>Cơ sở 2:</b> Đại lộ Trần Hưng Đạo, phường Cam Đường, tỉnh Lào Cai</li>
-      <li>Trung tâm Phục vụ hành chính công cấp xã; hoặc nộp trực tuyến trên Cổng Dịch vụ công</li>
+
+<div class="tq-luoi">
+  <section class="the">
+    <div class="tq-tieu-de"><h2>Giấy phép cấp gần đây</h2><a href="{{ url_for('gpmt.danh_sach') }}">Xem tất cả →</a></div>
+    {% if gp_moi %}
+    <div class="tq-ds">
+      {% for g in gp_moi %}
+      <a class="tq-dong" href="{{ url_for('gpmt.chi_tiet', id=g.id) }}">
+        <span class="so">{{ g.so_hieu }} · {{ g.ngay_ky|ngay }}</span>
+        {{ nhan_tt(g.trang_thai) }}
+        <span class="ten">{{ g.co_so.ten if g.co_so else '—' }}</span>
+        <span class="phu">{{ g.co_so.chu_the.ten if g.co_so and g.co_so.chu_the }}{% if g.co_quan_cap %} · {{ g.co_quan_cap }}{% endif %}</span>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="mo">Chưa có dữ liệu giấy phép.</p>
+    {% endif %}
+  </section>
+
+  <section class="the">
+    <div class="tq-tieu-de"><h2>Giấy phép theo năm cấp</h2><a href="{{ url_for('main.bang_dieu_khien') }}">Thống kê →</a></div>
+    {% if theo_nam %}
+    <div class="tq-cot">
+      {% for nam, n in theo_nam %}
+      <a href="{{ url_for('gpmt.danh_sach', nam=nam) }}" title="{{ n }} giấy phép năm {{ nam }}"><b>{{ n }}</b><i style="height: {{ (n / max_nam * 100)|round(0, 'ceil')|int }}%"></i>{{ nam }}</a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="mo">Chưa có dữ liệu.</p>
+    {% endif %}
+    {% if tong %}
+    <h3 class="tq-h3">Tình trạng hiệu lực</h3>
+    <div class="tq-thanh-tt" role="img" aria-label="Tỷ lệ giấy phép theo tình trạng hiệu lực">
+      {% for tt in DS_TRANG_THAI if theo_trang_thai.get(tt) %}
+      <span class="{{ MAU_TRANG_THAI[tt] }}" style="flex: {{ theo_trang_thai[tt] }}" title="{{ tt }}: {{ theo_trang_thai[tt] }}"></span>
+      {% endfor %}
+    </div>
+    <ul class="tq-chu-giai">
+      {% for tt in DS_TRANG_THAI if theo_trang_thai.get(tt) %}
+      <li><a href="{{ url_for('gpmt.danh_sach', trang_thai=tt) }}"><i class="{{ MAU_TRANG_THAI[tt] }}"></i>{{ tt }} <b>{{ theo_trang_thai[tt] }}</b></a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </section>
+</div>
+
+<section class="the">
+  <div class="tq-tieu-de"><h2>Quy trình cấp giấy phép môi trường cấp tỉnh</h2><a href="{{ url_for('cong_bo.trang') }}">Toàn văn quyết định →</a></div>
+  <p class="mo">Tóm tắt quy trình nội bộ tại Quyết định số 736/QĐ-UBND ngày 19/3/2026 của Chủ tịch UBND tỉnh, trường hợp phải vận hành thử nghiệm công trình xử lý chất thải: tổng thời gian rút ngắn còn <b>22 ngày</b> (theo quy định 30 ngày), không tính thời gian chỉnh sửa, bổ sung hồ sơ và phân tích mẫu chất thải.</p>
+  <ol class="tq-buoc">
+    <li><b>Nộp hồ sơ</b><span>Tại Trung tâm Phục vụ hành chính công tỉnh hoặc trực tuyến.</span></li>
+    <li><b>Kiểm tra, công khai</b><span>Chi cục Môi trường, KTTV và BĐKH kiểm tra hồ sơ, thành lập Hội đồng thẩm định / Đoàn kiểm tra.</span></li>
+    <li><b>Thẩm định</b><span>Họp Hội đồng, kiểm tra thực tế; thông báo kết quả để chủ cơ sở hoàn thiện.</span></li>
+    <li><b>Sở trình</b><span>Sở Nông nghiệp và Môi trường trình Ủy ban nhân dân tỉnh.</span></li>
+    <li><b>Cấp phép</b><span>UBND tỉnh ký giấy phép; trả kết quả tại Trung tâm Phục vụ hành chính công.</span></li>
+  </ol>
+</section>
+
+<div class="tq-luoi">
+  <section class="the">
+    <div class="tq-tieu-de"><h2>{{ TEN_DON_VI }}</h2>{% if lien_he.website %}<a href="{{ lien_he.website }}" target="_blank" rel="noopener">Cổng TTĐT ↗</a>{% endif %}</div>
+    <p>Cơ quan chuyên môn thuộc Ủy ban nhân dân tỉnh Lào Cai, tham mưu quản lý nhà nước về nông nghiệp và môi trường trên địa bàn tỉnh. Trong lĩnh vực môi trường, Sở thẩm định hồ sơ đề nghị cấp giấy phép môi trường, báo cáo đánh giá tác động môi trường, trình UBND tỉnh cấp phép và theo dõi việc chấp hành pháp luật về bảo vệ môi trường của các cơ sở.</p>
+    <div class="tq-lv">
+      {% for ten in ['Trồng trọt, chăn nuôi, thú y', 'Lâm nghiệp', 'Thủy sản', 'Thủy lợi, tài nguyên nước', 'Đất đai, đo đạc, bản đồ', 'Địa chất, khoáng sản', 'Bảo vệ môi trường', 'Khí tượng thủy văn, biến đổi khí hậu', 'Phát triển nông thôn'] %}
+      <span>{{ ten }}</span>
+      {% endfor %}
+    </div>
+    <h3 class="tq-h3">Nơi nộp hồ sơ</h3>
+    <ul class="tq-lien-he">
+      <li>{{ bt('dia_diem', 18) }}<span>Trung tâm Phục vụ hành chính công tỉnh — Cơ sở 1: số 64 đường Lý Tự Trọng, phường Yên Bái; Cơ sở 2: Đại lộ Trần Hưng Đạo, phường Cam Đường</span></li>
+      <li>{{ bt('web', 18) }}<span>Trung tâm Phục vụ hành chính công cấp xã, hoặc nộp trực tuyến trên Cổng Dịch vụ công</span></li>
     </ul>
     <p class="mo">Theo Quyết định số 463/QĐ-UBND ngày 13/02/2026 của Chủ tịch UBND tỉnh.</p>
-  </div>
-  <div>
-    <p class="tc-nhan-xanh">Liên hệ</p>
-    <h2>{{ TEN_DON_VI }}</h2>
-    <dl class="thong-tin">
-      {% if lien_he.giam_doc %}<dt>Giám đốc Sở</dt><dd>{{ lien_he.giam_doc }}</dd>{% endif %}
-      <dt>Địa chỉ</dt><dd>{{ lien_he.dia_chi_tru_so or 'Đang cập nhật' }}</dd>
-      <dt>Điện thoại</dt><dd>{{ lien_he.dien_thoai or 'Đang cập nhật' }}{% if lien_he.fax %} · Fax: {{ lien_he.fax }}{% endif %}</dd>
-      <dt>Email</dt><dd>{% if lien_he.email %}<a href="mailto:{{ lien_he.email }}">{{ lien_he.email }}</a>{% else %}Đang cập nhật{% endif %}</dd>
-      <dt>Trang thông tin</dt><dd>{% if lien_he.website %}<a href="{{ lien_he.website }}" rel="noopener" target="_blank">{{ lien_he.website }}</a>{% else %}Đang cập nhật{% endif %}</dd>
-      {% if lien_he.gio_lam_viec %}<dt>Giờ làm việc</dt><dd>{{ lien_he.gio_lam_viec }}</dd>{% endif %}
-    </dl>
+  </section>
+
+  <section class="the">
+    <div class="tq-tieu-de"><h2>Liên hệ</h2></div>
+    <ul class="tq-lien-he">
+      {% if lien_he.giam_doc %}<li>{{ bt('tai_khoan', 18) }}<span>Giám đốc Sở: <b>{{ lien_he.giam_doc }}</b></span></li>{% endif %}
+      <li>{{ bt('dia_diem', 18) }}<span>{{ lien_he.dia_chi_tru_so or 'Đang cập nhật' }}</span></li>
+      <li>{{ bt('dien_thoai', 18) }}<span>{{ lien_he.dien_thoai or 'Đang cập nhật' }}{% if lien_he.fax %} · Fax: {{ lien_he.fax }}{% endif %}</span></li>
+      <li>{{ bt('thu', 18) }}<span>{% if lien_he.email %}<a href="mailto:{{ lien_he.email }}">{{ lien_he.email }}</a>{% else %}Đang cập nhật{% endif %}</span></li>
+      <li>{{ bt('web', 18) }}<span>{% if lien_he.website %}<a href="{{ lien_he.website }}" rel="noopener" target="_blank">{{ lien_he.website }}</a>{% else %}Đang cập nhật{% endif %}</span></li>
+      {% if lien_he.gio_lam_viec %}<li>{{ bt('dong_ho', 18) }}<span>{{ lien_he.gio_lam_viec }}</span></li>{% endif %}
+    </ul>
     {% if lien_he.nguon %}<p class="mo">Nguồn: {{ lien_he.nguon }}.</p>{% endif %}
-  </div>
-</section>
+  </section>
+</div>
 {% endblock %}

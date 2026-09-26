@@ -24,7 +24,10 @@ def ds_gpmt_trong_pham_vi():
 @bp.route("/")
 @can_xem
 def trang_chu():
-    """Trang chủ giới thiệu, quảng bá Sở NN&MT (Bạn yêu cầu 27/9/2026). Số liệu lấy trực tiếp từ CSDL."""
+    """Trang chủ tổng quan (Bạn yêu cầu 27/9/2026): giới thiệu Sở, số liệu chính, và với cán bộ quản trị là
+    danh sách việc cần làm khi mới đăng nhập. Số liệu lấy trực tiếp từ CSDL, không ghi cứng."""
+    from ..dich_vu import da_co_du_lieu_so
+    from ..models import TaiKhoan
     from .cong_bo import doc_du_lieu
     ds = ds_gpmt_trong_pham_vi().all()
     co_so = {g.co_so_du_an_id for g in ds if g.co_so_du_an_id}
@@ -32,11 +35,24 @@ def trang_chu():
     moi = sorted([g for g in ds if g.ngay_ky and g.loai_van_ban == "GPMT"], key=lambda g: g.ngay_ky, reverse=True)[:6]
     tthc = doc_du_lieu()
     nam = sorted({g.nam_cap for g in ds if g.nam_cap})
+    theo_nam = sorted(Counter(g.nam_cap for g in ds if g.nam_cap).items())[-8:]
+    theo_trang_thai = Counter(g.trang_thai for g in ds)
+    viec = None
+    if current_user.noi_bo:
+        viec = dict(
+            ra_soat=sum(1 for g in ds if g.can_ra_soat),
+            thieu_thoi_han=theo_trang_thai.get(CHUA_XAC_DINH, 0),
+            ho_so=db.session.query(HoSo).filter(HoSo.trang_thai.notin_(["Đã ký GP/QĐ", "Trả hồ sơ / dừng"])).count(),
+            da_nhap_so=da_co_du_lieu_so(),
+            so_tai_khoan=db.session.query(TaiKhoan).count(),
+            sap_het=theo_trang_thai.get(SAP_HET_HAN, 0))
     return render_template(
         "trang_chu.html", tong=len(ds), so_nam=len(nam), nam_dau=nam[0] if nam else None,
         nam_cuoi=nam[-1] if nam else None,
         so_co_so=len(co_so), so_xa=len(xa), so_dtm=db.session.query(Dtm).count(),
-        so_tthc=sum(1 for t in tthc["thu_tuc"] if not t["da_thay_the"]), gp_moi=moi)
+        so_tthc=sum(1 for t in tthc["thu_tuc"] if not t["da_thay_the"]), gp_moi=moi,
+        theo_nam=theo_nam, max_nam=max((n for _, n in theo_nam), default=1),
+        theo_trang_thai=theo_trang_thai, viec=viec)
 
 
 @bp.route("/thong-ke")

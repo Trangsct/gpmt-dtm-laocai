@@ -10,96 +10,91 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <link rel="icon" href="{{ url_for('static', filename='logo.svg') }}" type="image/svg+xml">
 </head>
-<body>
-<header class="dau">
-  <div class="cong-cu" aria-label="Cỡ chữ và trình chiếu">
-    <span>Cỡ chữ</span>
-    <button type="button" data-co="1" title="Chữ thường">A</button>
-    <button type="button" data-co="1.2" title="Chữ lớn">A+</button>
-    <button type="button" data-co="1.4" title="Chữ rất lớn — trình chiếu hội nghị">A++</button>
-    <button type="button" id="toan-man-hinh" title="Toàn màn hình (F11)">⛶ Toàn màn hình</button>
-  </div>
-  <a class="ten" href="{{ url_for('main.trang_chu') }}"><img class="logo" src="{{ url_for('static', filename='logo.svg') }}" alt="" width="38" height="38"><span><small>{{ TEN_DON_VI }}</small>Cổng Giấy phép môi trường và ĐTM</span></a>
-  {% if not current_user.is_authenticated %}
-  <div class="nguoi"><a href="{{ url_for('auth.dang_nhap', next=request.full_path.rstrip('?')) if request.endpoint not in ('auth.dang_nhap', 'auth.cai_dat') else url_for('auth.dang_nhap') }}">Cán bộ đăng nhập</a></div>
-  {% else %}
-  <div class="nguoi">
-    <span>{{ current_user.ho_ten }} · {{ VAI_TRO[current_user.vai_tro] }}</span>
-    <a href="{{ url_for('auth.doi_mat_khau') }}">Đổi mật khẩu</a>
-    <form method="post" action="{{ url_for('auth.dang_xuat') }}" style="display:inline">
-      <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
-      <button class="lien-ket" type="submit">Đăng xuất</button>
-    </form>
-  </div>
-  {% endif %}
-</header>
-{% if current_user.is_authenticated or config.CONG_KHAI %}
+{% from "_bieu_tuong.html" import bt %}
 {% set ep = request.endpoint or '' %}
 {% set loai = (request.view_args or {}).get('loai') %}
-<nav class="menu">
-  <a href="{{ url_for('main.trang_chu') }}" class="{{ 'dang-mo' if ep == 'main.trang_chu' }}">Trang chủ</a>
-  <a href="{{ url_for('main.bang_dieu_khien') }}" class="{{ 'dang-mo' if ep == 'main.bang_dieu_khien' }}">{{ 'Bảng điều khiển' if current_user.is_authenticated else 'Thống kê' }}</a>
-  <a href="{{ url_for('gpmt.danh_sach') }}" class="{{ 'dang-mo' if ep.startswith('gpmt.') }}">Giấy phép môi trường</a>
-  <a href="{{ url_for('danh_muc.ds_co_so') }}" class="{{ 'dang-mo' if ep in ('danh_muc.ds_co_so','danh_muc.co_so','danh_muc.sua_co_so') }}">Cơ sở / dự án</a>
-  <a href="{{ url_for('danh_muc.ds_bang', loai='dtm') }}" class="{{ 'dang-mo' if loai == 'dtm' }}">ĐTM</a>
-  {% if current_user.noi_bo %}
-  <a href="{{ url_for('danh_muc.ds_bang', loai='ho-so') }}" class="{{ 'dang-mo' if loai == 'ho-so' }}">Hồ sơ đang giải quyết</a>
-  {% endif %}
-  <a href="{{ url_for('danh_muc.ds_bang', loai='dang-ky-mt') }}" class="{{ 'dang-mo' if loai == 'dang-ky-mt' }}">Đăng ký môi trường</a>
-  <a href="{{ url_for('danh_muc.ds_bang', loai='chu-the') }}" class="{{ 'dang-mo' if loai == 'chu-the' }}">Chủ cơ sở</a>
-  <a href="{{ url_for('cong_bo.trang') }}" class="{{ 'dang-mo' if ep.startswith('cong_bo.') }}">Thủ tục hành chính</a>
-  {% if current_user.noi_bo %}
-  <a href="{{ url_for('main.ra_soat') }}" class="{{ 'dang-mo' if ep == 'main.ra_soat' }}">Cần rà soát</a>
-  <a href="{{ url_for('main.nhat_ky') }}" class="{{ 'dang-mo' if ep == 'main.nhat_ky' }}">Nhật ký</a>
-  {% endif %}
-  {% if current_user.duoc_sua %}
-  <a href="{{ url_for('nhap_du_lieu.trang_chinh') }}" class="{{ 'dang-mo' if ep.startswith('nhap_du_lieu.') }}">Nhập dữ liệu</a>
-  {% endif %}
-  {% if current_user.vai_tro == 'quan_tri' %}
-  <a href="{{ url_for('tai_khoan.danh_sach') }}" class="{{ 'dang-mo' if ep.startswith('tai_khoan.') }}">Tài khoản</a>
-  {% endif %}
-</nav>
-{% endif %}
-{% block truoc_main %}{% endblock %}
-<main>
-  {% for loai_tb, tb in get_flashed_messages(with_categories=true) %}
-  <div class="thong-bao {{ loai_tb if loai_tb in ('ok','loi') else 'ok' }}">{{ tb }}</div>
-  {% endfor %}
-  {% block noi_dung %}{% endblock %}
-</main>
-<footer class="chan">
-  <div class="chan-trong">
-    <div><b>{{ TEN_DON_VI }}</b><br>Cổng tra cứu Giấy phép môi trường, báo cáo đánh giá tác động môi trường và thủ tục hành chính lĩnh vực môi trường.
-      {% if lien_he.dia_chi_tru_so %}<br>Địa chỉ: {{ lien_he.dia_chi_tru_so }}{% endif %}
-      {% if lien_he.dien_thoai %}<br>Điện thoại: {{ lien_he.dien_thoai }}{% if lien_he.fax %} · Fax: {{ lien_he.fax }}{% endif %}{% endif %}
-      {% if lien_he.email %}<br>Email: <a href="mailto:{{ lien_he.email }}">{{ lien_he.email }}</a>{% endif %}
+{% macro muc(url, ten, ic, dang_mo, dem=None) -%}
+<a href="{{ url }}" class="{{ 'dang-mo' if dang_mo }}">{{ bt(ic) }}<span>{{ ten }}</span>{% if dem %}<em class="dem">{{ dem }}</em>{% endif %}</a>
+{%- endmacro %}
+<body>
+<div class="bo-cuc">
+  <aside class="thanh-ben" id="thanh-ben">
+    <a class="thuong-hieu" href="{{ url_for('main.trang_chu') }}">
+      <img src="{{ url_for('static', filename='logo.svg') }}" alt="" width="44" height="44">
+      <span><b>Sở Nông nghiệp và Môi trường</b><small>GPMT · ĐTM · Tỉnh Lào Cai</small></span>
+    </a>
+    <nav class="menu-doc" aria-label="Menu chính">
+      <p class="nhom">Tổng quan</p>
+      {{ muc(url_for('main.trang_chu'), 'Trang chủ', 'nha', ep == 'main.trang_chu') }}
+      {{ muc(url_for('main.bang_dieu_khien'), 'Thống kê', 'thong_ke', ep == 'main.bang_dieu_khien') }}
+      <p class="nhom">Tra cứu</p>
+      {{ muc(url_for('gpmt.danh_sach'), 'Giấy phép môi trường', 'giay_phep', ep.startswith('gpmt.')) }}
+      {{ muc(url_for('danh_muc.ds_co_so'), 'Cơ sở, dự án', 'co_so', ep in ('danh_muc.ds_co_so', 'danh_muc.co_so', 'danh_muc.sua_co_so')) }}
+      {{ muc(url_for('danh_muc.ds_bang', loai='dtm'), 'Quyết định ĐTM', 'dtm', loai == 'dtm') }}
+      {{ muc(url_for('danh_muc.ds_bang', loai='dang-ky-mt'), 'Đăng ký môi trường', 'dkmt', loai == 'dang-ky-mt') }}
+      {{ muc(url_for('danh_muc.ds_bang', loai='chu-the'), 'Chủ cơ sở', 'chu_the', loai == 'chu-the') }}
+      {{ muc(url_for('cong_bo.trang'), 'Thủ tục hành chính', 'tthc', ep.startswith('cong_bo.')) }}
+      {% if current_user.noi_bo %}
+      <p class="nhom">Nghiệp vụ</p>
+      {{ muc(url_for('danh_muc.ds_bang', loai='ho-so'), 'Hồ sơ đang giải quyết', 'ho_so', loai == 'ho-so') }}
+      {{ muc(url_for('main.ra_soat'), 'Cần rà soát', 'ra_soat', ep == 'main.ra_soat', dem_ra_soat()) }}
+      {{ muc(url_for('main.nhat_ky'), 'Nhật ký', 'nhat_ky', ep == 'main.nhat_ky') }}
+      {% endif %}
+      {% if current_user.duoc_sua %}
+      <p class="nhom">Quản trị</p>
+      {{ muc(url_for('nhap_du_lieu.trang_chinh'), 'Nhập dữ liệu', 'nhap', ep.startswith('nhap_du_lieu.')) }}
+      {% if current_user.vai_tro == 'quan_tri' %}
+      {{ muc(url_for('tai_khoan.danh_sach'), 'Tài khoản', 'tai_khoan', ep.startswith('tai_khoan.')) }}
+      {% endif %}
+      {% endif %}
+    </nav>
+    <div class="ben-duoi">
+      {% if current_user.is_authenticated %}
+      <div class="the-nguoi">
+        <span class="avatar">{{ current_user.ho_ten[:1] }}</span>
+        <span><b>{{ current_user.ho_ten }}</b><small>{{ VAI_TRO[current_user.vai_tro] }}</small></span>
+      </div>
+      <div class="nut-nguoi">
+        <a href="{{ url_for('auth.doi_mat_khau') }}">Đổi mật khẩu</a>
+        <form method="post" action="{{ url_for('auth.dang_xuat') }}">
+          <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+          <button class="lien-ket" type="submit">{{ bt('dang_xuat', 16) }} Đăng xuất</button>
+        </form>
+      </div>
+      {% else %}
+      <a class="nut-dang-nhap" href="{{ url_for('auth.dang_nhap', next=request.full_path.rstrip('?')) if ep not in ('auth.dang_nhap', 'auth.cai_dat') else url_for('auth.dang_nhap') }}">{{ bt('dang_nhap', 18) }} Cán bộ đăng nhập</a>
+      {% endif %}
     </div>
-    <div class="chan-lk">
-      <a href="{{ url_for('gpmt.danh_sach') }}">Tra cứu GPMT</a>
-      <a href="{{ url_for('cong_bo.trang') }}">Thủ tục hành chính</a>
-      <a href="{{ url_for('main.bang_dieu_khien') }}">Thống kê</a>
-      {% if lien_he.website %}<a href="{{ lien_he.website }}" target="_blank" rel="noopener">Cổng TTĐT của Sở ↗</a>{% endif %}
-      {% if not current_user.is_authenticated %}<a href="{{ url_for('auth.dang_nhap') }}">Cán bộ đăng nhập</a>{% endif %}
-    </div>
+  </aside>
+
+  <div class="vung-chinh">
+    <header class="thanh-tren">
+      <button type="button" class="nut-menu" aria-controls="thanh-ben" aria-label="Mở menu"
+              onclick="document.getElementById('thanh-ben').classList.toggle('mo')">{{ bt('menu', 22) }}</button>
+      <div class="tt-don-vi"><b>{{ TEN_DON_VI }}</b><small>Cổng tra cứu Giấy phép môi trường và báo cáo ĐTM</small></div>
+      <form class="tim-nhanh" action="{{ url_for('gpmt.danh_sach') }}" method="get" role="search">
+        {{ bt('tim', 18) }}<input type="search" name="q" placeholder="Tra cứu số giấy phép, cơ sở, doanh nghiệp, MST…" aria-label="Tra cứu giấy phép">
+      </form>
+    </header>
+    {% block truoc_main %}{% endblock %}
+    <main>
+      {% for loai_tb, tb in get_flashed_messages(with_categories=true) %}
+      <div class="thong-bao {{ loai_tb if loai_tb in ('ok','loi') else 'ok' }}">{{ tb }}</div>
+      {% endfor %}
+      {% block noi_dung %}{% endblock %}
+    </main>
+    <footer class="chan">
+      <div><b>{{ TEN_DON_VI }}</b>
+        {% if lien_he.dia_chi_tru_so %} · {{ lien_he.dia_chi_tru_so }}{% endif %}
+        {% if lien_he.dien_thoai %} · ĐT: {{ lien_he.dien_thoai }}{% endif %}
+        {% if lien_he.email %} · <a href="mailto:{{ lien_he.email }}">{{ lien_he.email }}</a>{% endif %}
+      </div>
+      <div class="chan-lk">
+        {% if lien_he.website %}<a href="{{ lien_he.website }}" target="_blank" rel="noopener">Cổng TTĐT của Sở ↗</a>{% endif %}
+        <a href="{{ url_for('main.suc_khoe') }}">Kiểm tra hệ thống</a>
+      </div>
+    </footer>
   </div>
-</footer>
-<script>
-// Cỡ chữ cho trình chiếu hội nghị: ghi nhớ trên máy người xem (không bắt buộc)
-(function () {
-  var goc = document.documentElement;
-  function dat(co) { goc.setAttribute('data-co-chu', co);
-    document.querySelectorAll('.cong-cu [data-co]').forEach(function (b) { b.classList.toggle('dang-chon', b.dataset.co === co); }); }
-  var luu = null;
-  try { luu = localStorage.getItem('co-chu'); } catch (e) {}
-  if (luu) dat(luu); else dat(window.innerWidth >= 1200 ? '1.2' : '1');
-  document.querySelectorAll('.cong-cu [data-co]').forEach(function (b) {
-    b.addEventListener('click', function () { dat(b.dataset.co); try { localStorage.setItem('co-chu', b.dataset.co); } catch (e) {} });
-  });
-  var tm = document.getElementById('toan-man-hinh');
-  if (tm) tm.addEventListener('click', function () {
-    if (document.fullscreenElement) document.exitFullscreen(); else if (goc.requestFullscreen) goc.requestFullscreen();
-  });
-})();
-</script>
+</div>
 </body>
 </html>
