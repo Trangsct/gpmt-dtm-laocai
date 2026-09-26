@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Thủ tục hành chính{% endblock %}
+{% block noi_dung %}
+<h1>Thủ tục hành chính lĩnh vực môi trường</h1>
+<p class="mo">Thủ tục hành chính cấp tỉnh thuộc phạm vi chức năng quản lý của Sở Nông nghiệp và Môi trường tỉnh Lào Cai, theo các quyết định của Chủ tịch UBND tỉnh dưới đây. Thành phần hồ sơ, phí, trình tự từng bước: xem toàn văn quyết định.</p>
+
+<div class="the">
+  <h2 style="margin-top:0">Văn bản công bố</h2>
+  <div class="bang-cuon"><table>
+    <tr><th>Số hiệu</th><th>Ngày ban hành</th><th>Trích yếu</th><th>Nội dung chính</th><th>Toàn văn</th></tr>
+    {% for vb in van_ban %}
+    <tr>
+      <td style="white-space:nowrap"><b>{{ vb.so_hieu }}</b></td>
+      <td>{{ vb.ngay|ngay }}</td>
+      <td>{{ vb.trich_yeu }}<br><span class="mo">{{ vb.co_quan }} · {{ vb.nguoi_ky }}</span></td>
+      <td>{{ vb.noi_dung }}</td>
+      <td style="white-space:nowrap"><a class="nut phu" href="/cong-bo/{{ vb.tep }}" target="_blank" rel="noopener">Xem PDF</a></td>
+    </tr>
+    {% endfor %}
+  </table></div>
+</div>
+
+<div class="the">
+  <h2 style="margin-top:0">Danh mục thủ tục hành chính cấp tỉnh</h2>
+  <p class="co" style="font-weight:600">{{ ghi_chu_thay_the }}</p>
+  <div class="bang-cuon"><table>
+    <tr><th>TT</th><th>Mã TTHC</th><th>Tên thủ tục</th><th>Thời gian giải quyết (quy trình nội bộ, QĐ 736/QĐ-UBND)</th><th>Tình trạng</th></tr>
+    {% for t in thu_tuc %}
+    <tr {% if t.da_thay_the %}style="color:var(--xam)"{% endif %}>
+      <td>{{ t.tt }}</td><td style="white-space:nowrap">{{ t.ma }}</td>
+      <td>{% if t.da_thay_the %}<s>{{ t.ten }}</s>{% else %}<b>{{ t.ten }}</b>{% endif %}</td>
+      <td>{% for x in t.thoi_gian %}<div>• {{ x }}</div>{% endfor %}</td>
+      <td>{% if t.da_thay_the %}<span class="nhan xam">Đã bỏ theo QĐ ngày 26/6/2026</span>{% else %}<span class="nhan ok">Đang áp dụng</span>{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table></div>
+</div>
+
+<div class="the">
+  <h2 style="margin-top:0">Thủ tục hành chính bị bãi bỏ (QĐ 463/QĐ-UBND)</h2>
+  <table>
+    <tr><th>Mã TTHC</th><th>Tên thủ tục</th><th>Văn bản quy định việc bãi bỏ</th><th>Ghi chú</th></tr>
+    {% for t in thu_tuc_bai_bo %}
+    <tr><td>{{ t.ma }}</td><td>{{ t.ten }}</td><td>{{ t.can_cu }}</td><td>{{ t.ghi_chu }}</td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="the">
+  <h2 style="margin-top:0">Thông tin chung</h2>
+  <ul>{% for x in chung %}<li>{{ x }}</li>{% endfor %}</ul>
+</div>
+{% endblock %}
