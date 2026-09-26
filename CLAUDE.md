@@ -35,6 +35,10 @@ Cách chạy, triển khai: `README.md`.
   cần đăng nhập (`CONG_KHAI`, mặc định bật; khách = `KhachXem` trong `auth.py`, dùng decorator `can_xem`).
   Vẫn chỉ cán bộ đăng nhập mới thấy hồ sơ đang giải quyết, lý do rà soát, nhật ký, ghi chú nội bộ (mục 7
   HUONG_DAN.md: công khai chỉ các trường đã công khai) — hỏi Bạn trước khi mở thêm.
+- **27/9/2026 — Tab "Thủ tục hành chính"** (`/thu-tuc-hanh-chinh`, công khai): QĐ 463/QĐ-UBND ngày 13/02/2026
+  (công bố danh mục TTHC) và QĐ 736/QĐ-UBND ngày 19/3/2026 (quy trình nội bộ). Nội dung ở `gpmt/cong_bo.json`,
+  PDF gốc (giữ nguyên chữ ký số, không nén) ở `public/cong-bo/`. Theo Sở: TTHC số 1, 2, 5 đã bỏ theo QĐ ngày
+  26/6/2026 — **chưa có số hiệu/toàn văn**, khi có thì cập nhật. Thêm văn bản mới: thêm PDF + một mục JSON.
 - **27/9/2026 — Tài khoản quản trị đơn giản**: trang `/cai-dat` tạo quản trị đầu tiên khi CSDL chưa có tài khoản
   nào, tạo xong tự khóa; không bắt đặt biến trên Vercel.
 

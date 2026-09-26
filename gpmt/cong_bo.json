@@ -1,0 +1,80 @@
+{
+  "_ghi_chu": "Trang công khai 'Thủ tục hành chính'. Nội dung chép nguyên văn từ bản gốc PDF (ký số) trong public/cong-bo/; số, ngày đã đối chiếu ảnh trang 1 ngày 27/9/2026. Không bịa: chỗ chưa có văn bản thì ghi 'đang cập nhật'.",
+  "van_ban": [
+    {
+      "so_hieu": "463/QĐ-UBND",
+      "ngay": "2026-02-13",
+      "co_quan": "Chủ tịch UBND tỉnh Lào Cai",
+      "nguoi_ky": "KT. Chủ tịch – Phó Chủ tịch Ngô Hạnh Phúc",
+      "trich_yeu": "Về việc công bố Danh mục thủ tục hành chính được sửa đổi, bổ sung; thủ tục hành chính bị bãi bỏ lĩnh vực môi trường thuộc phạm vi chức năng quản lý của Sở Nông nghiệp và Môi trường tỉnh Lào Cai",
+      "noi_dung": "Công bố Danh mục 05 thủ tục hành chính được sửa đổi, bổ sung và Danh mục 01 thủ tục hành chính bị bãi bỏ (cấp tỉnh). Hiệu lực kể từ ngày ký; bãi bỏ thủ tục số thứ tự 02 phần I tại Quyết định số 1265/QĐ-UBND ngày 23/4/2025 và Quyết định số 2277/QĐ-UBND ngày 27/6/2025 của Chủ tịch UBND tỉnh Lào Cai (trước hợp nhất).",
+      "tep": "463_QD-UBND_2026.pdf"
+    },
+    {
+      "so_hieu": "736/QĐ-UBND",
+      "ngay": "2026-03-19",
+      "co_quan": "Chủ tịch UBND tỉnh Lào Cai",
+      "nguoi_ky": "KT. Chủ tịch – Phó Chủ tịch Ngô Hạnh Phúc",
+      "trich_yeu": "Về việc phê duyệt quy trình nội bộ trong giải quyết thủ tục hành chính lĩnh vực môi trường thuộc phạm vi chức năng quản lý của Sở Nông nghiệp và Môi trường tỉnh Lào Cai",
+      "noi_dung": "Phê duyệt 05 quy trình nội bộ trong giải quyết thủ tục hành chính (cấp tỉnh). Hiệu lực kể từ ngày ký; bãi bỏ 02 quy trình số thứ tự 2, 5 phần I tại Quyết định số 688/QĐ-UBND ngày 04/8/2025 và Quyết định số 144/QĐ-UBND ngày 19/01/2026 của Chủ tịch UBND tỉnh Lào Cai.",
+      "tep": "736_QD-UBND_2026.pdf"
+    }
+  ],
+  "thu_tuc": [
+    {
+      "tt": 1, "ma": "1.010733",
+      "ten": "Thẩm định báo cáo đánh giá tác động môi trường",
+      "thoi_gian": [
+        "Dự án nhóm I (khoản 3 Điều 28 Luật BVMT): theo quy định 45 ngày, rút ngắn còn 31 ngày",
+        "Dự án nhóm II (điểm c, d, đ, e khoản 4 Điều 28 Luật BVMT): theo quy định 35 ngày, rút ngắn còn 25 ngày",
+        "Thẩm định bằng hình thức lấy ý kiến: 25 ngày"
+      ],
+      "da_thay_the": true
+    },
+    {
+      "tt": 2, "ma": "1.010735",
+      "ten": "Thẩm định phương án cải tạo, phục hồi môi trường trong hoạt động khai thác khoáng sản (báo cáo riêng theo quy định tại khoản 2 Điều 36 Nghị định số 08/2022/NĐ-CP)",
+      "thoi_gian": ["30 ngày"],
+      "da_thay_the": true
+    },
+    {
+      "tt": 3, "ma": "1.010727",
+      "ten": "Cấp giấy phép môi trường",
+      "thoi_gian": [
+        "Không thuộc đối tượng phải vận hành thử nghiệm công trình xử lý chất thải: 15 ngày",
+        "Các trường hợp còn lại: theo quy định 30 ngày, rút ngắn còn 22 ngày"
+      ],
+      "da_thay_the": false
+    },
+    {
+      "tt": 4, "ma": "1.010729",
+      "ten": "Cấp điều chỉnh giấy phép môi trường",
+      "thoi_gian": ["15 ngày"],
+      "da_thay_the": false
+    },
+    {
+      "tt": 5, "ma": "1.010730",
+      "ten": "Cấp lại giấy phép môi trường",
+      "thoi_gian": [
+        "Không thuộc đối tượng phải vận hành thử nghiệm công trình xử lý chất thải: 15 ngày",
+        "Các trường hợp còn lại: theo quy định 30 ngày, rút ngắn còn 22 ngày"
+      ],
+      "da_thay_the": true
+    }
+  ],
+  "ghi_chu_thay_the": "Thủ tục số 1, 2, 5 đã được bỏ khỏi danh mục này theo Quyết định ngày 26/6/2026 (số hiệu và toàn văn đang cập nhật).",
+  "thu_tuc_bai_bo": [
+    {
+      "ma": "1.010728",
+      "ten": "Cấp đổi giấy phép môi trường",
+      "can_cu": "Luật sửa đổi, bổ sung một số điều của 15 luật trong lĩnh vực nông nghiệp và môi trường số 146/2025/QH15; Nghị định số 48/2026/NĐ-CP ngày 29/01/2026 của Chính phủ",
+      "ghi_chu": "Thủ tục có số thứ tự 03 phần I đã được công bố tại Quyết định số 2277/QĐ-UBND ngày 27/6/2025 của UBND tỉnh Lào Cai (cũ)"
+    }
+  ],
+  "chung": [
+    "Thời gian giải quyết tính kể từ ngày nhận được hồ sơ đầy đủ, hợp lệ; thời gian tổ chức, cá nhân chỉnh sửa, bổ sung hồ sơ không tính vào thời gian giải quyết.",
+    "Nơi nộp hồ sơ: Trung tâm Phục vụ hành chính công tỉnh Lào Cai (quầy Sở Nông nghiệp và Môi trường) — Cơ sở 1: số 64 đường Lý Tự Trọng, phường Yên Bái; Cơ sở 2: Đại lộ Trần Hưng Đạo, phường Cam Đường; Trung tâm Phục vụ hành chính công cấp xã; hoặc Cổng Dịch vụ công (trực tuyến).",
+    "Hình thức nộp: trực tiếp, qua dịch vụ bưu chính, hoặc trực tuyến.",
+    "Thành phần hồ sơ, phí thẩm định, trình tự từng bước: xem toàn văn quyết định (nút “Xem PDF” ở mục Văn bản công bố)."
+  ]
+}

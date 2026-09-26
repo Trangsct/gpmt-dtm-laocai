@@ -35,6 +35,7 @@
   {% endif %}
   <a href="{{ url_for('danh_muc.ds_bang', loai='dang-ky-mt') }}" class="{{ 'dang-mo' if loai == 'dang-ky-mt' }}">Đăng ký môi trường</a>
   <a href="{{ url_for('danh_muc.ds_bang', loai='chu-the') }}" class="{{ 'dang-mo' if loai == 'chu-the' }}">Chủ cơ sở</a>
+  <a href="{{ url_for('cong_bo.trang') }}" class="{{ 'dang-mo' if ep.startswith('cong_bo.') }}">Thủ tục hành chính</a>
   {% if current_user.noi_bo %}
   <a href="{{ url_for('main.ra_soat') }}" class="{{ 'dang-mo' if ep == 'main.ra_soat' }}">Cần rà soát</a>
   <a href="{{ url_for('main.nhat_ky') }}" class="{{ 'dang-mo' if ep == 'main.nhat_ky' }}">Nhật ký</a>
