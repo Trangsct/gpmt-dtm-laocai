@@ -3,7 +3,6 @@ import io
 import json
 from collections import Counter
 from datetime import date
-from pathlib import Path
 
 from flask import Blueprint, render_template, request, send_file
 from flask_login import current_user
@@ -33,12 +32,11 @@ def trang_chu():
     moi = sorted([g for g in ds if g.ngay_ky and g.loai_van_ban == "GPMT"], key=lambda g: g.ngay_ky, reverse=True)[:6]
     tthc = doc_du_lieu()
     nam = sorted({g.nam_cap for g in ds if g.nam_cap})
-    lien_he = json.loads((Path(__file__).resolve().parent.parent / "gioi_thieu.json").read_text(encoding="utf-8"))
     return render_template(
         "trang_chu.html", tong=len(ds), so_nam=len(nam), nam_dau=nam[0] if nam else None,
         nam_cuoi=nam[-1] if nam else None,
         so_co_so=len(co_so), so_xa=len(xa), so_dtm=db.session.query(Dtm).count(),
-        so_tthc=sum(1 for t in tthc["thu_tuc"] if not t["da_thay_the"]), gp_moi=moi, lien_he=lien_he)
+        so_tthc=sum(1 for t in tthc["thu_tuc"] if not t["da_thay_the"]), gp_moi=moi)
 
 
 @bp.route("/thong-ke")

@@ -32,10 +32,14 @@ def dang_ky_views(app):
     from .bieu_mau import hien_thi
     app.jinja_env.globals["hien_thi"] = hien_thi
 
+    import json
+    from pathlib import Path
+    lien_he = json.loads((Path(__file__).resolve().parent.parent / "gioi_thieu.json").read_text(encoding="utf-8"))
+
     @app.context_processor
     def _bien_chung():
         return dict(TEN_DON_VI=app.config["TEN_DON_VI"], VAI_TRO=VAI_TRO, MAU_TRANG_THAI=MAU_TRANG_THAI,
-                    DS_TRANG_THAI=DS_TRANG_THAI, hom_nay=date.today())
+                    DS_TRANG_THAI=DS_TRANG_THAI, hom_nay=date.today(), lien_he=lien_he)
 
     @app.errorhandler(401)
     def _moi_dang_nhap(e):

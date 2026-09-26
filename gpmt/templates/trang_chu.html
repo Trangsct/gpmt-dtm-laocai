@@ -56,6 +56,7 @@
     <div class="tc-nut">
       <a class="tc-nut-chinh" href="{{ url_for('gpmt.danh_sach') }}">Danh sách giấy phép môi trường</a>
       <a class="tc-nut-phu" href="{{ url_for('cong_bo.trang') }}">Thủ tục hành chính</a>
+      {% if lien_he.website %}<a class="tc-nut-phu" href="{{ lien_he.website }}" target="_blank" rel="noopener">Cổng thông tin điện tử của Sở ↗</a>{% endif %}
     </div>
   </div>
 </section>
@@ -122,7 +123,7 @@
     {% for g in gp_moi %}
     <a class="tc-gp" href="{{ url_for('gpmt.chi_tiet', id=g.id) }}">
       <span class="tc-gp-so">{{ g.so_hieu }}</span>
-      <span class="mo">{{ g.ngay_ky|ngay }} · {{ g.co_quan_cap or '' }}</span>
+      <span class="mo">{{ g.ngay_ky|ngay }}{% if g.co_quan_cap %} · {{ g.co_quan_cap }}{% endif %}</span>
       <b>{{ g.co_so.ten if g.co_so }}</b>
       <span class="mo">{{ g.co_so.chu_the.ten if g.co_so and g.co_so.chu_the }}</span>
       {{ nhan_tt(g.trang_thai) }}
@@ -149,12 +150,14 @@
     <p class="tc-nhan-xanh">Liên hệ</p>
     <h2>{{ TEN_DON_VI }}</h2>
     <dl class="thong-tin">
+      {% if lien_he.giam_doc %}<dt>Giám đốc Sở</dt><dd>{{ lien_he.giam_doc }}</dd>{% endif %}
       <dt>Địa chỉ</dt><dd>{{ lien_he.dia_chi_tru_so or 'Đang cập nhật' }}</dd>
-      <dt>Điện thoại</dt><dd>{{ lien_he.dien_thoai or 'Đang cập nhật' }}</dd>
+      <dt>Điện thoại</dt><dd>{{ lien_he.dien_thoai or 'Đang cập nhật' }}{% if lien_he.fax %} · Fax: {{ lien_he.fax }}{% endif %}</dd>
       <dt>Email</dt><dd>{% if lien_he.email %}<a href="mailto:{{ lien_he.email }}">{{ lien_he.email }}</a>{% else %}Đang cập nhật{% endif %}</dd>
       <dt>Trang thông tin</dt><dd>{% if lien_he.website %}<a href="{{ lien_he.website }}" rel="noopener" target="_blank">{{ lien_he.website }}</a>{% else %}Đang cập nhật{% endif %}</dd>
       {% if lien_he.gio_lam_viec %}<dt>Giờ làm việc</dt><dd>{{ lien_he.gio_lam_viec }}</dd>{% endif %}
     </dl>
+    {% if lien_he.nguon %}<p class="mo">Nguồn: {{ lien_he.nguon }}.</p>{% endif %}
   </div>
 </section>
 {% endblock %}

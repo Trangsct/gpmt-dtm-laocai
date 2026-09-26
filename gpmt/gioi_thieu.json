@@ -1,8 +1,11 @@
 {
-  "_ghi_chu": "Thông tin liên hệ hiện ở trang chủ. Ô nào để trống thì trang ghi 'đang cập nhật' — KHÔNG điền khi chưa có nguồn chính thức (không bịa). Bạn gửi Claude thông tin thì Claude điền giúp.",
-  "dia_chi_tru_so": "",
-  "dien_thoai": "",
-  "email": "",
-  "website": "",
+  "_ghi_chu": "Thông tin liên hệ hiện ở trang chủ và chân trang. Nguồn: chân trang Cổng thông tin điện tử Sở NN&MT tỉnh Lào Cai (snnmt.laocai.gov.vn), ảnh chụp Bạn gửi ngày 27/9/2026 — chép nguyên văn. Ô để trống thì trang không hiện/ghi 'Đang cập nhật'. Không điền khi chưa có nguồn chính thức.",
+  "nguon": "Cổng thông tin điện tử Sở Nông nghiệp và Môi trường tỉnh Lào Cai",
+  "giam_doc": "Ông Trần Minh Sáng",
+  "dia_chi_tru_so": "Khối 8, phường Nam Cường, thành phố Lào Cai",
+  "dien_thoai": "02143.820 062",
+  "fax": "02143.820 080",
+  "email": "contact-snnmt@laocai.gov.vn",
+  "website": "https://snnmt.laocai.gov.vn",
   "gio_lam_viec": ""
 }
