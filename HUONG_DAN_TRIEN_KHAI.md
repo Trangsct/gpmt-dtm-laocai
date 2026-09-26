@@ -83,7 +83,8 @@ khẩu trên trang thì biến cũ không còn tác dụng. Không cần đặt 
 ## Bước 6. Đăng nhập và tải sổ Excel lên 🙋
 
 1. Mở **https://gpmt-dtm-laocai.vercel.app** (hoặc `gpmt-laocai…` nếu đổi tên ở bước 3).
-   Kiểm tra nhanh: mở `…/suc-khoe` phải thấy `{"trang_thai":"ok"}`.
+   Kiểm tra nhanh: mở `…/suc-khoe` — trang **Kiểm tra hệ thống** liệt kê từng hạng mục; mọi dòng *Đạt* (hoặc
+   *Thông tin*) là được. Dòng *Lỗi* có cột **Việc cần làm** ghi rõ bấm vào đâu.
 2. Đăng nhập bằng email + mật khẩu ở bước 5 → bấm **Đổi mật khẩu** (góc phải trên) → đặt mật khẩu mới.
 3. Menu **Nhập dữ liệu** → mục 1 → **Choose File** → chọn tệp `Danh_sach_theo_doi_cap_GPMT_hang_nam__Lao_Cai.xls`
    → **Nhập sổ**. Chờ vài giây → hiện báo cáo nhập (148 giấy phép, 29 bản ghi cần rà soát).
@@ -161,7 +162,7 @@ Khi Sở quyết định dùng lâu dài:
 
 | Hiện tượng | Xử lý |
 |---|---|
-| Trang báo lỗi 500 ngay khi mở | Vercel → **Storage**: kiểm tra CSDL Neon đã **Connect** vào dự án chưa; rồi **Redeploy**. |
+| Trang báo "Hệ thống gặp lỗi" / "Internal Server Error" | Mở `…/suc-khoe`, làm theo cột **Việc cần làm** ở dòng đỏ. Thường là chưa nối Neon (Bước 4) hoặc quên **Redeploy**. |
 | Không đăng nhập được lần đầu | Kiểm tra 3 biến ở bước 5 (mật khẩu ≥ 10 ký tự) → **Redeploy**. |
 | Quên mật khẩu quản trị | Nhờ một quản trị khác đặt lại; nếu chỉ có một quản trị, nhắn Claude để được hướng dẫn. |
 | Nhập sổ báo "đã có dữ liệu" | Đúng thiết kế (tránh nhập trùng). Muốn nhập lại: mục 3 trang **Nhập dữ liệu**. |

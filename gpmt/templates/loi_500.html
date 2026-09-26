@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lỗi hệ thống</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="dau"><div class="ten"><small>{{ TEN_DON_VI }}</small>Quản lý Giấy phép môi trường và báo cáo ĐTM</div></header>
+<main>
+  <div class="the">
+    <h1>Hệ thống gặp lỗi</h1>
+    <p>Mở trang <a href="{{ url_for('main.suc_khoe') }}"><b>Kiểm tra hệ thống</b></a> để xem nguyên nhân và việc cần làm (thường do chưa nối được CSDL).</p>
+    <p class="mo">Nếu trang kiểm tra báo mọi mục đều đạt mà vẫn lỗi, chụp màn hình gửi Claude.</p>
+  </div>
+</main>
+</body>
+</html>
