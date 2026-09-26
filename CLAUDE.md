@@ -45,6 +45,10 @@ Cách chạy, triển khai: `README.md`.
   `gpmt/ban_ghi_doi_chieu/` (`"loai": "gpmt"` hoặc `"ho_so"`, nhiều bản ghi: `{"ban_ghi": [...]}`); ứng dụng tự
   nạp bản ghi CHƯA CÓ mỗi lần khởi động (`dong_bo_ban_ghi_moi`), không ghi đè chỉnh sửa trên web. Mới có mục lục
   (chưa bản gốc) thì gắn `ly_do_ra_soat`. Số/ngày lấy từ mục lục/đầu tệp `.md`, không từ lớp chữ PDF.
+- **27/9/2026 — Trang chủ giới thiệu, quảng bá Sở** (`/`, `trang_chu.html`; thống kê chuyển sang `/thong-ke`):
+  số liệu lấy trực tiếp từ CSDL; quy trình 5 chặng tóm tắt QĐ 736/QĐ-UBND; nơi nộp hồ sơ theo QĐ 463/QĐ-UBND.
+  Thông tin liên hệ của Sở ở `gpmt/gioi_thieu.json` — **đang để trống** ("Đang cập nhật"), chỉ điền khi Bạn
+  cung cấp. Biểu trưng `static/logo.svg` là hình chung (lá, núi, nước), không phải logo chính thức.
 - **27/9/2026 — Tài khoản quản trị đơn giản**: trang `/cai-dat` tạo quản trị đầu tiên khi CSDL chưa có tài khoản
   nào, tạo xong tự khóa; không bắt đặt biến trên Vercel.
 

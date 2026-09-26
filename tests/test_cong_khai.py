@@ -13,7 +13,7 @@ def test_khach_xem_duoc_khong_can_dang_nhap(app, db, du_lieu_that):
     tao_tai_khoan(db, "qt@thu.local", "quan_tri")
     c = app.test_client()
     gp = db.session.query(Gpmt).filter_by(so_hieu="1439/GPMT-UBND").one()
-    for u in ("/", "/gpmt/", "/gpmt/?q=Eurostark", f"/gpmt/{gp.id}", f"/co-so/{gp.co_so_du_an_id}", "/co-so",
+    for u in ("/", "/thong-ke", "/gpmt/", "/gpmt/?q=Eurostark", f"/gpmt/{gp.id}", f"/co-so/{gp.co_so_du_an_id}", "/co-so",
               "/dtm", "/dang-ky-mt", "/chu-the"):
         assert c.get(u).status_code == 200, u
     r = c.get(f"/gpmt/{gp.id}")
@@ -31,6 +31,7 @@ def test_khach_khong_thay_noi_bo_va_khong_sua(app, db, du_lieu_that):
         r = c.get(u)
         assert r.status_code == 302 and "/dang-nhap" in r.headers["Location"], u
     assert "Hồ sơ đang giải quyết" not in c.get("/").text
+    assert "Hồ sơ đang giải quyết" not in c.get("/thong-ke").text
 
 
 def test_khach_xuat_excel_khong_co_sheet_ra_soat(app, db, du_lieu_that):
@@ -61,3 +62,11 @@ def test_tao_quan_tri_dau_tien_tren_web(app, db):
     c2.post("/cai-dat", data={"_csrf": tok2, "ho_ten": "X", "email": "x@x.x", "mat_khau": "mat-khau-dai-123",
                               "mat_khau_2": "mat-khau-dai-123"})
     assert db.session.query(TaiKhoan).count() == 1
+
+
+def test_trang_chu_gioi_thieu(app, db, du_lieu_that):
+    r = app.test_client().get("/")
+    assert r.status_code == 200
+    for x in ("Sở Nông nghiệp và Môi trường", "Tra cứu", "Thủ tục hành chính", "736/QĐ-UBND", "22 ngày",
+              "2519/GPMT-UBND", "số 64 đường Lý Tự Trọng", "Đang cập nhật"):
+        assert x in r.text, x
