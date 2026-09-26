@@ -30,3 +30,10 @@ def test_secret_key_on_dinh_khi_khong_dat(monkeypatch):
 def test_cookie_bao_mat_tren_vercel(monkeypatch):
     assert _nap(monkeypatch, VERCEL="1").SESSION_COOKIE_SECURE is True
     assert _nap(monkeypatch).SESSION_COOKIE_SECURE is False
+
+
+def test_gio_viet_nam():
+    import time
+
+    import gpmt  # noqa: F401
+    assert time.strftime("%z") == "+0700"
