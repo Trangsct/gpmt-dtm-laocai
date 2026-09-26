@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}{{ tieu_de }}{% endblock %}
+{% block noi_dung %}
+<h1>{{ tieu_de }}</h1>
+<form method="post" class="the">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <div class="bieu-mau">
+  {% for t in bm.truong %}
+    {% set gt = bm.gia_tri_hien(obj, t) %}
+    <label for="f_{{ t.ten }}">{{ t.nhan }}{% if t.bat_buoc %} <span class="co">*</span>{% endif %}</label>
+    <div>
+      {% if t.kieu == 'textarea' %}
+        <textarea id="f_{{ t.ten }}" name="{{ t.ten }}">{{ gt }}</textarea>
+      {% elif t.kieu == 'bool' %}
+        <input id="f_{{ t.ten }}" type="checkbox" name="{{ t.ten }}" value="1" {{ 'checked' if gt }}>
+      {% elif t.kieu in ('chon', 'fk') %}
+        <select id="f_{{ t.ten }}" name="{{ t.ten }}" {{ 'required' if t.bat_buoc }}>
+          {% if t.kieu == 'fk' %}<option value="">— chọn —</option>{% endif %}
+          {% for lc in t.ds_lua_chon() %}
+            {% set v = lc[0] if lc is not string else lc %}{% set n = lc[1] if lc is not string else (lc or '— chưa rõ —') %}
+            <option value="{{ v }}" {{ 'selected' if v|string == gt|string }}>{{ n }}</option>
+          {% endfor %}
+        </select>
+      {% elif t.kieu == 'goi_y' %}
+        <input id="f_{{ t.ten }}" type="text" name="{{ t.ten }}" value="{{ gt }}" list="dl_{{ t.ten }}">
+        <datalist id="dl_{{ t.ten }}">{% for lc in t.ds_lua_chon() %}<option value="{{ lc }}">{% endfor %}</datalist>
+      {% else %}
+        <input id="f_{{ t.ten }}" type="{{ 'date' if t.kieu == 'date' else ('number' if t.kieu in ('int','float') else 'text') }}"
+               {% if t.kieu == 'float' %}step="any"{% endif %} name="{{ t.ten }}" value="{{ gt }}" {{ 'required' if t.bat_buoc }}>
+      {% endif %}
+      {% if t.goi_y %}<div class="goi-y">{{ t.goi_y }}</div>{% endif %}
+    </div>
+  {% endfor %}
+  </div>
+  <div class="hang-nut">
+    <button type="submit">Lưu</button>
+    <a class="nut phu" href="{{ quay_lai }}">Hủy</a>
+  </div>
+</form>
+{% if co_xoa %}
+<form method="post" onsubmit="return confirm('Xóa bản ghi này? Thao tác được ghi vào nhật ký.')">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <input type="hidden" name="_xoa" value="1">
+  <button class="nguy" type="submit">Xóa</button>
+</form>
+{% endif %}
+{% endblock %}

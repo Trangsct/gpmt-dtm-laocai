@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Nhật ký{% endblock %}
+{% block noi_dung %}
+<h1>Nhật ký sửa đổi <span class="mo">(500 thao tác gần nhất)</span></h1>
+<div class="bang-cuon"><table>
+  <tr><th>Thời điểm</th><th>Người sửa</th><th>Bảng</th><th>Bản ghi</th><th>Thao tác</th><th>Thay đổi (cũ → mới)</th></tr>
+  {% for x in ds %}
+  <tr><td>{{ x.thoi_diem.strftime('%d/%m/%Y %H:%M') }}</td><td>{{ x.tai_khoan.ho_ten if x.tai_khoan }}</td><td>{{ x.bang }}</td><td>{{ x.ban_ghi }}</td>
+  <td>{{ {'them': 'Thêm', 'sua': 'Sửa', 'xoa': 'Xóa'}.get(x.hanh_dong, x.hanh_dong) }}</td>
+  <td>{% for k, v in x.doi.items() %}<div><b>{{ k }}</b>: {{ v[0] if v[0] is not none else '∅' }} → {{ v[1] if v[1] is not none else '∅' }}</div>{% endfor %}</td></tr>
+  {% else %}<tr><td colspan="6" class="mo">Chưa có thao tác nào.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

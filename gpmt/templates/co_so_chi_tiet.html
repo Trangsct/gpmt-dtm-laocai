@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% from "_macro.html" import nhan_tt, lk_gp with context %}
+{% block title %}{{ cs.ten }}{% endblock %}
+{% block noi_dung %}
+<h1>{{ cs.ten }}</h1>
+<div class="hang-nut">
+  {% if current_user.duoc_sua %}
+  <a class="nut phu" href="{{ url_for('danh_muc.sua_co_so', id=cs.id) }}">Sửa cơ sở</a>
+  {% if cs.chu_the %}<a class="nut phu" href="{{ url_for('danh_muc.sua_bang', loai='chu-the', id=cs.chu_the.id) }}">Sửa chủ cơ sở</a>{% endif %}
+  <a class="nut phu" href="{{ url_for('gpmt.sua', co_so=cs.id) }}">+ GPMT</a>
+  <a class="nut phu" href="{{ url_for('danh_muc.sua_bang', loai='dtm', co_so=cs.id) }}">+ QĐ ĐTM</a>
+  <a class="nut phu" href="{{ url_for('danh_muc.sua_bang', loai='dang-ky-mt', co_so=cs.id) }}">+ Đăng ký MT</a>
+  <a class="nut phu" href="{{ url_for('danh_muc.sua_bang', loai='ho-so', co_so=cs.id) }}">+ Hồ sơ</a>
+  {% endif %}
+</div>
+<div class="the">
+  <dl class="thong-tin">
+    <dt>Chủ cơ sở</dt><dd>{{ cs.chu_the.ten if cs.chu_the }}{% if cs.chu_the and cs.chu_the.ma_so_thue %} · MST {{ cs.chu_the.ma_so_thue }}{% endif %}</dd>
+    <dt>Địa điểm</dt><dd>{{ cs.dia_diem or '' }}</dd>
+    <dt>Xã/phường (mới)</dt><dd>{{ cs.xa_phuong_moi or '' }}</dd>
+    <dt>KCN/CCN</dt><dd>{{ cs.kcn_ccn or '' }}</dd>
+    <dt>Địa bàn cũ</dt><dd>{{ {'LC': 'Lào Cai cũ', 'YB': 'Yên Bái cũ'}.get(cs.dia_ban_cu, '') }}</dd>
+    <dt>Loại hình</dt><dd>{{ cs.loai_hinh or '' }}</dd>
+    <dt>Nhóm (Luật BVMT)</dt><dd>{{ cs.nhom_du_an or '' }}</dd>
+    <dt>Diện tích</dt><dd>{{ cs.dien_tich or '' }}</dd>
+    <dt>Quy mô, công suất</dt><dd>{{ cs.cong_suat_goc or '' }}</dd>
+    {% if current_user.noi_bo and cs.ghi_chu %}<dt>Ghi chú nội bộ</dt><dd>{{ cs.ghi_chu }}</dd>{% endif %}
+  </dl>
+</div>
+<h2>Dòng thời gian</h2>
+<div class="dong-thoi-gian">
+{% for ngay, loai, x, cha in su_kien %}
+  <div class="muc">
+    <b>{{ ngay|ngay or 'Chưa rõ ngày' }}</b> · <span class="nhan xam">{{ loai }}</span>
+    {% if loai == 'GPMT' %}
+      {{ lk_gp(x) }} — {{ x.co_quan_cap or 'cơ quan cấp chưa xác định' }} {{ nhan_tt(x.trang_thai) }}
+      {% if x.thay_the %}<span class="mo">thay thế {{ x.thay_the.so_hieu }}</span>{% endif %}
+      {% if x.dieu_chinh_cho %}<span class="mo">điều chỉnh cho {{ x.dieu_chinh_cho.so_hieu }}</span>{% endif %}
+    {% elif loai == 'VHTN' %}
+      {{ x.cong_trinh or 'VHTN' }} ({{ x.trang_thai }}) — theo {{ lk_gp(cha) }}{% if x.ghi_chu_goc %} · <span class="mo">{{ x.ghi_chu_goc }}</span>{% endif %}
+    {% elif loai == 'ĐTM' %}
+      <a href="{{ url_for('danh_muc.sua_bang', loai='dtm', id=x.id) if current_user.duoc_sua else '#' }}">QĐ {{ x.so_qd or '(chưa có số)' }}</a> — {{ x.co_quan_phe_duyet or '' }}
+    {% elif loai == 'ĐKMT' %}
+      Đăng ký môi trường {{ x.so_van_ban or '' }} — {{ x.co_quan_tiep_nhan or '' }}
+    {% else %}
+      <a href="{{ url_for('danh_muc.sua_bang', loai='ho-so', id=x.id) }}">{{ x.loai }}</a> — {{ x.trang_thai }}{% if x.can_bo_thu_ly %} · thụ lý: {{ x.can_bo_thu_ly }}{% endif %}
+    {% endif %}
+  </div>
+{% else %}
+  <p class="mo">Chưa có sự kiện.</p>
+{% endfor %}
+</div>
+{% endblock %}

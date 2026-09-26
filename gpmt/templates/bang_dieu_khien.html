@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% from "_macro.html" import nhan_tt, lk_gp with context %}
+{% block title %}Bảng điều khiển{% endblock %}
+{% block noi_dung %}
+<h1>Bảng điều khiển</h1>
+<div class="luoi">
+  <a class="chi-so" href="{{ url_for('gpmt.danh_sach') }}"><b>{{ tong }}</b>Giấy phép trong hệ thống</a>
+  <a class="chi-so" href="{{ url_for('gpmt.danh_sach', trang_thai='Còn hiệu lực') }}"><b>{{ theo_trang_thai.get('Còn hiệu lực', 0) }}</b>Còn hiệu lực</a>
+  <a class="chi-so canh-bao" href="{{ url_for('gpmt.danh_sach', trang_thai='Sắp hết hạn') }}"><b>{{ sap_het|length }}</b>Sắp hết hạn (≤ 12 tháng)</a>
+  <a class="chi-so loi" href="{{ url_for('gpmt.danh_sach', trang_thai='Hết hạn') }}"><b>{{ het_han|length }}</b>Hết hạn</a>
+  <a class="chi-so xam" href="{{ url_for('gpmt.danh_sach', trang_thai='Hết hiệu lực — bị thay thế') }}"><b>{{ bi_thay_the }}</b>Bị thay thế</a>
+  <a class="chi-so canh-bao" href="{{ url_for('gpmt.danh_sach', trang_thai='Chưa xác định') }}"><b>{{ thieu_thoi_han }}</b>Chưa xác định hiệu lực (thiếu ngày ký hoặc thời hạn — cần nhập tay)</a>
+  <div class="chi-so loi"><b>{{ vhtn_qua_han|length }}</b>VHTN quá hạn</div>
+  {% if current_user.noi_bo %}
+  <a class="chi-so" href="{{ url_for('danh_muc.ds_bang', loai='ho-so') }}"><b>{{ ho_so|length }}</b>Hồ sơ đang giải quyết</a>
+  <a class="chi-so loi" href="{{ url_for('main.ra_soat') }}"><b>{{ ra_soat }}</b>Bản ghi cần rà soát</a>
+  {% endif %}
+</div>
+
+<div class="hai-cot">
+  <div class="the">
+    <h2>Số giấy phép theo năm cấp</h2>
+    {% for nam, n in theo_nam %}
+    <div class="thanh"><span><a href="{{ url_for('gpmt.danh_sach', nam=nam or '') }}">{{ nam or 'Chưa xác định' }}</a></span><i style="width:{{ (n / max_nam * 60)|round(1) }}%"></i><b>{{ n }}</b></div>
+    {% endfor %}
+  </div>
+  <div class="the">
+    <h2>Số giấy phép theo cơ quan cấp</h2>
+    {% for cq, n in theo_co_quan %}
+    <div class="thanh"><span title="{{ cq }}"><a href="{{ url_for('gpmt.danh_sach', co_quan=cq if cq != '(chưa xác định)' else '_trong') }}">{{ cq }}</a></span><i style="width:{{ (n / max_cq * 55)|round(1) }}%"></i><b>{{ n }}</b></div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="the">
+  <h2>Giấy phép sắp hết hạn</h2>
+  {% if sap_het %}
+  <table><tr><th>Số hiệu</th><th>Cơ sở</th><th>Ngày hết hạn</th></tr>
+  {% for g in sap_het %}<tr><td>{{ lk_gp(g) }}</td><td>{{ g.co_so.ten if g.co_so }}</td><td>{{ g.ngay_het_han|ngay }}</td></tr>{% endfor %}
+  </table>
+  {% else %}<p class="mo">Không có giấy phép nào hết hạn trong 12 tháng tới (trong số giấy phép đã có thời hạn).</p>{% endif %}
+</div>
+
+<div class="the">
+  <h2>VHTN quá hạn</h2>
+  {% if vhtn_qua_han %}
+  <table><tr><th>Giấy phép</th><th>Công trình</th><th>Hạn</th><th>Trạng thái</th></tr>
+  {% for v in vhtn_qua_han %}<tr><td>{{ lk_gp(v.gpmt) }}</td><td>{{ v.cong_trinh }}</td><td>{{ (v.gia_han_den or v.ket_thuc_du_kien)|ngay }}</td><td>{{ v.trang_thai }}</td></tr>{% endfor %}
+  </table>
+  {% else %}<p class="mo">Chưa có VHTN quá hạn. Cảnh báo này chỉ chạy khi VHTN đã nhập ngày kết thúc dự kiến hoặc ngày gia hạn — sổ Excel hiện chưa có các ngày này.</p>{% endif %}
+</div>
+
+{% if current_user.noi_bo %}
+<div class="the">
+  <h2>Hồ sơ đang giải quyết</h2>
+  {% if ho_so %}
+  <table><tr><th>Cơ sở</th><th>Loại</th><th>Tiếp nhận</th><th>Trạng thái</th><th>Thụ lý</th></tr>
+  {% for h in ho_so %}<tr><td><a href="{{ url_for('danh_muc.sua_bang', loai='ho-so', id=h.id) }}">{{ h.co_so.ten if h.co_so }}</a></td><td>{{ h.loai }}</td><td>{{ h.ngay_tiep_nhan|ngay }}</td><td>{{ h.trang_thai }}</td><td>{{ h.can_bo_thu_ly or '' }}</td></tr>{% endfor %}
+  </table>
+  {% else %}<p class="mo">Chưa có hồ sơ nào. <a href="{{ url_for('danh_muc.sua_bang', loai='ho-so') }}">Thêm hồ sơ</a>.</p>{% endif %}
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Cơ sở / dự án{% endblock %}
+{% block noi_dung %}
+<h1>Cơ sở / dự án <span class="mo">({{ ds|length }})</span></h1>
+<form class="loc the" method="get">
+  <label>Tìm (tên, chủ, MST, xã/phường, KCN)<input type="search" name="q" value="{{ tu }}" size="40"></label>
+  <button type="submit">Tìm</button>
+  {% if current_user.duoc_sua %}<a class="nut" href="{{ url_for('danh_muc.sua_co_so') }}">+ Thêm cơ sở</a>{% endif %}
+</form>
+<div class="bang-cuon"><table>
+  <tr><th>Cơ sở / dự án</th><th>Chủ cơ sở</th><th>Xã/phường</th><th>KCN/CCN</th><th>Địa bàn cũ</th><th class="so">GPMT</th><th class="so">ĐTM</th></tr>
+  {% for c in ds %}
+  <tr><td><a href="{{ url_for('danh_muc.co_so', id=c.id) }}">{{ c.ten }}</a></td><td>{{ c.chu_the.ten if c.chu_the }}</td><td>{{ c.xa_phuong_moi or '' }}</td><td>{{ c.kcn_ccn or '' }}</td><td>{{ c.dia_ban_cu or '' }}</td><td class="so">{{ c.gpmt|length }}</td><td class="so">{{ c.dtm|length }}</td></tr>
+  {% endfor %}
+</table></div>
+{% endblock %}

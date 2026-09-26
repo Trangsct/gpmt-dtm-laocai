@@ -1,0 +1,2 @@
+{% macro nhan_tt(tt) -%}<span class="nhan {{ MAU_TRANG_THAI.get(tt, 'chua-ro') }}">{{ tt }}</span>{%- endmacro %}
+{% macro lk_gp(g) -%}<a href="{{ url_for('gpmt.chi_tiet', id=g.id) }}">{{ g.so_hieu or '(chưa có số)' }}</a>{%- endmacro %}

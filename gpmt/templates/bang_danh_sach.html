@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ ten }}{% endblock %}
+{% block noi_dung %}
+<h1>{{ ten }} <span class="mo">({{ ds|length }})</span></h1>
+{% if loai == 'dang-ky-mt' %}<p class="mo">Đăng ký môi trường do UBND cấp xã tiếp nhận. Theo dõi đầy đủ (tải PDF, đọc tự động) làm ở giai đoạn 2.</p>{% endif %}
+{% if loai == 'dtm' %}<p class="mo">Sổ Excel hiện chưa có dữ liệu ĐTM. Nhập từ hồ sơ lưu của Sở hoặc trang công khai của Cổng TTĐT tỉnh; module đầy đủ ở giai đoạn 2.</p>{% endif %}
+{% if current_user.duoc_sua %}<div class="hang-nut"><a class="nut" href="{{ url_for('danh_muc.sua_bang', loai=loai) }}">+ Thêm mới</a></div>{% endif %}
+<div class="bang-cuon"><table>
+  <tr>{% for t in cot %}<th>{{ t.nhan }}</th>{% endfor %}{% if current_user.duoc_sua %}<th></th>{% endif %}</tr>
+  {% for x in ds %}
+  <tr>{% for t in cot %}<td>{% if t.ten == 'co_so_du_an_id' and x.co_so %}<a href="{{ url_for('danh_muc.co_so', id=x.co_so.id) }}">{{ x.co_so.ten }}</a>{% else %}{{ hien_thi(x, t) }}{% endif %}</td>{% endfor %}
+  {% if current_user.duoc_sua %}<td><a href="{{ url_for('danh_muc.sua_bang', loai=loai, id=x.id) }}">Sửa</a></td>{% endif %}</tr>
+  {% else %}<tr><td colspan="{{ cot|length + 1 }}" class="mo">Chưa có dữ liệu.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

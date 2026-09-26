@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% from "_macro.html" import nhan_tt, lk_gp with context %}
+{% block title %}{{ gp.so_hieu or 'GPMT' }}{% endblock %}
+{% block noi_dung %}
+<h1>Giấy phép môi trường {{ gp.so_hieu or '(chưa có số)' }} {{ nhan_tt(gp.trang_thai) }}</h1>
+<div class="hang-nut">
+  {% if co_pdf %}<a class="nut" href="{{ url_for('gpmt.pdf', id=gp.id) }}" target="_blank" rel="noopener">Mở PDF gốc</a>{% endif %}
+  {% if current_user.duoc_sua %}
+  <a class="nut phu" href="{{ url_for('gpmt.sua', id=gp.id) }}">Sửa</a>
+  {% if gp.can_ra_soat %}
+  <form method="post" action="{{ url_for('gpmt.da_ra_soat', id=gp.id) }}" onsubmit="return confirm('Xác nhận đã rà soát xong và bỏ cờ?')">
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}"><button class="phu" type="submit">Đã rà soát xong</button>
+  </form>
+  {% endif %}
+  {% endif %}
+  {% if current_user.noi_bo %}<a class="nut phu" href="{{ url_for('main.nhat_ky', bang='gpmt', ban_ghi=gp.id) }}">Lịch sử sửa</a>{% endif %}
+</div>
+
+{% if current_user.noi_bo and gp.can_ra_soat %}
+<div class="the" style="border-color:var(--do)">
+  <b class="co">Cần rà soát</b>
+  <ul class="ly-do">{% for x in gp.ds_ly_do %}<li>{{ x }}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+
+{% if chuoi|length > 1 %}
+<div class="the">
+  <h2 style="margin-top:0">Chuỗi thay thế</h2>
+  <div class="chuoi">
+  {% for x in chuoi %}
+    {% if not loop.first %}<span>→</span>{% endif %}
+    <div class="mat {{ 'hien-tai' if x.id == gp.id }}">{{ lk_gp(x) }} · {{ x.ngay_ky|ngay }}<br><small>{{ x.co_quan_cap or '' }}</small><br>{{ nhan_tt(x.trang_thai) }}</div>
+  {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<div class="the">
+  <h2 style="margin-top:0">Thông tin chung</h2>
+  <dl class="thong-tin">
+    <dt>Số hiệu</dt><dd>{{ gp.so_hieu or '(chưa có số)' }}{% if gp.so_hieu_goc and gp.so_hieu_goc != gp.so_hieu %} <span class="mo">(sổ ghi: “{{ gp.so_hieu_goc }}”)</span>{% endif %}</dd>
+    <dt>Loại văn bản</dt><dd>{{ gp.loai_van_ban }}</dd>
+    <dt>Ngày ký</dt><dd>{{ gp.ngay_ky|ngay or '—' }}</dd>
+    <dt>Cơ quan cấp</dt><dd>{{ gp.co_quan_cap or '— chưa xác định —' }}</dd>
+    <dt>Người ký</dt><dd>{{ gp.nguoi_ky or '' }}</dd>
+    <dt>Loại cấp</dt><dd>{{ gp.loai_cap or 'chưa rõ' }}</dd>
+    <dt>Thời hạn</dt><dd>{% if gp.thoi_han_nam %}{{ gp.thoi_han_nam|so }} năm kể từ ngày ký{% else %}<span class="mo">chưa nhập (đọc tại Điều 3 của GP)</span>{% endif %}</dd>
+    <dt>Ngày hết hạn</dt><dd>{{ gp.ngay_het_han|ngay or '—' }}</dd>
+    {% if gp.thay_the %}<dt>Thay thế GP</dt><dd>{{ lk_gp(gp.thay_the) }} ngày {{ gp.thay_the.ngay_ky|ngay }} (hết hiệu lực)</dd>{% endif %}
+    {% for x in gp.bi_thay_the_boi %}<dt>Bị thay thế bởi</dt><dd>{{ lk_gp(x) }} ngày {{ x.ngay_ky|ngay }}</dd>{% endfor %}
+    {% if gp.dieu_chinh_cho %}<dt>Điều chỉnh cho GP</dt><dd>{{ lk_gp(gp.dieu_chinh_cho) }}</dd>{% endif %}
+    {% for x in gp.cac_ban_dieu_chinh %}<dt>Được điều chỉnh bởi</dt><dd>{{ lk_gp(x) }} ngày {{ x.ngay_ky|ngay }}</dd>{% endfor %}
+    {% if gp.lua_chon_chuyen_tiep %}<dt>Lựa chọn chuyển tiếp</dt><dd>{{ gp.lua_chon_chuyen_tiep }}</dd>{% endif %}
+    <dt>Công suất</dt><dd>{{ gp.cong_suat_goc or '' }}</dd>
+    {% if current_user.noi_bo %}
+    <dt>QĐ đoàn kiểm tra</dt><dd>{{ gp.qd_doan_kiem_tra or '' }}</dd>
+    <dt>Tờ trình của Sở</dt><dd>{{ gp.to_trinh or '' }}</dd>
+    <dt>Văn bản đề nghị</dt><dd>{{ gp.van_ban_de_nghi or '' }}</dd>
+    <dt>Nguồn dữ liệu</dt><dd class="mo">{{ gp.nguon_du_lieu or '' }}</dd>
+    {% endif %}
+  </dl>
+</div>
+
+{% set cs = gp.co_so %}
+{% if cs %}
+<div class="the">
+  <h2 style="margin-top:0">Cơ sở / dự án — <a href="{{ url_for('danh_muc.co_so', id=cs.id) }}">{{ cs.ten }}</a></h2>
+  <dl class="thong-tin">
+    <dt>Chủ cơ sở</dt><dd>{{ cs.chu_the.ten if cs.chu_the }}{% if cs.chu_the and cs.chu_the.ma_so_thue %} · MST {{ cs.chu_the.ma_so_thue }}{% endif %}</dd>
+    <dt>Địa điểm</dt><dd>{{ cs.dia_diem or '' }}</dd>
+    <dt>Xã/phường (mới)</dt><dd>{{ cs.xa_phuong_moi or '' }}</dd>
+    <dt>KCN/CCN</dt><dd>{{ cs.kcn_ccn or '' }}</dd>
+    <dt>Địa bàn cũ</dt><dd>{{ {'LC': 'Lào Cai cũ', 'YB': 'Yên Bái cũ'}.get(cs.dia_ban_cu, '') }}</dd>
+    <dt>Loại hình</dt><dd>{{ cs.loai_hinh or '' }}</dd>
+    <dt>Nhóm (Luật BVMT)</dt><dd>{{ cs.nhom_du_an or '' }}</dd>
+    <dt>Diện tích</dt><dd>{{ cs.dien_tich or '' }}</dd>
+  </dl>
+</div>
+{% endif %}
+
+<div class="the">
+  <h2 style="margin-top:0">Xả thải {% if current_user.duoc_sua %}<a class="nut phu" href="{{ url_for('gpmt.sua_con', gpmt_id=gp.id, loai='xa-thai') }}">+ Thêm</a>{% endif %}</h2>
+  <div class="bang-cuon"><table>
+    <tr><th>Loại</th><th>Dòng thải</th><th>Nguyên văn</th><th class="so">Lưu lượng lớn nhất</th><th>Đơn vị</th><th>Quy chuẩn</th><th>Tọa độ VN-2000</th><th>Công trình xử lý</th>{% if current_user.duoc_sua %}<th></th>{% endif %}</tr>
+    {% for x in gp.xa_thai %}
+    <tr><td>{{ x.loai }}</td><td>{{ x.ten_dong or '' }}</td><td>{{ x.luu_luong_goc or '' }}</td><td class="so">{{ x.luu_luong_max|so }}</td><td>{{ x.don_vi or '' }}</td><td>{{ x.quy_chuan or '' }}</td><td>{{ x.toa_do_vn2000 or '' }}</td><td>{{ x.cong_trinh_xu_ly or '' }}</td>
+    {% if current_user.duoc_sua %}<td><a href="{{ url_for('gpmt.sua_con', gpmt_id=gp.id, loai='xa-thai', id=x.id) }}">Sửa</a></td>{% endif %}</tr>
+    {% else %}<tr><td colspan="9" class="mo">Chưa có dữ liệu.</td></tr>{% endfor %}
+  </table></div>
+</div>
+
+<div class="the">
+  <h2 style="margin-top:0">Chất thải {% if current_user.duoc_sua %}<a class="nut phu" href="{{ url_for('gpmt.sua_con', gpmt_id=gp.id, loai='chat-thai') }}">+ Thêm</a>{% endif %}</h2>
+  <table>
+    <tr><th>Loại</th><th>Nguyên văn</th><th class="so">Khối lượng</th><th>Đơn vị</th><th class="so">Quy đổi kg/năm</th>{% if current_user.duoc_sua %}<th></th>{% endif %}</tr>
+    {% for x in gp.chat_thai %}
+    <tr><td>{{ x.loai }}</td><td>{{ x.khoi_luong_goc or '' }}</td><td class="so">{{ x.khoi_luong_so|so }}</td><td>{{ x.don_vi or '' }}</td><td class="so">{{ x.khoi_luong_kg_nam|so }}</td>
+    {% if current_user.duoc_sua %}<td><a href="{{ url_for('gpmt.sua_con', gpmt_id=gp.id, loai='chat-thai', id=x.id) }}">Sửa</a></td>{% endif %}</tr>
+    {% else %}<tr><td colspan="6" class="mo">Chưa có dữ liệu.</td></tr>{% endfor %}
+  </table>
+</div>
+
+<div class="the">
+  <h2 style="margin-top:0">Vận hành thử nghiệm {% if current_user.duoc_sua %}<a class="nut phu" href="{{ url_for('gpmt.sua_con', gpmt_id=gp.id, loai='vhtn') }}">+ Thêm</a>{% endif %}</h2>
+  <table>
+    <tr><th>Công trình</th><th>Trạng thái</th><th>Bắt đầu</th><th>Kết thúc dự kiến</th><th>Gia hạn đến</th><th>Ghi chú</th>{% if current_user.duoc_sua %}<th></th>{% endif %}</tr>
+    {% for x in gp.vhtn %}
+    <tr><td>{{ x.cong_trinh or '' }}</td><td>{{ x.trang_thai }}</td><td>{{ x.bat_dau|ngay }}</td><td>{{ x.ket_thuc_du_kien|ngay }}</td><td>{{ x.gia_han_den|ngay }}</td><td>{{ x.ghi_chu_goc or '' }}</td>
+    {% if current_user.duoc_sua %}<td><a href="{{ url_for('gpmt.sua_con', gpmt_id=gp.id, loai='vhtn', id=x.id) }}">Sửa</a></td>{% endif %}</tr>
+    {% else %}<tr><td colspan="7" class="mo">Chưa có dữ liệu VHTN.</td></tr>{% endfor %}
+  </table>
+</div>
+
+{% if ghi_chu_goc %}
+<div class="the">
+  <h2 style="margin-top:0">Nguyên văn trong sổ theo dõi <span class="mo">(nội bộ)</span></h2>
+  <dl class="thong-tin">{% for k, v in ghi_chu_goc.items() %}<dt>{{ k }}</dt><dd>{{ v }}</dd>{% endfor %}</dl>
+</div>
+{% endif %}
+
+{% if current_user.vai_tro == 'quan_tri' %}
+<form method="post" action="{{ url_for('gpmt.xoa', id=gp.id) }}" onsubmit="return confirm('Xóa hẳn giấy phép này? Thao tác được ghi vào nhật ký.')">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}"><button class="nguy" type="submit">Xóa giấy phép</button>
+</form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}GPMT – ĐTM{% endblock %} · {{ TEN_DON_VI }}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="dau">
+  <div class="ten"><small>{{ TEN_DON_VI }}</small>Quản lý Giấy phép môi trường và báo cáo ĐTM</div>
+  {% if current_user.is_authenticated %}
+  <div class="nguoi">
+    <span>{{ current_user.ho_ten }} · {{ VAI_TRO[current_user.vai_tro] }}</span>
+    <a href="{{ url_for('auth.doi_mat_khau') }}">Đổi mật khẩu</a>
+    <form method="post" action="{{ url_for('auth.dang_xuat') }}" style="display:inline">
+      <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+      <button class="lien-ket" type="submit">Đăng xuất</button>
+    </form>
+  </div>
+  {% endif %}
+</header>
+{% if current_user.is_authenticated %}
+{% set ep = request.endpoint or '' %}
+{% set loai = (request.view_args or {}).get('loai') %}
+<nav class="menu">
+  <a href="{{ url_for('main.bang_dieu_khien') }}" class="{{ 'dang-mo' if ep == 'main.bang_dieu_khien' }}">Bảng điều khiển</a>
+  <a href="{{ url_for('gpmt.danh_sach') }}" class="{{ 'dang-mo' if ep.startswith('gpmt.') }}">Giấy phép môi trường</a>
+  <a href="{{ url_for('danh_muc.ds_co_so') }}" class="{{ 'dang-mo' if ep in ('danh_muc.ds_co_so','danh_muc.co_so','danh_muc.sua_co_so') }}">Cơ sở / dự án</a>
+  <a href="{{ url_for('danh_muc.ds_bang', loai='dtm') }}" class="{{ 'dang-mo' if loai == 'dtm' }}">ĐTM</a>
+  {% if current_user.noi_bo %}
+  <a href="{{ url_for('danh_muc.ds_bang', loai='ho-so') }}" class="{{ 'dang-mo' if loai == 'ho-so' }}">Hồ sơ đang giải quyết</a>
+  {% endif %}
+  <a href="{{ url_for('danh_muc.ds_bang', loai='dang-ky-mt') }}" class="{{ 'dang-mo' if loai == 'dang-ky-mt' }}">Đăng ký môi trường</a>
+  <a href="{{ url_for('danh_muc.ds_bang', loai='chu-the') }}" class="{{ 'dang-mo' if loai == 'chu-the' }}">Chủ cơ sở</a>
+  {% if current_user.noi_bo %}
+  <a href="{{ url_for('main.ra_soat') }}" class="{{ 'dang-mo' if ep == 'main.ra_soat' }}">Cần rà soát</a>
+  <a href="{{ url_for('main.nhat_ky') }}" class="{{ 'dang-mo' if ep == 'main.nhat_ky' }}">Nhật ký</a>
+  {% endif %}
+  {% if current_user.vai_tro == 'quan_tri' %}
+  <a href="{{ url_for('tai_khoan.danh_sach') }}" class="{{ 'dang-mo' if ep.startswith('tai_khoan.') }}">Tài khoản</a>
+  {% endif %}
+</nav>
+{% endif %}
+<main>
+  {% for loai_tb, tb in get_flashed_messages(with_categories=true) %}
+  <div class="thong-bao {{ loai_tb if loai_tb in ('ok','loi') else 'ok' }}">{{ tb }}</div>
+  {% endfor %}
+  {% block noi_dung %}{% endblock %}
+</main>
+</body>
+</html>
