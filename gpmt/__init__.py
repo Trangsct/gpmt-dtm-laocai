@@ -26,4 +26,8 @@ def create_app(cau_hinh=None):
 
     from .cli import dang_ky_lenh
     dang_ky_lenh(app)
+
+    if app.config.get("KHOI_TAO_TU_DONG", True):
+        from .dich_vu import khoi_tao_tu_dong
+        khoi_tao_tu_dong(app)
     return app

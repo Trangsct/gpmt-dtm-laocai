@@ -42,7 +42,14 @@ Cách chạy, triển khai: `README.md`.
 - Flask + SQLAlchemy + Jinja2, không bundler. Cấu hình đọc từ biến môi trường (`gpmt/config.py`).
 - Không có migration tool: `flask khoi-tao-csdl` chỉ tạo bảng thiếu. Đổi cột trên CSDL đã có dữ liệu → viết lệnh
   ALTER riêng hoặc thêm Alembic khi cần.
-- Nhật ký: `gpmt/nhat_ky.py` bắt sự kiện flush của SQLAlchemy, chỉ ghi khi có người dùng đăng nhập (lệnh CLI
-  không ghi nhật ký; nhập hàng loạt đã có báo cáo nhập).
+- Nhật ký: `gpmt/nhat_ky.py` bắt sự kiện flush của SQLAlchemy, chỉ ghi khi có người dùng đăng nhập. Nhập sổ hàng
+  loạt (CLI hoặc web) tắt nhật ký từng dòng qua `session.info["tat_nhat_ky"]`; bản lưu vết là báo cáo nhập trong
+  bảng `bao_cao_nhap`.
+- Người dùng không chuyên (Bạn chốt 26/9/2026): việc gì làm được trên web thì làm trên web, không bắt gõ lệnh.
+  Hướng dẫn cho người dùng: `HUONG_DAN_TRIEN_KHAI.md` — cập nhật khi thêm/đổi bước.
+- CSDL: SQLAlchemy 2.1 mặc định `postgresql://` dùng psycopg 3; `config.py` đổi sang `postgresql+psycopg2://`.
+  Đã chạy thử trên PostgreSQL 16 thật (26/9/2026).
+- GP đọc từ PDF đã đối chiếu tay: thêm tệp JSON vào `gpmt/ban_ghi_doi_chieu/` (theo mẫu 2519) — tự nạp khi
+  nhập sổ.
 - Sổ Excel: sheet "GPMT tỉnh YB cũ" có 61 dòng đánh số + 5 dòng không số TT (vẫn là dữ liệu thật). Sổ có 8 văn bản
   `QĐ-UBND` (bài giao việc ghi 9). Số hiệu 1827/GPMT-UBND ngày 16/9/2024 ghi cho 2 cơ sở khác nhau → cả hai gắn cờ.

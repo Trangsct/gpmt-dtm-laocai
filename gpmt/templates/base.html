@@ -37,6 +37,9 @@
   <a href="{{ url_for('main.ra_soat') }}" class="{{ 'dang-mo' if ep == 'main.ra_soat' }}">Cần rà soát</a>
   <a href="{{ url_for('main.nhat_ky') }}" class="{{ 'dang-mo' if ep == 'main.nhat_ky' }}">Nhật ký</a>
   {% endif %}
+  {% if current_user.duoc_sua %}
+  <a href="{{ url_for('nhap_du_lieu.trang_chinh') }}" class="{{ 'dang-mo' if ep.startswith('nhap_du_lieu.') }}">Nhập dữ liệu</a>
+  {% endif %}
   {% if current_user.vai_tro == 'quan_tri' %}
   <a href="{{ url_for('tai_khoan.danh_sach') }}" class="{{ 'dang-mo' if ep.startswith('tai_khoan.') }}">Tài khoản</a>
   {% endif %}

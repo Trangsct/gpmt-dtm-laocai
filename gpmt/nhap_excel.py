@@ -167,8 +167,9 @@ def _doc_sheet_vhtn(sh, bo_qua):
     return ket_qua
 
 
-def doc_so_theo_doi(duong_dan) -> DuLieuSo:
-    book = xlrd.open_workbook(duong_dan)
+def doc_so_theo_doi(duong_dan=None, noi_dung: bytes | None = None) -> DuLieuSo:
+    """Đọc sổ từ đường dẫn tệp, hoặc từ nội dung tệp (bytes) khi người dùng tải lên qua trang web."""
+    book = xlrd.open_workbook(file_contents=noi_dung) if noi_dung is not None else xlrd.open_workbook(duong_dan)
     ten_sheet = book.sheet_names()
     thieu = [s for s in SHEET_GPMT + [SHEET_VHTN] if s not in ten_sheet]
     if thieu:

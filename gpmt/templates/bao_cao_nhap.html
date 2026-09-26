@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Báo cáo nhập{% endblock %}
+{% block noi_dung %}
+<h1>Báo cáo nhập — {{ bc.thoi_diem.strftime('%d/%m/%Y %H:%M') }}</h1>
+<div class="hang-nut">
+  <a class="nut phu" href="{{ url_for('nhap_du_lieu.trang_chinh') }}">← Nhập dữ liệu</a>
+  <a class="nut phu" href="{{ url_for('nhap_du_lieu.xem_bao_cao', id=bc.id, tai=1) }}">Tải báo cáo (.md)</a>
+  {% if bc.loai == 'so-excel' %}<a class="nut" href="{{ url_for('main.ra_soat') }}">Xem các bản ghi cần rà soát</a>{% endif %}
+</div>
+<div class="the"><pre style="white-space:pre-wrap;font:13px/1.5 Consolas,monospace;margin:0">{{ bc.noi_dung }}</pre></div>
+{% endblock %}

@@ -43,24 +43,20 @@ def dang_ky_lenh(app):
     @click.option("--bao-cao", "tep_bao_cao", default=None,
                   help="Nơi ghi báo cáo nhập (mặc định bao-cao/nhap-du-lieu-<ngày>.md)")
     def nhap_excel(tep_xls, tep_bao_cao):
-        """Nhập sổ theo dõi GPMT (.xls) vào CSDL và ghi báo cáo nhập."""
-        from .nhap_excel import doc_so_theo_doi, nhap_vao_csdl, viet_bao_cao
+        """Nhập sổ theo dõi GPMT (.xls) + các GP đã đối chiếu tay; ghi báo cáo nhập (tệp và CSDL).
+        Trên trang web: menu 'Nhập dữ liệu'."""
+        from .dich_vu import nhap_so
         db.create_all()
-        du_lieu = doc_so_theo_doi(tep_xls)
-        bc = nhap_vao_csdl(du_lieu)
-        noi_dung = viet_bao_cao(bc, Path(tep_xls).name)
+        luu = nhap_so(duong_dan=tep_xls, ten_tep=Path(tep_xls).name)
         tep_bao_cao = Path(tep_bao_cao or f"bao-cao/nhap-du-lieu-{date.today().isoformat()}.md")
         tep_bao_cao.parent.mkdir(parents=True, exist_ok=True)
-        tep_bao_cao.write_text(noi_dung, encoding="utf-8")
-        from .models import Gpmt
-        so_ra_soat = db.session.query(Gpmt).filter(Gpmt.can_ra_soat.is_(True)).count()
-        click.echo(f"Đã nhập {bc.so_gpmt_tao} GPMT, {bc.so_co_so} cơ sở; {so_ra_soat} bản ghi cần rà soát; "
-                   f"{len(bc.canh_bao)} cảnh báo. Báo cáo: {tep_bao_cao}")
+        tep_bao_cao.write_text(luu.noi_dung, encoding="utf-8")
+        click.echo(f"{luu.tom_tat}. Báo cáo: {tep_bao_cao}")
 
     @app.cli.command("nhap-ban-ghi")
     @click.argument("tep_json", type=click.Path(exists=True, dir_okay=False))
     def nhap_ban_ghi(tep_json):
-        """Nhập một GPMT đã đối chiếu tay (JSON), vd du-lieu-goc/ban-ghi-doi-chieu/2519_GPMT-UBND.json."""
+        """Nhập một GPMT đã đối chiếu tay (JSON), vd gpmt/ban_ghi_doi_chieu/2519_GPMT-UBND.json."""
         from .nhap_ban_ghi import nhap_tep_json
         db.create_all()
         gp, tb = nhap_tep_json(tep_json)
@@ -72,12 +68,6 @@ def dang_ky_lenh(app):
     @click.confirmation_option(prompt="Xóa TOÀN BỘ GPMT, cơ sở, chủ thể, VHTN, ĐTM, hồ sơ? (tài khoản và nhật ký giữ nguyên)")
     def xoa_du_lieu_nhap():
         """Xóa dữ liệu nghiệp vụ để nhập lại sổ từ đầu (giữ tài khoản, nhật ký)."""
-        from .models import (BaoCaoBvmt, ChuThe, CoSoDuAn, DangKyMoiTruong, Dtm, Gpmt, GpmtChatThai,
-                             GpmtXaThai, HoSo, KiemTra, Vhtn)
-        for m in (GpmtXaThai, GpmtChatThai, Vhtn, HoSo, DangKyMoiTruong, BaoCaoBvmt, KiemTra):
-            db.session.query(m).delete()
-        db.session.query(Gpmt).update({Gpmt.thay_the_gpmt_id: None, Gpmt.dieu_chinh_gpmt_id: None})
-        for m in (Gpmt, Dtm, CoSoDuAn, ChuThe):
-            db.session.query(m).delete()
-        db.session.commit()
+        from .dich_vu import xoa_du_lieu_nghiep_vu
+        xoa_du_lieu_nghiep_vu()
         click.echo("Đã xóa dữ liệu nghiệp vụ.")

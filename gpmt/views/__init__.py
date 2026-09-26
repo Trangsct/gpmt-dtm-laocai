@@ -23,8 +23,8 @@ def dinh_dang_so(v):
 
 
 def dang_ky_views(app):
-    from . import danh_muc, gpmt, main, tai_khoan
-    for bp in (main.bp, gpmt.bp, danh_muc.bp, tai_khoan.bp):
+    from . import danh_muc, gpmt, main, nhap_du_lieu, tai_khoan
+    for bp in (main.bp, gpmt.bp, danh_muc.bp, tai_khoan.bp, nhap_du_lieu.bp):
         app.register_blueprint(bp)
 
     app.jinja_env.filters["ngay"] = dinh_dang_ngay

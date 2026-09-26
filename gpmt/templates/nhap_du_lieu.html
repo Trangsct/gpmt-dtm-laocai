@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Nhập dữ liệu{% endblock %}
+{% block noi_dung %}
+<h1>Nhập dữ liệu</h1>
+
+<div class="the">
+  <h2 style="margin-top:0">1. Tải sổ theo dõi GPMT (Excel .xls) lên</h2>
+  {% if da_co %}
+    <p>CSDL đã có dữ liệu từ sổ Excel ({{ tong }} giấy phép). Muốn nhập lại sổ mới thì dùng mục 3 để xóa dữ liệu cũ trước.</p>
+  {% elif current_user.vai_tro == 'quan_tri' %}
+    <p class="mo">Chọn tệp sổ theo dõi (Excel 97, đuôi .xls, gồm các sheet “GPMT Tinh cap”, “GPMT tỉnh YB cũ”, “GPMT cấp huyện cũ”, “VHTN”) rồi bấm Nhập. Hệ thống tự nhập kèm các giấy phép đã đối chiếu tay (hiện có GP 2519/GPMT-UBND) và lập báo cáo nhập. Mất khoảng 10–30 giây.</p>
+    <form method="post" action="{{ url_for('nhap_du_lieu.tai_so_excel') }}" enctype="multipart/form-data" class="hang-nut">
+      <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+      <input type="file" name="tep" accept=".xls" required>
+      <button type="submit" onclick="this.textContent='Đang nhập, vui lòng chờ…'">Nhập sổ</button>
+    </form>
+  {% else %}
+    <p class="mo">Chỉ tài khoản Quản trị được tải sổ lên.</p>
+  {% endif %}
+</div>
+
+<div class="the">
+  <h2 style="margin-top:0">2. Bổ sung thời hạn, ngày ký còn thiếu (qua Excel)</h2>
+  <p>Hiện có <b>{{ so_thieu }}</b> giấy phép chưa xác định được hiệu lực vì thiếu thời hạn hoặc ngày ký. Sổ theo dõi không ghi thời hạn, nên phải đọc Điều 3 của từng GP.</p>
+  <ol>
+    <li><a class="nut phu" href="{{ url_for('nhap_du_lieu.tai_mau_bo_sung') }}">Tải mẫu (chỉ GP còn thiếu)</a>
+        <a class="nut phu" href="{{ url_for('nhap_du_lieu.tai_mau_bo_sung', tat_ca=1) }}">Tải mẫu (tất cả GP)</a></li>
+    <li>Mở tệp bằng Excel, điền các <b>ô màu vàng</b>: thời hạn (số năm, đọc tại Điều 3), ngày ký nếu thiếu. Không chắc thì để trống. Không sửa cột “Mã”.</li>
+    <li>Lưu tệp (.xlsx) rồi tải lên:
+      <form method="post" action="{{ url_for('nhap_du_lieu.tai_len_bo_sung') }}" enctype="multipart/form-data" class="hang-nut">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <input type="file" name="tep" accept=".xlsx" required>
+        <button type="submit">Tải lên mẫu bổ sung</button>
+      </form></li>
+  </ol>
+  <p class="mo">Có thể làm nhiều lần, mỗi lần một ít. Ô để trống giữ nguyên dữ liệu cũ; mọi thay đổi được ghi vào nhật ký.</p>
+</div>
+
+{% if current_user.vai_tro == 'quan_tri' and da_co %}
+<div class="the" style="border-color:var(--do)">
+  <h2 style="margin-top:0">3. Xóa dữ liệu để nhập lại từ đầu</h2>
+  <p>Xóa toàn bộ giấy phép, cơ sở, chủ cơ sở, VHTN, ĐTM, hồ sơ, đăng ký môi trường. <b>Giữ nguyên</b> tài khoản, nhật ký, báo cáo nhập. Những gì đã sửa tay trên web sẽ mất.</p>
+  <form method="post" action="{{ url_for('nhap_du_lieu.xoa') }}" class="hang-nut" onsubmit="return confirm('Xóa hẳn toàn bộ dữ liệu nghiệp vụ?')">
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    <label>Gõ <b>XOA DU LIEU</b> để xác nhận: <input name="xac_nhan" autocomplete="off"></label>
+    <button class="nguy" type="submit">Xóa dữ liệu</button>
+  </form>
+</div>
+{% endif %}
+
+<div class="the">
+  <h2 style="margin-top:0">Lịch sử nhập dữ liệu</h2>
+  <table>
+    <tr><th>Thời điểm</th><th>Người thực hiện</th><th>Loại</th><th>Tệp</th><th>Tóm tắt</th><th></th></tr>
+    {% for b in ds_bao_cao %}
+    <tr><td>{{ b.thoi_diem.strftime('%d/%m/%Y %H:%M') }}</td><td>{{ b.tai_khoan.ho_ten if b.tai_khoan else '(lệnh máy)' }}</td>
+    <td>{{ {'so-excel': 'Nhập sổ Excel', 'bo-sung-thoi-han': 'Bổ sung thời hạn', 'xoa': 'Xóa dữ liệu'}.get(b.loai, b.loai) }}</td>
+    <td>{{ b.ten_tep or '' }}</td><td>{{ b.tom_tat or '' }}</td><td><a href="{{ url_for('nhap_du_lieu.xem_bao_cao', id=b.id) }}">Xem</a></td></tr>
+    {% else %}<tr><td colspan="6" class="mo">Chưa có lần nhập nào.</td></tr>{% endfor %}
+  </table>
+</div>
+{% endblock %}

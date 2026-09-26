@@ -323,3 +323,17 @@ class NhatKy(db.Model):
     thay_doi = db.Column(db.Text)          # JSON {truong: [cũ, mới]}
 
     tai_khoan = db.relationship("TaiKhoan")
+
+
+class BaoCaoNhapLuu(db.Model):
+    """Báo cáo mỗi lần nhập dữ liệu qua trang web (máy chủ Vercel không ghi được tệp nên lưu vào CSDL)."""
+    __tablename__ = "bao_cao_nhap"
+    id = db.Column(db.Integer, primary_key=True)
+    thoi_diem = db.Column(db.DateTime, default=_now)
+    tai_khoan_id = db.Column(db.Integer, db.ForeignKey("tai_khoan.id"))
+    loai = db.Column(db.String(30))        # so-excel / bo-sung-thoi-han
+    ten_tep = db.Column(db.String(300))
+    tom_tat = db.Column(db.String(500))
+    noi_dung = db.Column(db.Text)          # Markdown
+
+    tai_khoan = db.relationship("TaiKhoan")

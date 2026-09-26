@@ -8,7 +8,7 @@ from gpmt.extensions import db as _db
 
 GOC = Path(__file__).resolve().parent.parent
 TEP_SO = GOC / "du-lieu-goc" / "So_theo_doi_cap_GPMT_hang_nam_Lao_Cai.xls"
-TEP_2519 = GOC / "du-lieu-goc" / "ban-ghi-doi-chieu" / "2519_GPMT-UBND.json"
+TEP_2519 = GOC / "gpmt" / "ban_ghi_doi_chieu" / "2519_GPMT-UBND.json"
 
 
 @pytest.fixture()

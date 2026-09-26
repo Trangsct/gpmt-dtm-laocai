@@ -10,7 +10,8 @@ báo và xuất báo cáo theo mẫu Phụ lục 6.4. Yêu cầu đầy đủ: [
 
 | Chức năng | Tình trạng |
 |---|---|
-| Nhập sổ Excel + báo cáo nhập (dòng đã vào, dòng gắn cờ `can_ra_soat` và lý do) | xong — `bao-cao/nhap-du-lieu-<ngày>.md` |
+| Nhập sổ Excel + báo cáo nhập (dòng đã vào, dòng gắn cờ `can_ra_soat` và lý do) — trên web (menu **Nhập dữ liệu**) hoặc lệnh | xong |
+| Bổ sung thời hạn/ngày ký hàng loạt qua mẫu Excel tải về – điền – tải lên | xong |
 | Danh sách GPMT: tìm theo số hiệu, cơ sở, chủ cơ sở, MST; lọc năm, cơ quan cấp, địa bàn cũ, xã/phường, loại hình, nhóm, KCN/CCN, trạng thái | xong |
 | Chi tiết GPMT: thông tin chung, xả thải, chất thải, VHTN, chuỗi thay thế, mở PDF gốc | xong |
 | Chi tiết cơ sở: dòng thời gian GPMT, ĐTM, VHTN, ĐKMT, hồ sơ | xong |
@@ -29,7 +30,7 @@ export FLASK_APP=gpmt                      # không đặt DATABASE_URL → dùn
 
 flask khoi-tao-csdl
 flask nhap-excel du-lieu-goc/So_theo_doi_cap_GPMT_hang_nam_Lao_Cai.xls
-flask nhap-ban-ghi du-lieu-goc/ban-ghi-doi-chieu/2519_GPMT-UBND.json
+flask nhap-ban-ghi gpmt/ban_ghi_doi_chieu/2519_GPMT-UBND.json
 flask tao-tai-khoan --email <email> --ho-ten "<Họ tên>" --vai-tro quan_tri   # hỏi mật khẩu
 flask run                                  # http://127.0.0.1:5000
 ```
@@ -61,25 +62,22 @@ Tài khoản do quản trị cấp (trang **Tài khoản** hoặc lệnh `flask 
 
 ## Triển khai chạy thử: Vercel + Neon
 
-1. **Neon** (Vercel → Storage → Neon, gói miễn phí): tạo CSDL, lấy chuỗi kết nối.
-2. **Vercel**: Import kho này (Private). Tên dự án `gpmt-dtm-laocai` → `https://gpmt-dtm-laocai.vercel.app`
-   (tên đã có người dùng thì đặt `gpmt-laocai`). Biến môi trường (Settings → Environment Variables):
-   - `DATABASE_URL` — chuỗi kết nối Neon (tích hợp Storage tự điền);
-   - `SECRET_KEY` — chuỗi ngẫu nhiên dài (`python3 -c "import secrets; print(secrets.token_hex(32))"`);
-   - `SESSION_COOKIE_SECURE=1`;
-   - `PDF_BASE_URL` — nơi lưu PDF riêng tư (tùy chọn; để trống thì nút "Mở PDF gốc" ẩn).
-3. **Khởi tạo và nhập dữ liệu từ máy cục bộ** vào Neon (hệ tệp Vercel chỉ đọc, không chạy lệnh CLI ở đó):
-   ```bash
-   export DATABASE_URL='<chuỗi kết nối Neon>' FLASK_APP=gpmt
-   flask khoi-tao-csdl && flask nhap-excel du-lieu-goc/So_theo_doi_cap_GPMT_hang_nam_Lao_Cai.xls
-   flask nhap-ban-ghi du-lieu-goc/ban-ghi-doi-chieu/2519_GPMT-UBND.json
-   flask tao-tai-khoan --email <email> --ho-ten "<Họ tên>" --vai-tro quan_tri
-   ```
-4. `.vercelignore` loại `du-lieu-goc/`, `bao-cao/`, `tests/` khỏi bản triển khai.
+Hướng dẫn từng bước cho người không chuyên: **[`HUONG_DAN_TRIEN_KHAI.md`](HUONG_DAN_TRIEN_KHAI.md)**. Tóm tắt:
 
-Mã nguồn không gắn cứng tên miền/nơi chạy (xem `.env.example`). Khi Sở chuyển sang máy chủ riêng hoặc tên miền
-`….laocai.gov.vn`: chạy `gunicorn 'gpmt:create_app()'` sau reverse proxy, đặt cùng các biến môi trường, `PDF_DIR`
-trỏ tới thư mục PDF — không phải sửa code.
+1. Vercel: Import kho (Private), tên dự án `gpmt-dtm-laocai` → `https://gpmt-dtm-laocai.vercel.app`
+   (tên đã có người dùng thì `gpmt-laocai`).
+2. Vercel → Storage → Neon (Free, Singapore) → Connect vào dự án: tự thêm `DATABASE_URL`.
+3. Biến môi trường: `QUAN_TRI_EMAIL`, `QUAN_TRI_MAT_KHAU` (≥ 10 ký tự), `QUAN_TRI_HO_TEN` → Redeploy.
+   Lần chạy đầu ứng dụng tự tạo bảng và tài khoản quản trị (chỉ khi CSDL chưa có tài khoản nào).
+4. Đăng nhập → **Nhập dữ liệu** → tải sổ `.xls` lên (tự nhập kèm GP đã đối chiếu tay trong
+   `gpmt/ban_ghi_doi_chieu/`).
+
+Không bắt buộc: `SECRET_KEY` (không đặt thì suy ra từ chuỗi kết nối CSDL), `SESSION_COOKIE_SECURE` (tự bật trên
+Vercel), `PDF_BASE_URL`. Xem `.env.example`. `.vercelignore` loại `du-lieu-goc/`, `bao-cao/`, `tests/`.
+
+Mã nguồn không gắn cứng tên miền/nơi chạy. Khi Sở chuyển sang máy chủ riêng hoặc tên miền `….laocai.gov.vn`:
+chạy WSGI `gpmt:create_app()` (vd gunicorn) sau reverse proxy, đặt cùng các biến môi trường, `PDF_DIR` trỏ tới
+thư mục PDF — không phải sửa code.
 
 ## Cấu trúc
 
@@ -89,13 +87,14 @@ gpmt/
   phan_tich.py     tách số/ngày GP, đọc số kiểu Việt, KCN/CCN
   trang_thai.py    tính ngày hết hạn, trạng thái
   nhap_excel.py    nhập sổ theo dõi + báo cáo nhập
-  nhap_ban_ghi.py  nhập GP đã đối chiếu tay (JSON)
+  nhap_ban_ghi.py  nhập GP đã đối chiếu tay (JSON trong ban_ghi_doi_chieu/)
+  dich_vu.py       tự khởi tạo, nhập sổ qua web, mẫu bổ sung thời hạn (dùng chung CLI + web)
   xuat_excel.py    xuất Phụ lục 6.4
   nhat_ky.py       lưu vết thay đổi
   auth.py          đăng nhập, vai trò, CSRF
   views/           các trang web;  templates/, static/
 api/index.py       điểm vào Vercel
-du-lieu-goc/       sổ Excel, PDF gốc, bản ghi đối chiếu tay (nội bộ)
+du-lieu-goc/       sổ Excel, PDF gốc (nội bộ)
 bao-cao/           báo cáo nhập dữ liệu (nội bộ)
 tests/             kiểm thử
 ```

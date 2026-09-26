@@ -12,7 +12,7 @@ from sqlalchemy import event, inspect
 from sqlalchemy.orm import Session
 
 
-BANG_KHONG_GHI = {"nhat_ky"}
+BANG_KHONG_GHI = {"nhat_ky", "bao_cao_nhap"}
 
 
 def _gt(v):
@@ -36,7 +36,7 @@ def _truong(obj):
 
 def _before_flush(session, flush_context, instances):
     uid = _nguoi_dung_id()
-    if uid is None:
+    if uid is None or session.info.get("tat_nhat_ky"):
         return
     ghi = []
     for obj in session.new:

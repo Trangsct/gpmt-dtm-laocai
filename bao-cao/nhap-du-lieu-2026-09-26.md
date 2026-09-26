@@ -139,3 +139,8 @@ Trong đó **5 dòng không có số TT** nhưng có đủ dữ liệu, vẫn nh
 | GPMT cấp huyện cũ | 18 | chỉ có số thứ tự '15', các cột khác trống |
 | GPMT cấp huyện cũ | 19 | chỉ có số thứ tự '16', các cột khác trống |
 | GPMT cấp huyện cũ | 20 | chỉ có số thứ tự '17', các cột khác trống |
+
+## 7. Giấy phép đã đối chiếu tay với bản gốc PDF
+
+- 2519/GPMT-UBND ngày 22/07/2026 (2519_GPMT-UBND.json): Còn hiệu lực
+  - 1439/GPMT-UBND → Hết hiệu lực — bị thay thế bởi 2519/GPMT-UBND

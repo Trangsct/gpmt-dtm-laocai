@@ -1,4 +1,4 @@
-"""Nhập một bản ghi GPMT đã đối chiếu tay với bản gốc (tệp JSON trong du-lieu-goc/ban-ghi-doi-chieu/).
+"""Nhập một bản ghi GPMT đã đối chiếu tay với bản gốc (tệp JSON trong gpmt/ban_ghi_doi_chieu/).
 
 Giai đoạn 1 chưa có bộ đọc PDF tự động (giai đoạn 2), nên GP mẫu 2519/GPMT-UBND được nhập từ tệp JSON
 mà số, ngày đã đối chiếu với ảnh trang 1. Nếu JSON có `thay_the` thì GP cũ được gắn quan hệ thay thế và
