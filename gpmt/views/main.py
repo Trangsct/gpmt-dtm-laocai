@@ -9,7 +9,7 @@ from flask_login import current_user, login_required
 
 from ..auth import can_noi_bo
 from ..extensions import db
-from ..models import CoSoDuAn, Gpmt, HoSo, NhatKy, TaiKhoan, Vhtn
+from ..models import CoSoDuAn, Gpmt, HoSo, NhatKy, Vhtn
 from ..trang_thai import BI_THAY_THE, CHUA_XAC_DINH, HET_HAN, SAP_HET_HAN
 from .pham_vi import loc_co_so
 
@@ -99,7 +99,18 @@ def xuat_excel():
 
 @bp.route("/suc-khoe")
 def suc_khoe():
-    """Kiểm tra kết nối CSDL (dùng cho giám sát triển khai)."""
-    db.session.query(TaiKhoan.id).first()
-    return {"trang_thai": "ok"}
+    """Tự chẩn đoán cấu hình (không cần đăng nhập, không hiện giá trị bí mật). ?json=1 cho máy giám sát."""
+    from flask import current_app
+
+    from ..chan_doan import kiem_tra
+    try:
+        kq = kiem_tra(current_app)
+    finally:
+        db.session.rollback()
+    ok = all(x.dat is not False for x in kq)
+    if request.args.get("json") == "1":
+        return ({"trang_thai": "ok" if ok else "loi",
+                 "kiem_tra": [{"ten": x.ten, "dat": x.dat, "chi_tiet": x.chi_tiet, "viec_can_lam": x.viec_can_lam}
+                              for x in kq]}, 200 if ok else 503)
+    return render_template("suc_khoe.html", kq=kq, ok=ok), 200 if ok else 503
 

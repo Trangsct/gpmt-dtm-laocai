@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kiểm tra hệ thống · {{ TEN_DON_VI }}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="dau"><div class="ten"><small>{{ TEN_DON_VI }}</small>Kiểm tra hệ thống</div></header>
+<main>
+  {% if ok %}
+  <div class="thong-bao ok"><b>Hệ thống hoạt động bình thường.</b> <a href="{{ url_for('auth.dang_nhap') }}">Vào trang đăng nhập →</a></div>
+  {% else %}
+  <div class="thong-bao loi"><b>Còn việc cần làm</b> — làm theo cột “Việc cần làm” ở dòng màu đỏ, xong thì tải lại trang này. Không rõ thì chụp màn hình trang này gửi Claude.</div>
+  {% endif %}
+  <table>
+    <tr><th>Hạng mục</th><th>Kết quả</th><th>Chi tiết</th><th>Việc cần làm</th></tr>
+    {% for x in kq %}
+    <tr>
+      <td><b>{{ x.ten }}</b></td>
+      <td>{% if x.dat is true %}<span class="nhan ok">Đạt</span>{% elif x.dat is false %}<span class="nhan loi">Lỗi</span>{% else %}<span class="nhan xam">Thông tin</span>{% endif %}</td>
+      <td>{{ x.chi_tiet }}</td>
+      <td>{{ x.viec_can_lam }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <p class="mo">Trang này không hiện mật khẩu hay chuỗi kết nối. Thời điểm kiểm tra: {{ hom_nay|ngay }}.</p>
+</main>
+</body>
+</html>

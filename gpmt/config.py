@@ -7,9 +7,29 @@ from pathlib import Path
 GOC_DU_AN = Path(__file__).resolve().parent.parent
 
 
+# Tên biến chứa chuỗi kết nối, theo thứ tự ưu tiên. Tích hợp Neon trên Vercel thường đặt DATABASE_URL, có khi
+# POSTGRES_URL; nếu người dùng đặt "tiền tố" khi nối (vd STORAGE) thì thành STORAGE_DATABASE_URL, STORAGE_URL…
+TEN_BIEN_CSDL = ["DATABASE_URL", "POSTGRES_URL", "NEON_DATABASE_URL"]
+
+
+def tim_bien_csdl():
+    """Trả (tên biến, giá trị) của chuỗi kết nối PostgreSQL tìm được, hoặc (None, "")."""
+    for ten in TEN_BIEN_CSDL:
+        if os.environ.get(ten, "").strip():
+            return ten, os.environ[ten].strip()
+    # Dò các biến có tiền tố: …_DATABASE_URL, …_POSTGRES_URL, …_URL — bỏ bản "không qua pool"/"không SSL"
+    ung_vien = sorted(
+        (k for k, v in os.environ.items()
+         if v.strip().startswith(("postgres://", "postgresql://"))
+         and not any(x in k for x in ("UNPOOLED", "NON_POOLING", "NO_SSL"))),
+        key=lambda k: (not k.endswith("DATABASE_URL"), not k.endswith("POSTGRES_URL"), k))
+    if ung_vien:
+        return ung_vien[0], os.environ[ung_vien[0]].strip()
+    return None, ""
+
+
 def _url_tho():
-    """Tích hợp Neon trên Vercel đặt DATABASE_URL (có nơi đặt POSTGRES_URL) — nhận cả hai."""
-    return (os.environ.get("DATABASE_URL") or os.environ.get("POSTGRES_URL") or "").strip()
+    return tim_bien_csdl()[1]
 
 
 def _database_url():

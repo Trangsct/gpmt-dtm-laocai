@@ -45,6 +45,16 @@ def dang_ky_views(app):
     def _khong_thay(e):
         return render_template("loi.html", ma=404, thong_bao="Không tìm thấy trang hoặc bản ghi."), 404
 
+    @app.errorhandler(500)
+    def _loi_may_chu(e):
+        # Trang độc lập, không đụng CSDL (lỗi thường do CSDL chưa nối được)
+        from ..extensions import db
+        try:
+            db.session.rollback()
+        except Exception:
+            pass
+        return render_template("loi_500.html"), 500
+
     @app.errorhandler(400)
     def _sai(e):
         return render_template("loi.html", ma=400, thong_bao=getattr(e, "description", "Yêu cầu không hợp lệ.")), 400
