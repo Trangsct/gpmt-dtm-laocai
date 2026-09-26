@@ -1,0 +1,71 @@
+{
+  "_ghi_chu": "Đối chiếu tay với du-lieu-goc/2519_GPMT-UBND.pdf (26/9/2026). Số và ngày đọc từ ảnh trang 1 (trường ký số, lớp chữ để trống). Ký hiệu lấy theo trang bìa (/GPMT-UBND), không theo phụ lục (/GP-UBND).",
+  "so_hieu": "2519/GPMT-UBND",
+  "so": 2519,
+  "ky_hieu": "GPMT-UBND",
+  "ngay_ky": "2026-07-22",
+  "co_quan_cap": "UBND tỉnh Lào Cai",
+  "nguoi_ky": "KT. Chủ tịch – PCT Phan Trung Bá",
+  "loai_cap": "cấp lại",
+  "thoi_han_nam": 10,
+  "qd_doan_kiem_tra": "293/QĐ-SNNMT ngày 20/04/2026",
+  "to_trinh": "573/TTr-SNNMT ngày 07/7/2026",
+  "van_ban_de_nghi": "049/2026/CV-EUPW ngày 09/04/2026 (đề nghị cấp lại); 186/2026/CV-EUPW ngày 18/6/2026 (chỉnh sửa, bổ sung hồ sơ)",
+  "cong_suat_goc": "Tấm nhựa gỗ 300.000 m2/năm; compound nhựa gỗ 20.000 tấn/năm; nguyên liệu nhôm 60.000 tấn/năm",
+  "tep_pdf": "2519_GPMT-UBND.pdf",
+  "nguon_du_lieu": "pdf: 2519_GPMT-UBND.pdf (nhập tay, đã đối chiếu)",
+  "thay_the": {
+    "so_hieu": "1439/GPMT-UBND",
+    "ngay_ky": "2022-08-22",
+    "co_quan_cap": "UBND tỉnh Yên Bái (cũ)"
+  },
+  "chu_the": {
+    "ten": "Công ty Cổ phần đầu tư và phát triển nhựa gỗ Châu Âu",
+    "ma_so_thue": "0107094917",
+    "loai": "doanh nghiệp"
+  },
+  "co_so": {
+    "ten": "Nhà máy sản xuất các sản phẩm nhôm và các sản phẩm nhựa Eurostark",
+    "dia_diem": "Lô CN-24, Khu công nghiệp phía Nam, phường Văn Phú, tỉnh Lào Cai",
+    "xa_phuong_moi": "Phường Văn Phú",
+    "kcn_ccn": "KCN Phía Nam",
+    "loai_hinh": "Sản xuất các sản phẩm nhôm và các sản phẩm nhựa",
+    "nhom_du_an": "II",
+    "dien_tich": "48.113,5 m2",
+    "cong_suat_goc": "Tấm nhựa gỗ 300.000 m2/năm; compound nhựa gỗ 20.000 tấn/năm; nguyên liệu nhôm 60.000 tấn/năm"
+  },
+  "xa_thai": [
+    {"loai": "nước thải", "ten_dong": "Dòng nước thải số 01 (nguồn 01–03, sau HTXL tập trung)",
+     "luu_luong_goc": "9 m3/ngày đêm", "luu_luong_max": 9, "don_vi": "m3/ngày đêm",
+     "quy_chuan": "QCVN 14:2025/BTNMT (cột C, Bảng 2)",
+     "nguon_tiep_nhan": "Hệ thống thoát nước chung KCN phía Nam, phường Văn Phú",
+     "toa_do_vn2000": "X = 2 398 477; Y = 520 528 (KTT 104°45', múi 3°)",
+     "cong_trinh_xu_ly": "HTXL nước thải tập trung 15 m3/ngày đêm; nguồn 04–06 tuần hoàn, không xả"},
+    {"loai": "khí thải", "ten_dong": "Dòng số 01 (nguồn 01–04, dây chuyền compound)",
+     "luu_luong_goc": "32.000 m3/giờ", "luu_luong_max": 32000, "don_vi": "m3/giờ",
+     "quy_chuan": "QCVN 19:2024/BTNMT, cột C", "toa_do_vn2000": "X = 2398375; Y = 520867",
+     "cong_trinh_xu_ly": "Xyclone lọc bụi 32.000 m3/giờ"},
+    {"loai": "khí thải", "ten_dong": "Dòng số 02 (nguồn 05–17, sản xuất nhôm)",
+     "luu_luong_goc": "95.000 m3/giờ", "luu_luong_max": 95000, "don_vi": "m3/giờ",
+     "quy_chuan": "QCVN 19:2024/BTNMT, cột C", "toa_do_vn2000": "X = 2398303; Y = 520717",
+     "cong_trinh_xu_ly": "Hệ thống xử lý bụi, khí thải sản xuất nhôm 95.000 m3/giờ"},
+    {"loai": "khí thải", "ten_dong": "Tổng (lưu lượng xả khí thải lớn nhất)",
+     "luu_luong_goc": "127.000 m3/giờ", "luu_luong_max": 127000, "don_vi": "m3/giờ",
+     "quy_chuan": "QCVN 19:2024/BTNMT"},
+    {"loai": "ồn-rung", "ten_dong": "Tiếng ồn, độ rung (6 nguồn)",
+     "quy_chuan": "QCVN 26:2025/BNNMT (tiếng ồn: 70 dBA 6–21 giờ, 55 dBA 21–6 giờ)"}
+  ],
+  "chat_thai": [
+    {"loai": "CTNH", "khoi_luong_goc": "4.680 kg/năm", "khoi_luong_so": 4680, "don_vi": "kg/năm", "khoi_luong_kg_nam": 4680},
+    {"loai": "CTRCNTT", "khoi_luong_goc": "7,8 tấn/năm", "khoi_luong_so": 7.8, "don_vi": "tấn/năm", "khoi_luong_kg_nam": 7800},
+    {"loai": "CTRSH", "khoi_luong_goc": "khoảng 18 tấn/năm", "khoi_luong_so": 18, "don_vi": "tấn/năm", "khoi_luong_kg_nam": 18000}
+  ],
+  "vhtn": [
+    {"cong_trinh": "Hệ thống xử lý nước thải tập trung 15 m3/ngày đêm", "trang_thai": "chưa rõ",
+     "ghi_chu_goc": "Không quá 06 tháng kể từ ngày GP có hiệu lực (Phụ lục 1, mục 2)"},
+    {"cong_trinh": "Xyclone lọc bụi dây chuyền compound 32.000 m3/giờ", "trang_thai": "chưa rõ",
+     "ghi_chu_goc": "Không quá 06 tháng kể từ ngày GP có hiệu lực (Phụ lục 2, mục 2)"},
+    {"cong_trinh": "Hệ thống xử lý bụi, khí thải sản xuất nhôm 95.000 m3/giờ", "trang_thai": "chưa rõ",
+     "ghi_chu_goc": "Không quá 06 tháng kể từ ngày GP có hiệu lực (Phụ lục 2, mục 2)"}
+  ]
+}

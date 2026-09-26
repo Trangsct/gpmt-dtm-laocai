@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% from "_macro.html" import lk_gp with context %}
+{% block title %}Cần rà soát{% endblock %}
+{% block noi_dung %}
+<h1>Bản ghi cần rà soát <span class="mo">({{ ds|length }})</span></h1>
+<p class="mo">Các dòng dưới đây được gắn cờ khi nhập vì dữ liệu chưa chắc chắn. Hệ thống không tự đoán — người phụ trách mở từng bản ghi, đối chiếu bản gốc, sửa rồi bấm “Đã rà soát xong”.</p>
+<div class="the"><h2 style="margin-top:0">Nhóm lý do</h2>
+<table><tr><th>Lý do</th><th class="so">Số bản ghi</th></tr>{% for k, n in nhom %}<tr><td>{{ k }}</td><td class="so">{{ n }}</td></tr>{% endfor %}</table></div>
+<div class="bang-cuon"><table>
+  <tr><th>Số hiệu</th><th>Cơ sở</th><th>Nguồn</th><th>Lý do</th></tr>
+  {% for g in ds %}
+  <tr><td>{{ lk_gp(g) }}</td><td>{{ g.co_so.ten if g.co_so }}</td><td class="mo">{{ g.nguon_du_lieu.split(';')[0] if g.nguon_du_lieu }}</td>
+  <td><ul class="ly-do">{% for x in g.ds_ly_do %}<li>{{ x }}</li>{% endfor %}</ul></td></tr>
+  {% endfor %}
+</table></div>
+{% endblock %}

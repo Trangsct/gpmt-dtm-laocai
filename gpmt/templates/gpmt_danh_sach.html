@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% from "_macro.html" import nhan_tt, lk_gp with context %}
+{% block title %}Giấy phép môi trường{% endblock %}
+{% block noi_dung %}
+<h1>Giấy phép môi trường <span class="mo">({{ ds|length }} bản ghi)</span></h1>
+<form class="loc the" method="get">
+  <label>Tìm (số hiệu, tên cơ sở, chủ cơ sở, MST)<input type="search" name="q" value="{{ loc.q }}" size="32"></label>
+  <label>Năm<select name="nam"><option value="">Tất cả</option>{% for x in ds_nam %}<option {{ 'selected' if x|string == loc.nam }}>{{ x }}</option>{% endfor %}</select></label>
+  <label>Cơ quan cấp<select name="co_quan"><option value="">Tất cả</option>{% for x in ds_co_quan %}<option {{ 'selected' if x == loc.co_quan }}>{{ x }}</option>{% endfor %}<option value="_trong" {{ 'selected' if loc.co_quan == '_trong' }}>(chưa xác định)</option></select></label>
+  <label>Địa bàn cũ<select name="dia_ban"><option value="">Tất cả</option><option value="LC" {{ 'selected' if loc.dia_ban == 'LC' }}>Lào Cai cũ</option><option value="YB" {{ 'selected' if loc.dia_ban == 'YB' }}>Yên Bái cũ</option></select></label>
+  <label>Xã/phường<input name="xa" value="{{ loc.xa }}" size="14"></label>
+  <label>Loại hình<input name="loai_hinh" value="{{ loc.loai_hinh }}" size="12"></label>
+  <label>Nhóm<select name="nhom"><option value="">Tất cả</option>{% for x in ds_nhom %}<option {{ 'selected' if x == loc.nhom }}>{{ x }}</option>{% endfor %}</select></label>
+  <label>KCN/CCN<select name="kcn"><option value="">Tất cả</option>{% for x in ds_kcn %}<option {{ 'selected' if x == loc.kcn }}>{{ x }}</option>{% endfor %}</select></label>
+  <label>Trạng thái<select name="trang_thai"><option value="">Tất cả</option>{% for x in DS_TRANG_THAI %}<option {{ 'selected' if x == loc.trang_thai }}>{{ x }}</option>{% endfor %}</select></label>
+  <label>Loại văn bản<select name="loai_van_ban"><option value="">Tất cả</option><option {{ 'selected' if loc.loai_van_ban == 'GPMT' }}>GPMT</option><option {{ 'selected' if loc.loai_van_ban == 'chưa rõ' }}>chưa rõ</option></select></label>
+  {% if current_user.noi_bo %}<label>Cần rà soát<select name="ra_soat"><option value="">—</option><option value="1" {{ 'selected' if loc.ra_soat == '1' }}>Chỉ dòng cần rà soát</option></select></label>{% endif %}
+  <button type="submit">Lọc</button>
+  <a class="nut phu" href="{{ url_for('gpmt.danh_sach') }}">Bỏ lọc</a>
+  <a class="nut phu" href="{{ url_for('main.xuat_excel', **request.args) }}">Xuất Excel (Phụ lục 6.4)</a>
+  {% if current_user.duoc_sua %}<a class="nut" href="{{ url_for('gpmt.sua') }}">+ Nhập GP mới</a>{% endif %}
+</form>
+<div class="bang-cuon">
+<table>
+  <tr><th>Số hiệu</th><th>Ngày ký</th><th>Cơ sở / dự án</th><th>Chủ cơ sở</th><th>Xã/phường</th><th>Cơ quan cấp</th><th>Hết hạn</th><th>Trạng thái</th>{% if current_user.noi_bo %}<th title="Cần rà soát">!</th>{% endif %}</tr>
+  {% for g in ds %}
+  <tr>
+    <td>{{ lk_gp(g) }}{% if g.loai_van_ban != 'GPMT' %} <span class="nhan chua-ro">loại VB chưa rõ</span>{% endif %}</td>
+    <td>{{ g.ngay_ky|ngay }}</td>
+    <td>{% if g.co_so %}<a href="{{ url_for('danh_muc.co_so', id=g.co_so.id) }}">{{ g.co_so.ten }}</a>{% endif %}</td>
+    <td>{{ g.co_so.chu_the.ten if g.co_so and g.co_so.chu_the }}</td>
+    <td>{{ g.co_so.xa_phuong_moi or '' if g.co_so }}</td>
+    <td>{{ g.co_quan_cap or '' }}</td>
+    <td>{{ g.ngay_het_han|ngay }}</td>
+    <td>{{ nhan_tt(g.trang_thai) }}</td>
+    {% if current_user.noi_bo %}<td>{% if g.can_ra_soat %}<span class="co" title="{{ g.ds_ly_do|join('; ') }}">!</span>{% endif %}</td>{% endif %}
+  </tr>
+  {% else %}
+  <tr><td colspan="9" class="mo">Không có giấy phép phù hợp.</td></tr>
+  {% endfor %}
+</table>
+</div>
+{% endblock %}

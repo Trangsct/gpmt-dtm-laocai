@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Tài khoản{% endblock %}
+{% block noi_dung %}
+{% if ds is not none %}
+<h1>Tài khoản</h1>
+<div class="hang-nut"><a class="nut" href="{{ url_for('tai_khoan.sua') }}">+ Cấp tài khoản</a></div>
+<table>
+  <tr><th>Họ tên</th><th>Email</th><th>Đơn vị</th><th>Vai trò</th><th>Phạm vi</th><th>Hoạt động</th><th></th></tr>
+  {% for t in ds %}
+  <tr><td>{{ t.ho_ten }}</td><td>{{ t.email }}</td><td>{{ t.don_vi or '' }}</td><td>{{ VAI_TRO[t.vai_tro] }}</td>
+  <td>{% if t.pham_vi_xa %}Xã/phường: {{ t.pham_vi_xa }}{% endif %}{% if t.pham_vi_kcn %} Chỉ cơ sở trong KCN/CCN{% endif %}</td>
+  <td>{{ 'Có' if t.hoat_dong else 'Khóa' }}</td><td><a href="{{ url_for('tai_khoan.sua', id=t.id) }}">Sửa</a></td></tr>
+  {% endfor %}
+</table>
+<p class="mo">Vai trò “Xem giới hạn” dành cho BQL các KCN và UBND xã: chỉ xem GPMT, ĐTM, cơ sở trong phạm vi được gán; không thấy hồ sơ đang giải quyết, ghi chú nội bộ, lý do rà soát, nhật ký.</p>
+{% else %}
+<h1>{{ 'Sửa tài khoản' if tk.id else 'Cấp tài khoản mới' }}</h1>
+<form method="post" class="the">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <div class="bieu-mau">
+    <label>Họ tên *</label><div><input type="text" name="ho_ten" value="{{ tk.ho_ten or '' }}" required></div>
+    <label>Email *</label><div><input type="text" name="email" value="{{ tk.email or '' }}" required></div>
+    <label>Đơn vị</label><div><input type="text" name="don_vi" value="{{ tk.don_vi or '' }}"><div class="goi-y">Phòng … của Sở / Ban Quản lý các KCN / UBND xã …</div></div>
+    <label>Vai trò</label><div><select name="vai_tro">{% for k, v in VAI_TRO.items() %}<option value="{{ k }}" {{ 'selected' if k == tk.vai_tro }}>{{ v }}</option>{% endfor %}</select></div>
+    <label>Giới hạn theo xã/phường</label><div><input type="text" name="pham_vi_xa" value="{{ tk.pham_vi_xa or '' }}"><div class="goi-y">Chỉ áp dụng cho vai trò “Xem giới hạn”, vd “Phường Văn Phú”.</div></div>
+    <label>Chỉ cơ sở trong KCN/CCN</label><div><input type="checkbox" name="pham_vi_kcn" value="1" {{ 'checked' if tk.pham_vi_kcn }}><div class="goi-y">Dành cho tài khoản BQL các KCN.</div></div>
+    <label>Hoạt động</label><div><input type="checkbox" name="hoat_dong" value="1" {{ 'checked' if tk.hoat_dong }}></div>
+    {% if tk.id %}<label>Đặt lại mật khẩu</label><div><input type="checkbox" name="dat_lai_mk" value="1"><div class="goi-y">Sinh mật khẩu tạm mới, hiện một lần sau khi lưu.</div></div>{% endif %}
+  </div>
+  <div class="hang-nut"><button type="submit">Lưu</button><a class="nut phu" href="{{ url_for('tai_khoan.danh_sach') }}">Hủy</a></div>
+</form>
+{% endif %}
+{% endblock %}

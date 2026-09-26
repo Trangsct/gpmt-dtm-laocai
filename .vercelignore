@@ -1,0 +1,7 @@
+# Không đưa sổ theo dõi, PDF, báo cáo nhập, kiểm thử lên máy chủ Vercel
+du-lieu-goc/
+bao-cao/
+tests/
+HUONG_DAN.md
+*.sqlite3
+requirements-dev.txt
