@@ -29,7 +29,14 @@ Cách chạy, triển khai: `README.md`.
 - Trước khi commit: `python3 -m pytest -q` phải xanh.
 - Báo cáo cuối phiên: đã làm gì, đường dẫn chạy thử, danh sách dòng cần rà, việc còn treo.
 
-## Quyết định đã chốt (26/9/2026)
+## Quyết định đã chốt (26–27/9/2026)
+
+- **27/9/2026 — Công khai**: dữ liệu GPMT không bí mật, cần công khai cho người dân và doanh nghiệp → xem không
+  cần đăng nhập (`CONG_KHAI`, mặc định bật; khách = `KhachXem` trong `auth.py`, dùng decorator `can_xem`).
+  Vẫn chỉ cán bộ đăng nhập mới thấy hồ sơ đang giải quyết, lý do rà soát, nhật ký, ghi chú nội bộ (mục 7
+  HUONG_DAN.md: công khai chỉ các trường đã công khai) — hỏi Bạn trước khi mở thêm.
+- **27/9/2026 — Tài khoản quản trị đơn giản**: trang `/cai-dat` tạo quản trị đầu tiên khi CSDL chưa có tài khoản
+  nào, tạo xong tự khóa; không bắt đặt biến trên Vercel.
 
 - Người dùng: Sở + BQL các KCN + UBND xã. Tài khoản bên ngoài = vai trò `ben_ngoai`, giới hạn theo
   `pham_vi_xa` / `pham_vi_kcn`, không thấy thông tin nội bộ (hồ sơ, ghi chú, lý do rà soát, nhật ký).

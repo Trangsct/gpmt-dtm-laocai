@@ -9,7 +9,8 @@ from gpmt.models import Gpmt, NhatKy
 from .conftest import dang_nhap, tao_tai_khoan
 
 
-def test_phai_dang_nhap(app):
+def test_tat_cong_khai_thi_phai_dang_nhap(app):
+    app.config["CONG_KHAI"] = False
     assert app.test_client().get("/gpmt/").status_code == 302
 
 

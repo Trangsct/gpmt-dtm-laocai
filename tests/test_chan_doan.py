@@ -24,10 +24,8 @@ def test_chua_noi_neon_bao_ro_viec_can_lam(monkeypatch, tmp_path):
 
 
 def test_trang_khac_hien_loi_tieng_viet(monkeypatch, tmp_path):
-    import re
     c = _app_loi(monkeypatch, tmp_path).test_client()
-    tok = re.search(r'name="_csrf" value="([^"]+)"', c.get("/dang-nhap").text).group(1)
-    r = c.post("/dang-nhap", data={"_csrf": tok, "email": "a@b.c", "mat_khau": "x"})  # phải truy vấn CSDL
+    r = c.get("/dang-nhap")   # trang đăng nhập kiểm tra đã có tài khoản chưa → phải truy vấn CSDL
     assert r.status_code == 500 and "Kiểm tra hệ thống" in r.text and "Traceback" not in r.text
 
 
@@ -36,7 +34,7 @@ def test_thieu_bien_quan_tri(app, db, monkeypatch):
         monkeypatch.delenv(k, raising=False)
     r = app.test_client().get("/suc-khoe?json=1")
     tk = [x for x in r.get_json()["kiem_tra"] if x["ten"] == "Tài khoản"][0]
-    assert tk["dat"] is False and "Bước 5" in tk["viec_can_lam"]
+    assert tk["dat"] is None and "/cai-dat" in tk["viec_can_lam"]
 
 
 def test_tu_tao_quan_tri_khi_kiem_tra(app, db, monkeypatch):

@@ -51,6 +51,9 @@ Kiểm thử: `python3 -m pytest -q`.
 
 ## Người dùng và phân quyền
 
+**Công khai** (Bạn chốt 27/9/2026, biến `CONG_KHAI`, mặc định bật): ai cũng xem, tìm, xuất Excel được GPMT, ĐTM,
+cơ sở, đăng ký môi trường mà không cần đăng nhập — quyền như vai trò "Xem giới hạn" không giới hạn phạm vi.
+
 | Vai trò | Quyền |
 |---|---|
 | Quản trị | sửa dữ liệu, xóa, cấp tài khoản |
@@ -67,8 +70,9 @@ Hướng dẫn từng bước cho người không chuyên: **[`HUONG_DAN_TRIEN_K
 1. Vercel: Import kho (Private), tên dự án `gpmt-dtm-laocai` → `https://gpmt-dtm-laocai.vercel.app`
    (tên đã có người dùng thì `gpmt-laocai`).
 2. Vercel → Storage → Neon (Free, Singapore) → Connect vào dự án: tự thêm `DATABASE_URL`.
-3. Biến môi trường: `QUAN_TRI_EMAIL`, `QUAN_TRI_MAT_KHAU` (≥ 10 ký tự), `QUAN_TRI_HO_TEN` → Redeploy.
-   Lần chạy đầu ứng dụng tự tạo bảng và tài khoản quản trị (chỉ khi CSDL chưa có tài khoản nào).
+3. Mở `/cai-dat` để tạo tài khoản quản trị đầu tiên (chỉ mở khi CSDL chưa có tài khoản nào; tạo xong tự khóa).
+   Cách khác: đặt `QUAN_TRI_EMAIL`, `QUAN_TRI_MAT_KHAU` (≥ 10 ký tự), `QUAN_TRI_HO_TEN` → Redeploy.
+   Ứng dụng tự tạo bảng ở lần chạy đầu. `/suc-khoe` tự chẩn đoán cấu hình bằng tiếng Việt.
 4. Đăng nhập → **Nhập dữ liệu** → tải sổ `.xls` lên (tự nhập kèm GP đã đối chiếu tay trong
    `gpmt/ban_ghi_doi_chieu/`).
 

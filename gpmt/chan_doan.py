@@ -86,18 +86,9 @@ def kiem_tra(app) -> list[KetQua]:
     if so_tk:
         kq.append(KetQua("Tài khoản", True, f"Đã có {so_tk} tài khoản"))
     else:
-        email = os.environ.get("QUAN_TRI_EMAIL", "").strip()
-        mk = os.environ.get("QUAN_TRI_MAT_KHAU", "")
-        if not email or not mk:
-            viec = ("Làm Bước 5: Vercel → Settings → Environment Variables → thêm QUAN_TRI_EMAIL, QUAN_TRI_MAT_KHAU "
-                    "(≥ 10 ký tự), QUAN_TRI_HO_TEN → Deployments → ⋯ → Redeploy.")
-            thieu_bien = [x for x, v in (("QUAN_TRI_EMAIL", email), ("QUAN_TRI_MAT_KHAU", mk)) if not v]
-            kq.append(KetQua("Tài khoản", False, f"Chưa có tài khoản nào; thiếu biến {', '.join(thieu_bien)}", viec))
-        elif len(mk) < 10:
-            kq.append(KetQua("Tài khoản", False, "Chưa có tài khoản; QUAN_TRI_MAT_KHAU ngắn hơn 10 ký tự",
-                             "Sửa QUAN_TRI_MAT_KHAU cho đủ 10 ký tự trở lên → Redeploy."))
-        else:
-            kq.append(KetQua("Tài khoản", False, "Chưa tạo được tài khoản quản trị", "Chụp trang này gửi Claude."))
+        kq.append(KetQua("Tài khoản", None, "Chưa có tài khoản nào",
+                         "Mở trang /cai-dat (hoặc bấm 'Cán bộ đăng nhập') để tạo tài khoản quản trị — không cần "
+                         "đặt biến trên Vercel. Làm ngay, vì ai mở trang này trước sẽ tạo được tài khoản."))
 
     so_gp = db.session.query(Gpmt).count()
     kq.append(KetQua("Dữ liệu GPMT", True if so_gp else None,

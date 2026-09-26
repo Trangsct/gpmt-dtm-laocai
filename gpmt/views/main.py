@@ -5,9 +5,9 @@ from collections import Counter
 from datetime import date
 
 from flask import Blueprint, render_template, request, send_file
-from flask_login import current_user, login_required
+from flask_login import current_user
 
-from ..auth import can_noi_bo
+from ..auth import can_noi_bo, can_xem
 from ..extensions import db
 from ..models import CoSoDuAn, Gpmt, HoSo, NhatKy, Vhtn
 from ..trang_thai import BI_THAY_THE, CHUA_XAC_DINH, HET_HAN, SAP_HET_HAN
@@ -22,7 +22,7 @@ def ds_gpmt_trong_pham_vi():
 
 
 @bp.route("/")
-@login_required
+@can_xem
 def bang_dieu_khien():
     hom_nay = date.today()
     ds = ds_gpmt_trong_pham_vi().all()
@@ -83,7 +83,7 @@ def nhat_ky():
 
 
 @bp.route("/xuat-excel")
-@login_required
+@can_xem
 def xuat_excel():
     from ..xuat_excel import xuat_phu_luc_64
     from .gpmt import loc_danh_sach

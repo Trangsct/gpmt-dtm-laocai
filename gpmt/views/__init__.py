@@ -37,6 +37,11 @@ def dang_ky_views(app):
         return dict(TEN_DON_VI=app.config["TEN_DON_VI"], VAI_TRO=VAI_TRO, MAU_TRANG_THAI=MAU_TRANG_THAI,
                     DS_TRANG_THAI=DS_TRANG_THAI, hom_nay=date.today())
 
+    @app.errorhandler(401)
+    def _moi_dang_nhap(e):
+        from flask import redirect, request, url_for
+        return redirect(url_for("auth.dang_nhap", next=request.full_path.rstrip("?")))
+
     @app.errorhandler(403)
     def _cam(e):
         return render_template("loi.html", ma=403, thong_bao="Tài khoản không có quyền thực hiện việc này."), 403

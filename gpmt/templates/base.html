@@ -9,7 +9,9 @@
 <body>
 <header class="dau">
   <div class="ten"><small>{{ TEN_DON_VI }}</small>Quản lý Giấy phép môi trường và báo cáo ĐTM</div>
-  {% if current_user.is_authenticated %}
+  {% if not current_user.is_authenticated %}
+  <div class="nguoi"><a href="{{ url_for('auth.dang_nhap', next=request.full_path.rstrip('?')) if request.endpoint not in ('auth.dang_nhap', 'auth.cai_dat') else url_for('auth.dang_nhap') }}">Cán bộ đăng nhập</a></div>
+  {% else %}
   <div class="nguoi">
     <span>{{ current_user.ho_ten }} · {{ VAI_TRO[current_user.vai_tro] }}</span>
     <a href="{{ url_for('auth.doi_mat_khau') }}">Đổi mật khẩu</a>
@@ -20,11 +22,11 @@
   </div>
   {% endif %}
 </header>
-{% if current_user.is_authenticated %}
+{% if current_user.is_authenticated or config.CONG_KHAI %}
 {% set ep = request.endpoint or '' %}
 {% set loai = (request.view_args or {}).get('loai') %}
 <nav class="menu">
-  <a href="{{ url_for('main.bang_dieu_khien') }}" class="{{ 'dang-mo' if ep == 'main.bang_dieu_khien' }}">Bảng điều khiển</a>
+  <a href="{{ url_for('main.bang_dieu_khien') }}" class="{{ 'dang-mo' if ep == 'main.bang_dieu_khien' }}">{{ 'Bảng điều khiển' if current_user.is_authenticated else 'Trang chủ' }}</a>
   <a href="{{ url_for('gpmt.danh_sach') }}" class="{{ 'dang-mo' if ep.startswith('gpmt.') }}">Giấy phép môi trường</a>
   <a href="{{ url_for('danh_muc.ds_co_so') }}" class="{{ 'dang-mo' if ep in ('danh_muc.ds_co_so','danh_muc.co_so','danh_muc.sua_co_so') }}">Cơ sở / dự án</a>
   <a href="{{ url_for('danh_muc.ds_bang', loai='dtm') }}" class="{{ 'dang-mo' if loai == 'dtm' }}">ĐTM</a>

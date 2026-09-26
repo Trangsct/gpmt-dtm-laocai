@@ -1,9 +1,9 @@
 """Cơ sở/dự án (trang dòng thời gian), chủ cơ sở, ĐTM, hồ sơ đang giải quyết, đăng ký môi trường."""
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
-from flask_login import current_user, login_required
+from flask_login import current_user
 from sqlalchemy import or_
 
-from ..auth import can_quyen_sua
+from ..auth import can_quyen_sua, can_xem
 from ..extensions import db
 from ..models import ChuThe, CoSoDuAn, DangKyMoiTruong, Dtm, HoSo
 from .bieu_mau import BM_CHU_THE, BM_CO_SO, BM_DKMT, BM_DTM, BM_HO_SO
@@ -21,7 +21,7 @@ BANG = {
 
 
 @bp.route("/co-so")
-@login_required
+@can_xem
 def ds_co_so():
     q = db.session.query(CoSoDuAn).outerjoin(ChuThe, CoSoDuAn.chu_the_id == ChuThe.id)
     q = loc_co_so(q)
@@ -34,7 +34,7 @@ def ds_co_so():
 
 
 @bp.route("/co-so/<int:id>")
-@login_required
+@can_xem
 def co_so(id):
     cs = db.get_or_404(CoSoDuAn, id)
     kiem_co_so(cs)
@@ -83,12 +83,14 @@ def _lay_bang(loai):
         abort(404)
     mo_hinh, bm, ten, noi_bo = BANG[loai]
     if noi_bo and not current_user.noi_bo:
+        if not current_user.is_authenticated:
+            abort(401)
         abort(403)
     return mo_hinh, bm, ten
 
 
 @bp.route("/<any(dtm, 'ho-so', 'dang-ky-mt', 'chu-the'):loai>")
-@login_required
+@can_xem
 def ds_bang(loai):
     mo_hinh, bm, ten = _lay_bang(loai)
     q = db.session.query(mo_hinh)
