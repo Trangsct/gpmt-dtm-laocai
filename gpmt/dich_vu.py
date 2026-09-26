@@ -36,6 +36,7 @@ def khoi_tao_tu_dong(app):
                 db.session.add(tk)
                 db.session.commit()
                 log.warning("Đã tạo tài khoản quản trị đầu tiên: %s", email)
+            dong_bo_ban_ghi_moi()
     except Exception:  # CSDL chưa sẵn sàng: vẫn cho ứng dụng chạy, trang /suc-khoe sẽ báo lỗi
         log.exception("Không khởi tạo được CSDL")
 
@@ -47,14 +48,46 @@ def da_co_du_lieu_so():
     return db.session.query(Gpmt.id).filter(Gpmt.nguon_du_lieu.like("excel:%")).first() is not None
 
 
-def nhap_ban_ghi_doi_chieu():
-    """Nạp mọi GP đã đối chiếu tay trong gpmt/ban_ghi_doi_chieu/*.json. Trả danh sách thông báo."""
-    from .nhap_ban_ghi import nhap_tep_json
+def _mo_ta(obj):
+    from .models import Gpmt
+    if isinstance(obj, Gpmt):
+        return f"GPMT {obj} — {obj.trang_thai}"
+    return f"Hồ sơ {obj.loai}: {obj.co_so.ten if obj.co_so else ''} — {obj.trang_thai}"
+
+
+def nhap_ban_ghi_doi_chieu(chi_ban_ghi_moi=False):
+    """Nạp các bản ghi trong gpmt/ban_ghi_doi_chieu/*.json (GP đối chiếu tay, hồ sơ lấy từ Data360X).
+    chi_ban_ghi_moi=True: bỏ qua bản ghi đã có trong CSDL (không ghi đè chỉnh sửa trên web)."""
+    from .nhap_ban_ghi import da_co, doc_tep_json, nhap_mot
     tb = []
     for p in sorted(THU_MUC_BAN_GHI.glob("*.json")):
-        gp, ds = nhap_tep_json(p)
-        tb.append(f"{gp} ({p.name}): {gp.trang_thai}")
-        tb += [f"  - {x}" for x in ds]
+        for x in doc_tep_json(p):
+            if chi_ban_ghi_moi and da_co(x):
+                continue
+            obj, ds = nhap_mot(x)
+            tb.append(f"{_mo_ta(obj)} ({p.name})")
+            tb += [f"  - {y}" for y in ds]
+    return tb
+
+
+def dong_bo_ban_ghi_moi(tai_khoan_id=None):
+    """Chạy mỗi lần ứng dụng khởi động: nạp bản ghi mới thêm vào kho mã (sau khi đã nhập sổ Excel).
+    Có bản ghi mới thì lưu báo cáo 'Đồng bộ bản ghi mới' để người dùng thấy ở trang Nhập dữ liệu."""
+    from .models import BaoCaoNhapLuu
+    if not da_co_du_lieu_so():
+        return []
+    db.session.info["tat_nhat_ky"] = True
+    try:
+        tb = nhap_ban_ghi_doi_chieu(chi_ban_ghi_moi=True)
+    finally:
+        db.session.info.pop("tat_nhat_ky", None)
+    if tb:
+        so = sum(1 for x in tb if not x.startswith(" "))
+        db.session.add(BaoCaoNhapLuu(
+            loai="dong-bo", tai_khoan_id=tai_khoan_id, ten_tep="gpmt/ban_ghi_doi_chieu/",
+            tom_tat=f"Nạp {so} bản ghi mới", noi_dung=f"# Đồng bộ bản ghi mới — {date.today().strftime('%d/%m/%Y')}\n\n"
+            + "\n".join(f"- {x}" if not x.startswith(" ") else x for x in tb) + "\n"))
+        db.session.commit()
     return tb
 
 

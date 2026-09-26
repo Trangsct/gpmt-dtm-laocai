@@ -8,7 +8,7 @@ import json
 from datetime import date
 
 from .extensions import db
-from .models import ChuThe, CoSoDuAn, Gpmt, GpmtChatThai, GpmtXaThai, Vhtn
+from .models import ChuThe, CoSoDuAn, Gpmt, GpmtChatThai, GpmtXaThai, HoSo, Vhtn
 from .phan_tich import chuan_ten
 
 
@@ -69,6 +69,8 @@ def nhap_ban_ghi(du_lieu: dict) -> tuple[Gpmt, list[str]]:
         if k in du_lieu:
             setattr(gp, k, du_lieu[k])
     gp.loai_van_ban = "GPMT"
+    for x in du_lieu.get("ly_do_ra_soat", []):
+        gp.them_ly_do(x)
     gp.ngay_ky = ngay_ky
     gp.nam_cap = ngay_ky.year
     gp.co_so = cs
@@ -90,6 +92,73 @@ def nhap_ban_ghi(du_lieu: dict) -> tuple[Gpmt, list[str]]:
     return gp, tb
 
 
-def nhap_tep_json(duong_dan):
+def doc_tep_json(duong_dan) -> list[dict]:
+    """Một tệp chứa một bản ghi, hoặc {"ban_ghi": [...]} gồm nhiều bản ghi."""
     with open(duong_dan, encoding="utf-8") as f:
-        return nhap_ban_ghi(json.load(f))
+        du_lieu = json.load(f)
+    return du_lieu["ban_ghi"] if "ban_ghi" in du_lieu else [du_lieu]
+
+
+def nhap_tep_json(duong_dan):
+    """Tương thích cũ: nhập tệp một GPMT. Trả (bản ghi, thông báo) của bản ghi đầu."""
+    kq = [nhap_mot(x) for x in doc_tep_json(duong_dan)]
+    return kq[0]
+
+
+def nhap_mot(du_lieu: dict):
+    """Nhập một bản ghi theo trường "loai": gpmt (mặc định) / ho_so."""
+    if du_lieu.get("loai", "gpmt") == "ho_so":
+        return nhap_ho_so(du_lieu)
+    return nhap_ban_ghi(du_lieu)
+
+
+def da_co(du_lieu: dict) -> bool:
+    """Bản ghi đã có trong CSDL chưa (để đồng bộ tự động không ghi đè chỉnh sửa trên web)."""
+    if du_lieu.get("loai", "gpmt") == "ho_so":
+        return tim_ho_so(du_lieu) is not None
+    return bool(tim_gpmt(du_lieu["so_hieu"], _ngay(du_lieu["ngay_ky"])))
+
+
+# ---------------------------------------------------------------- Hồ sơ đang giải quyết
+
+def _lay_co_so(cs_dl: dict, ct_ten: str | None):
+    """Tìm cơ sở theo tên (không phân biệt dấu, hoa thường); chưa có thì tạo."""
+    khoa = chuan_ten(cs_dl["ten"])
+    cs = next((c for c in db.session.query(CoSoDuAn).all() if chuan_ten(c.ten) == khoa), None)
+    if cs is None:
+        cs = CoSoDuAn(ten=cs_dl["ten"])
+        db.session.add(cs)
+    for k, v in cs_dl.items():
+        if v and not getattr(cs, k):
+            setattr(cs, k, v)
+    if ct_ten and cs.chu_the is None:
+        ct = next((c for c in db.session.query(ChuThe).all() if chuan_ten(c.ten) == chuan_ten(ct_ten)), None)
+        cs.chu_the = ct or ChuThe(ten=ct_ten)
+    return cs
+
+
+def tim_ho_so(du_lieu: dict):
+    khoa = chuan_ten(du_lieu["co_so"]["ten"])
+    for h in db.session.query(HoSo).filter(HoSo.loai == du_lieu["loai_ho_so"]).all():
+        if h.co_so and chuan_ten(h.co_so.ten) == khoa:
+            return h
+    return None
+
+
+def nhap_ho_so(du_lieu: dict):
+    """Hồ sơ đang giải quyết lấy từ văn bản đến (QĐ thành lập HĐTĐ/đoàn kiểm tra, giấy mời, xin ý kiến)."""
+    h = tim_ho_so(du_lieu)
+    with db.session.no_autoflush:
+        cs = _lay_co_so(du_lieu["co_so"], du_lieu.get("chu_the"))
+    if h is None:
+        h = HoSo(loai=du_lieu["loai_ho_so"], co_so=cs)
+        db.session.add(h)
+    h.co_so = cs
+    for k in ("van_ban_de_nghi", "qd_doan_kiem_tra_hoac_hoi_dong", "van_ban_bo_sung", "to_trinh", "trang_thai",
+              "can_bo_thu_ly", "ghi_chu"):
+        if k in du_lieu:
+            setattr(h, k, du_lieu[k])
+    if du_lieu.get("ngay_tiep_nhan"):
+        h.ngay_tiep_nhan = _ngay(du_lieu["ngay_tiep_nhan"])
+    db.session.commit()
+    return h, []
