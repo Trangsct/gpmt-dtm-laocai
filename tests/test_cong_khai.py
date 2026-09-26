@@ -69,5 +69,20 @@ def test_trang_chu_gioi_thieu(app, db, du_lieu_that):
     assert r.status_code == 200
     for x in ("Sở Nông nghiệp và Môi trường", "Tra cứu", "Thủ tục hành chính", "736/QĐ-UBND", "22 ngày",
               "2519/GPMT-UBND", "số 64 đường Lý Tự Trọng", "02143.820 062",
-              "contact-snnmt@laocai.gov.vn", "Trần Minh Sáng", "snnmt.laocai.gov.vn", "data-co=\"1.4\""):
+              "contact-snnmt@laocai.gov.vn", "Trần Minh Sáng", "snnmt.laocai.gov.vn", "tq-so"):
+        assert x in r.text, x
+
+
+def test_trang_chu_viec_can_lam_chi_cho_can_bo(app, db, du_lieu_that):
+    from .conftest import dang_nhap
+    r = app.test_client().get("/")
+    assert "Việc cần làm" not in r.text and "Hồ sơ đang giải quyết" not in r.text
+    assert "Cán bộ đăng nhập" in r.text
+    tao_tai_khoan(db, "qt@vd.vn", "quan_tri")
+    c = app.test_client()
+    dang_nhap(c, "qt@vd.vn")
+    r = c.get("/")
+    assert r.status_code == 200
+    for x in ("Việc cần làm", "Nhập sổ theo dõi GPMT", "Rà soát bản ghi", "Cấp tài khoản cho đồng nghiệp",
+              "Hồ sơ đang giải quyết"):
         assert x in r.text, x

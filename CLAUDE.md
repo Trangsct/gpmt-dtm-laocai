@@ -49,9 +49,14 @@ Cách chạy, triển khai: `README.md`.
   số liệu lấy trực tiếp từ CSDL; quy trình 5 chặng tóm tắt QĐ 736/QĐ-UBND; nơi nộp hồ sơ theo QĐ 463/QĐ-UBND.
   Thông tin liên hệ của Sở ở `gpmt/gioi_thieu.json` — chép nguyên văn chân trang Cổng TTĐT snnmt.laocai.gov.vn
   (ảnh Bạn gửi 27/9/2026; máy phiên không truy cập được trang đó). Chỉ sửa khi có nguồn chính thức.
-- **27/9/2026 — Trình chiếu hội nghị**: chữ to; nút Cỡ chữ A / A+ / A++ (CSS `zoom` trên `body`, mặc định A+ khi
-  màn hình ≥ 1200px, ghi nhớ bằng localStorage) và nút Toàn màn hình ở đầu trang. Thiết kế mới phải kiểm ở
-  1366×768 mức A++. Biểu trưng `static/logo.svg` là hình chung (lá, núi, nước), không phải logo chính thức.
+- **27/9/2026 — Giao diện "khoa học kỹ thuật"** (Bạn chốt, tham khảo vlncn-laocai.vercel.app; thay cho chế độ
+  trình chiếu hội nghị — đã BỎ nút Cỡ chữ A/A+/A++ và nút Toàn màn hình vì "không phù hợp"): menu dọc bên trái
+  (`base.html`, nhóm Tổng quan / Tra cứu / Nghiệp vụ / Quản trị; trên điện thoại thu vào nút ☰), thanh trên có ô tra
+  cứu nhanh, thẻ trắng bo góc, ô biểu tượng màu nhạt, số liệu lớn. Biểu tượng nét vẽ tay ở `_bieu_tuong.html`
+  (macro `bt`), không tải thư viện ngoài. Trang chủ: băng đầu + ô tra cứu, 5 thẻ số liệu, GP cấp gần đây, biểu đồ
+  theo năm + thanh tình trạng hiệu lực, quy trình 5 chặng, giới thiệu Sở + liên hệ. Cán bộ đăng nhập thấy thêm
+  khối **"Việc cần làm"** tính từ CSDL (nhập sổ, rà soát, bổ sung thời hạn, cấp tài khoản, hồ sơ tồn, GP sắp hết
+  hạn). Kiểm ảnh ở 1366×768 và 390px. Biểu trưng `static/logo.svg` là hình chung, không phải logo chính thức.
 - **27/9/2026 — Tài khoản quản trị đơn giản**: trang `/cai-dat` tạo quản trị đầu tiên khi CSDL chưa có tài khoản
   nào, tạo xong tự khóa; không bắt đặt biến trên Vercel.
 

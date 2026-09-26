@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<header class="dau"><div class="ten"><small>{{ TEN_DON_VI }}</small>Kiểm tra hệ thống</div></header>
+<header class="thanh-tren"><a href="{{ url_for('main.trang_chu') }}"><img src="{{ url_for('static', filename='logo.svg') }}" alt="" width="40" height="40"></a><div class="tt-don-vi"><b>Kiểm tra hệ thống</b><small>{{ TEN_DON_VI }}</small></div></header>
 <main>
   {% if ok %}
   <div class="thong-bao ok"><b>Hệ thống hoạt động bình thường.</b> <a href="{{ url_for('auth.dang_nhap') }}">Vào trang đăng nhập →</a></div>
