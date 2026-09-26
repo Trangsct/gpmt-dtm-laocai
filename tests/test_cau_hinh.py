@@ -32,8 +32,12 @@ def test_cookie_bao_mat_tren_vercel(monkeypatch):
     assert _nap(monkeypatch).SESSION_COOKIE_SECURE is False
 
 
-def test_gio_viet_nam():
+def test_gio_viet_nam_ke_ca_khi_may_chu_dat_utc(monkeypatch):
+    import importlib
     import time
 
-    import gpmt  # noqa: F401
+    import gpmt
+    monkeypatch.setenv("TZ", ":UTC")          # AWS Lambda/Vercel đặt sẵn như vậy
+    monkeypatch.delenv("MUI_GIO", raising=False)
+    importlib.reload(gpmt)
     assert time.strftime("%z") == "+0700"
