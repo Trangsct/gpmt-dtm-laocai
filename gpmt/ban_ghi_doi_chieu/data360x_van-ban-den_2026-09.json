@@ -1,0 +1,75 @@
+{
+  "_ghi_chu": "Lấy từ mục lục văn bản đến Data360X của Sở Công Thương (theo-doi/danh-muc-2026.json, kho vlncn-laocai), tra ngày 27/9/2026: số ký hiệu, ngày ban hành, đơn vị, trích yếu do bot chép từ bảng danh mục. Chưa có bản gốc — đã sai bot tải (workflow lay-van-ban, thư mục yeu-cau/gpmt-dtm-snnmt); có bản gốc thì bổ sung chủ dự án, ngày tiếp nhận, nội dung GP.",
+  "ban_ghi": [
+    {
+      "loai": "gpmt",
+      "so_hieu": "3216/GPMT-UBND",
+      "so": 3216,
+      "ky_hieu": "GPMT-UBND",
+      "ngay_ky": "2026-09-08",
+      "co_quan_cap": "UBND tỉnh Lào Cai",
+      "nguon_du_lieu": "data360x: văn bản đến 3216/GPMT-UBND ngày 08/09/2026 (mục lục, chưa có bản gốc)",
+      "ly_do_ra_soat": [
+        "Nhập từ mục lục Data360X: trích yếu bị cắt sau tên công ty — chờ bản gốc để ghi tên cơ sở, địa điểm, thời hạn (Điều 3), nội dung cấp phép"
+      ],
+      "chu_the": {"ten": "Công ty cổ phần Khai thác và Chế biến kim loại Thủ Đô", "loai": "doanh nghiệp"},
+      "co_so": {"ten": "Cơ sở của Công ty cổ phần Khai thác và Chế biến kim loại Thủ Đô"}
+    },
+    {
+      "loai": "ho_so",
+      "loai_ho_so": "GPMT (chưa rõ loại cấp)",
+      "co_so": {"ten": "Dự án đầu tư xây dựng và kinh doanh kết cấu hạ tầng Khu công nghiệp Phú Xuân",
+                "dia_diem": "xã Gia Phú, tỉnh Lào Cai", "xa_phuong_moi": "Xã Gia Phú", "kcn_ccn": "KCN Phú Xuân"},
+      "qd_doan_kiem_tra_hoac_hoi_dong": "715/QĐ-SNNMT ngày 18/08/2026 — thành lập Hội đồng thẩm định cấp GPMT",
+      "van_ban_bo_sung": "448/GM-SNNMT ngày 18/08/2026 — giấy mời họp Hội đồng thẩm định cấp GPMT\n8151/SNNMT-CCMT ngày 22/08/2026 — xin ý kiến đối với báo cáo đề xuất cấp GPMT",
+      "trang_thai": "Đoàn kiểm tra / Hội đồng thẩm định",
+      "ghi_chu": "Nguồn: văn bản đến Data360X của Sở Công Thương (Sở NN&MT gửi). Chờ bản gốc để bổ sung chủ dự án, ngày tiếp nhận hồ sơ."
+    },
+    {
+      "loai": "ho_so",
+      "loai_ho_so": "GPMT (chưa rõ loại cấp)",
+      "co_so": {"ten": "Mỏ sắt Quý Xa"},
+      "qd_doan_kiem_tra_hoac_hoi_dong": "733/QĐ-SNNMT ngày 19/08/2026 — thành lập Hội đồng thẩm định GPMT",
+      "van_ban_bo_sung": "456/GM-SNNMT ngày 20/08/2026 — giấy mời họp Hội đồng thẩm định GPMT\n8582/SNNMT-CCMT ngày 04/09/2026 — xin ý kiến thẩm định lần 2 hồ sơ GPMT",
+      "trang_thai": "Đoàn kiểm tra / Hội đồng thẩm định",
+      "ghi_chu": "Nguồn: văn bản đến Data360X của Sở Công Thương (Sở NN&MT gửi). Chờ bản gốc để bổ sung chủ dự án, địa điểm, ngày tiếp nhận hồ sơ."
+    },
+    {
+      "loai": "ho_so",
+      "loai_ho_so": "GPMT (chưa rõ loại cấp)",
+      "co_so": {"ten": "Dự án Đầu tư xây dựng hạ tầng kỹ thuật Cụm công nghiệp Bảo Minh", "kcn_ccn": "CCN Bảo Minh"},
+      "qd_doan_kiem_tra_hoac_hoi_dong": "744/QĐ-SNNMT ngày 22/08/2026 — thành lập Hội đồng thẩm định cấp GPMT",
+      "van_ban_bo_sung": "468/GM-SNNMT ngày 24/08/2026 — giấy mời họp Hội đồng thẩm định cấp GPMT",
+      "trang_thai": "Đoàn kiểm tra / Hội đồng thẩm định",
+      "ghi_chu": "Nguồn: văn bản đến Data360X của Sở Công Thương (Sở NN&MT gửi). Chờ bản gốc để bổ sung chủ đầu tư, địa điểm, ngày tiếp nhận hồ sơ."
+    },
+    {
+      "loai": "ho_so",
+      "loai_ho_so": "GPMT (chưa rõ loại cấp)",
+      "co_so": {"ten": "Dự án Nhà máy chế biến thép Lộc Linh", "dia_diem": "khu công nghiệp phía Nam, xã Văn Phú, tỉnh Lào Cai",
+                "xa_phuong_moi": "Xã Văn Phú", "kcn_ccn": "KCN Phía Nam"},
+      "qd_doan_kiem_tra_hoac_hoi_dong": "745/QĐ-SNNMT ngày 22/08/2026 — thành lập Hội đồng thẩm định cấp GPMT",
+      "van_ban_bo_sung": "469/GM-SNNMT ngày 25/08/2026 — giấy mời họp Hội đồng thẩm định cấp GPMT\n471/GM-SNNMT ngày 25/08/2026 — giấy mời (Hội đồng thẩm định cấp GPMT)",
+      "trang_thai": "Đoàn kiểm tra / Hội đồng thẩm định",
+      "ghi_chu": "Nguồn: văn bản đến Data360X của Sở Công Thương (Sở NN&MT gửi). Có 2 giấy mời cùng ngày 25/08/2026 — xem bản gốc để biết giấy mời nào thay giấy mời nào. Chờ bản gốc để bổ sung chủ đầu tư, ngày tiếp nhận hồ sơ."
+    },
+    {
+      "loai": "ho_so",
+      "loai_ho_so": "GPMT (chưa rõ loại cấp)",
+      "co_so": {"ten": "Cơ sở Nhà máy công nghiệp Sunwell Việt Nam"},
+      "qd_doan_kiem_tra_hoac_hoi_dong": "703/QĐ-SNNMT ngày 14/08/2026 — thành lập Đoàn kiểm tra cấp GPMT",
+      "van_ban_bo_sung": "443/GM-SNNMT ngày 17/08/2026 — giấy mời họp Đoàn kiểm tra cấp GPMT",
+      "trang_thai": "Đoàn kiểm tra / Hội đồng thẩm định",
+      "ghi_chu": "Nguồn: văn bản đến Data360X của Sở Công Thương (Sở NN&MT gửi). Chờ bản gốc để bổ sung chủ cơ sở, địa điểm, ngày tiếp nhận hồ sơ."
+    },
+    {
+      "loai": "ho_so",
+      "loai_ho_so": "ĐTM",
+      "co_so": {"ten": "Dự án Đầu tư, xây dựng và kinh doanh HTKT KCN Phú Xuân 1", "kcn_ccn": "KCN Phú Xuân 1"},
+      "qd_doan_kiem_tra_hoac_hoi_dong": "753/QĐ-SNNMT ngày 26/08/2026 — thành lập Hội đồng thẩm định báo cáo ĐTM",
+      "van_ban_bo_sung": "474/GM-SNNMT ngày 26/08/2026 — mời họp thẩm định báo cáo ĐTM",
+      "trang_thai": "Đoàn kiểm tra / Hội đồng thẩm định",
+      "ghi_chu": "Nguồn: văn bản đến Data360X của Sở Công Thương (Sở NN&MT gửi). Chờ bản gốc để bổ sung chủ đầu tư, địa điểm, ngày tiếp nhận hồ sơ."
+    }
+  ]
+}

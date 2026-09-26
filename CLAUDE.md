@@ -39,6 +39,12 @@ Cách chạy, triển khai: `README.md`.
   (công bố danh mục TTHC) và QĐ 736/QĐ-UBND ngày 19/3/2026 (quy trình nội bộ). Nội dung ở `gpmt/cong_bo.json`,
   PDF gốc (giữ nguyên chữ ký số, không nén) ở `public/cong-bo/`. Theo Sở: TTHC số 1, 2, 5 đã bỏ theo QĐ ngày
   26/6/2026 — **chưa có số hiệu/toàn văn**, khi có thì cập nhật. Thêm văn bản mới: thêm PDF + một mục JSON.
+- **27/9/2026 — Nguồn Data360X** (Bạn yêu cầu): GPMT, ĐTM và hồ sơ đang giải quyết lấy từ văn bản đến Sở NN&MT gửi
+  Sở Công Thương, qua bot Data360X (skill `data360x-sct-vn` ở kho skill-sct: tra `theo-doi/danh-muc-2026.json`
+  của kho vlncn-laocai trước, thiếu bản gốc thì gọi workflow `lay-van-ban.yml`). Kết quả viết thành JSON trong
+  `gpmt/ban_ghi_doi_chieu/` (`"loai": "gpmt"` hoặc `"ho_so"`, nhiều bản ghi: `{"ban_ghi": [...]}`); ứng dụng tự
+  nạp bản ghi CHƯA CÓ mỗi lần khởi động (`dong_bo_ban_ghi_moi`), không ghi đè chỉnh sửa trên web. Mới có mục lục
+  (chưa bản gốc) thì gắn `ly_do_ra_soat`. Số/ngày lấy từ mục lục/đầu tệp `.md`, không từ lớp chữ PDF.
 - **27/9/2026 — Tài khoản quản trị đơn giản**: trang `/cai-dat` tạo quản trị đầu tiên khi CSDL chưa có tài khoản
   nào, tạo xong tự khóa; không bắt đặt biến trên Vercel.
 

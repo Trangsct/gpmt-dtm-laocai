@@ -36,17 +36,17 @@ def test_nhap_so_qua_web(app, db):
     assert c.get("/nhap-du-lieu/").status_code == 200
     r = _tai_len(c, tok, "/nhap-du-lieu/so-excel", TEP_SO.read_bytes(), "so.xls")
     assert r.status_code == 302 and "/bao-cao/" in r.headers["Location"]
-    assert db.session.query(Gpmt).count() == 148      # 147 từ sổ + GP 2519 đối chiếu tay
+    assert db.session.query(Gpmt).count() == 149      # 147 từ sổ + 2519 đối chiếu tay + 3216 từ Data360X
     assert db.session.query(Gpmt).filter_by(so_hieu="1439/GPMT-UBND").one().trang_thai == BI_THAY_THE
     assert db.session.query(NhatKy).count() == 0      # nhập hàng loạt không ghi nhật ký từng dòng
     bc = db.session.query(BaoCaoNhapLuu).one()
     assert "2519/GPMT-UBND" in bc.noi_dung and c.get(r.headers["Location"]).status_code == 200
     # Nhập lần 2 bị chặn
     _tai_len(c, tok, "/nhap-du-lieu/so-excel", TEP_SO.read_bytes(), "so.xls")
-    assert db.session.query(Gpmt).count() == 148
+    assert db.session.query(Gpmt).count() == 149
     # Xóa phải gõ đúng cụm xác nhận
     c.post("/nhap-du-lieu/xoa", data={"_csrf": tok, "xac_nhan": "xoa"})
-    assert db.session.query(Gpmt).count() == 148
+    assert db.session.query(Gpmt).count() == 149
     c.post("/nhap-du-lieu/xoa", data={"_csrf": tok, "xac_nhan": "XOA DU LIEU"})
     assert db.session.query(Gpmt).count() == 0
 

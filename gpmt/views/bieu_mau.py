@@ -14,7 +14,7 @@ DIA_BAN_CU = ["", "LC", "YB"]
 LUA_CHON_CHUYEN_TIEP = ["", "Tiếp tục sử dụng GPMT đến hết hạn", "Chuyển sang đăng ký môi trường"]
 LOAI_XA_THAI = ["nước thải", "khí thải", "ồn-rung"]
 LOAI_CHAT_THAI = ["CTNH", "CTRCNTT", "CTRSH", "CTR thông thường (sổ)", "khác"]
-LOAI_HO_SO = ["GPMT cấp mới", "GPMT cấp điều chỉnh", "GPMT cấp lại", "ĐTM"]
+LOAI_HO_SO = ["GPMT cấp mới", "GPMT cấp điều chỉnh", "GPMT cấp lại", "GPMT (chưa rõ loại cấp)", "ĐTM"]
 LOAI_CHU_THE = ["", "doanh nghiệp", "ban QLDA", "đơn vị sự nghiệp", "cơ quan nhà nước", "hợp tác xã", "khác"]
 CO_QUAN_GOI_Y = ["UBND tỉnh Lào Cai", "UBND tỉnh Yên Bái (cũ)", "UBND cấp huyện (cũ)",
                  "Bộ Nông nghiệp và Môi trường", "Bộ Tài nguyên và Môi trường"]

@@ -54,7 +54,7 @@
     <tr><th>Thời điểm</th><th>Người thực hiện</th><th>Loại</th><th>Tệp</th><th>Tóm tắt</th><th></th></tr>
     {% for b in ds_bao_cao %}
     <tr><td>{{ b.thoi_diem.strftime('%d/%m/%Y %H:%M') }}</td><td>{{ b.tai_khoan.ho_ten if b.tai_khoan else '(lệnh máy)' }}</td>
-    <td>{{ {'so-excel': 'Nhập sổ Excel', 'bo-sung-thoi-han': 'Bổ sung thời hạn', 'xoa': 'Xóa dữ liệu'}.get(b.loai, b.loai) }}</td>
+    <td>{{ {'so-excel': 'Nhập sổ Excel', 'bo-sung-thoi-han': 'Bổ sung thời hạn', 'xoa': 'Xóa dữ liệu', 'dong-bo': 'Đồng bộ bản ghi mới'}.get(b.loai, b.loai) }}</td>
     <td>{{ b.ten_tep or '' }}</td><td>{{ b.tom_tat or '' }}</td><td><a href="{{ url_for('nhap_du_lieu.xem_bao_cao', id=b.id) }}">Xem</a></td></tr>
     {% else %}<tr><td colspan="6" class="mo">Chưa có lần nhập nào.</td></tr>{% endfor %}
   </table>
