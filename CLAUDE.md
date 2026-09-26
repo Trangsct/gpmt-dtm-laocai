@@ -22,7 +22,8 @@ Cách chạy, triển khai: `README.md`.
 ## Quy trình
 
 - Giao tiếp, giao diện, comment, commit message: **tiếng Việt**, ghi rõ lý do.
-- Làm trên nhánh làm việc, mở PR vào `main`, **hỏi người giao việc trước khi merge**.
+- Làm trên nhánh làm việc, mở PR vào `main` và **merge ngay, không cần hỏi** (Bạn chốt 26/9/2026, áp dụng
+  vĩnh viễn — thay cho quy định "hỏi trước khi merge" ở mục 8 HUONG_DAN.md). Kiểm thử phải xanh trước khi merge.
 - Làm theo giai đoạn: xong giai đoạn 1 → chạy thử, gửi ảnh màn hình + báo cáo nhập, **chờ duyệt** rồi mới sang
   giai đoạn 2.
 - Trước khi commit: `python3 -m pytest -q` phải xanh.
