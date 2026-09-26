@@ -11,8 +11,8 @@ Ký hiệu: 🙋 **bạn làm** · 🤖 **Claude tự làm** khi bạn nhắn tr
 | 2 | Đẩy mã lên kho, mở yêu cầu gộp (PR), gộp khi bạn đồng ý | 🤖 | — |
 | 3 | Tạo dự án Vercel từ kho | 🙋 | 5 phút |
 | 4 | Tạo CSDL Neon ngay trong Vercel | 🙋 | 3 phút |
-| 5 | Đặt tài khoản quản trị đầu tiên (3 biến) rồi triển khai lại | 🙋 | 3 phút |
-| 6 | Đăng nhập, tải sổ Excel lên | 🙋 | 2 phút |
+| 5 | Tạo tài khoản quản trị ngay trên trang (gõ họ tên, email, mật khẩu) | 🙋 | 1 phút |
+| 6 | Tải sổ Excel lên | 🙋 | 2 phút |
 | 7 | Cấp tài khoản cho đồng nghiệp, BQL các KCN, UBND xã | 🙋 | tùy số người |
 | 8 | Rà soát 29 bản ghi gắn cờ | 🙋 (Claude hỗ trợ đọc văn bản) | vài buổi |
 | 9 | Bổ sung thời hạn cho 146 GP (qua mẫu Excel) | 🙋 | theo tiến độ tìm được GP gốc |
@@ -64,32 +64,31 @@ Vercel chỉ lấy mã ở nhánh `main`, nên phải gộp xong mới sang bư�
 Vercel tự thêm biến `DATABASE_URL` vào dự án — **bạn không phải sao chép chuỗi kết nối**. Ứng dụng tự tạo các bảng
 ở lần chạy đầu. Tài khoản Neon do bạn giữ (đăng nhập qua Vercel).
 
-## Bước 5. Đặt tài khoản quản trị đầu tiên rồi triển khai lại 🙋
+## Bước 5. Tạo tài khoản quản trị 🙋
 
-1. Thẻ **Settings** → **Environment Variables**.
-2. Thêm lần lượt 3 biến (mỗi biến: gõ **Key**, gõ **Value**, để tích cả 3 môi trường, bấm **Save**):
+Không phải đặt gì trên Vercel.
 
-   | Key | Value |
-   |---|---|
-   | `QUAN_TRI_EMAIL` | email bạn dùng để đăng nhập trang |
-   | `QUAN_TRI_MAT_KHAU` | mật khẩu **ít nhất 10 ký tự** (chỉ dùng cho lần đầu, sau đó đổi ngay trên trang) |
-   | `QUAN_TRI_HO_TEN` | họ tên hiển thị, vd `Trần Trọng Trang` |
+1. Mở **https://gpmt-dtm-laocai.vercel.app/suc-khoe** → các dòng *Biến kết nối CSDL* và *Kết nối CSDL* phải **Đạt**
+   (chưa đạt thì làm lại Bước 4 và **Redeploy**).
+2. Bấm **Cán bộ đăng nhập** (góc phải trên). Hệ thống chưa có tài khoản nào nên tự mở trang
+   **Tạo tài khoản quản trị** → gõ họ tên, email, mật khẩu (ít nhất 10 ký tự, gõ 2 lần) → **Tạo tài khoản**.
+3. Trang tự đăng nhập và chuyển sang **Nhập dữ liệu**. Từ đây trang tạo tài khoản **tự khóa**.
 
-3. Thẻ **Deployments** → dòng trên cùng → nút **⋯** → **Redeploy** → **Redeploy**. Chờ 1–2 phút.
+⚠️ Làm bước này **ngay sau khi trang chạy được**: trước khi có tài khoản, ai mở trang trước sẽ tạo được tài khoản
+quản trị. Nếu lỡ bị người khác tạo trước, nhắn Claude để xử lý.
 
-Ứng dụng chỉ tạo tài khoản này khi CSDL **chưa có tài khoản nào**, nên để nguyên 3 biến cũng không sao; đổi mật
-khẩu trên trang thì biến cũ không còn tác dụng. Không cần đặt `SECRET_KEY` hay cấu hình HTTPS — ứng dụng tự xử lý.
+(Cách cũ vẫn dùng được nếu muốn: đặt 3 biến `QUAN_TRI_EMAIL`, `QUAN_TRI_MAT_KHAU`, `QUAN_TRI_HO_TEN` trên Vercel.)
 
-## Bước 6. Đăng nhập và tải sổ Excel lên 🙋
+## Bước 6. Tải sổ Excel lên 🙋
 
-1. Mở **https://gpmt-dtm-laocai.vercel.app** (hoặc `gpmt-laocai…` nếu đổi tên ở bước 3).
-   Kiểm tra nhanh: mở `…/suc-khoe` — trang **Kiểm tra hệ thống** liệt kê từng hạng mục; mọi dòng *Đạt* (hoặc
-   *Thông tin*) là được. Dòng *Lỗi* có cột **Việc cần làm** ghi rõ bấm vào đâu.
-2. Đăng nhập bằng email + mật khẩu ở bước 5 → bấm **Đổi mật khẩu** (góc phải trên) → đặt mật khẩu mới.
-3. Menu **Nhập dữ liệu** → mục 1 → **Choose File** → chọn tệp `Danh_sach_theo_doi_cap_GPMT_hang_nam__Lao_Cai.xls`
-   → **Nhập sổ**. Chờ vài giây → hiện báo cáo nhập (148 giấy phép, 29 bản ghi cần rà soát).
+Menu **Nhập dữ liệu** → mục 1 → **Choose File** → chọn tệp `Danh_sach_theo_doi_cap_GPMT_hang_nam__Lao_Cai.xls`
+→ **Nhập sổ**. Chờ vài giây → hiện báo cáo nhập (148 giấy phép, 29 bản ghi cần rà soát).
 
 GP 2519/GPMT-UBND đã đối chiếu tay được nhập kèm tự động; GP 1439/GPMT-UBND tự chuyển *Hết hiệu lực — bị thay thế*.
+
+**Trang công khai** (Bạn chốt 27/9/2026): người dân, doanh nghiệp mở trang là tra cứu được GPMT, ĐTM, đăng ký môi
+trường, xuất Excel — không cần đăng nhập. Chỉ cán bộ đăng nhập mới sửa được dữ liệu và thấy hồ sơ đang giải quyết,
+lý do rà soát, nhật ký. Muốn tạm đóng (bắt đăng nhập mới xem): đặt biến `CONG_KHAI` = `0` trên Vercel → Redeploy.
 
 ## Bước 7. Cấp tài khoản cho người khác 🙋
 
@@ -163,7 +162,7 @@ Khi Sở quyết định dùng lâu dài:
 | Hiện tượng | Xử lý |
 |---|---|
 | Trang báo "Hệ thống gặp lỗi" / "Internal Server Error" | Mở `…/suc-khoe`, làm theo cột **Việc cần làm** ở dòng đỏ. Thường là chưa nối Neon (Bước 4) hoặc quên **Redeploy**. |
-| Không đăng nhập được lần đầu | Kiểm tra 3 biến ở bước 5 (mật khẩu ≥ 10 ký tự) → **Redeploy**. |
+| Không đăng nhập được lần đầu | Mở `…/suc-khoe`: dòng *Tài khoản* ghi “Chưa có tài khoản” thì mở `…/cai-dat` để tạo (Bước 5). |
 | Quên mật khẩu quản trị | Nhờ một quản trị khác đặt lại; nếu chỉ có một quản trị, nhắn Claude để được hướng dẫn. |
 | Nhập sổ báo "đã có dữ liệu" | Đúng thiết kế (tránh nhập trùng). Muốn nhập lại: mục 3 trang **Nhập dữ liệu**. |
 | Neon báo CSDL "tạm dừng" | Gói miễn phí tự nghỉ khi lâu không dùng và tự thức dậy ở lần truy cập sau (chờ vài giây). |

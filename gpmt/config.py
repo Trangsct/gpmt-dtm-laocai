@@ -68,3 +68,6 @@ class Config:
     # Địa chỉ gốc nơi lưu PDF riêng tư (dịch vụ lưu tệp); nếu đặt thì nút "Mở PDF" trỏ tới đây
     PDF_BASE_URL = os.environ.get("PDF_BASE_URL", "").rstrip("/")
     TEN_DON_VI = os.environ.get("TEN_DON_VI", "Sở Nông nghiệp và Môi trường tỉnh Lào Cai")
+    # Bạn chốt 27/9/2026: dữ liệu GPMT công khai cho người dân, doanh nghiệp — xem không cần đăng nhập.
+    # Đặt CONG_KHAI=0 để bắt buộc đăng nhập mới xem.
+    CONG_KHAI = os.environ.get("CONG_KHAI", "1") != "0"

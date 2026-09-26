@@ -5,10 +5,10 @@ from pathlib import Path
 
 from flask import (Blueprint, abort, current_app, flash, redirect, render_template, request, send_file,
                    url_for)
-from flask_login import current_user, login_required
+from flask_login import current_user
 from sqlalchemy import or_
 
-from ..auth import can_quan_tri, can_quyen_sua
+from ..auth import can_quan_tri, can_quyen_sua, can_xem
 from ..extensions import db
 from ..models import ChuThe, CoSoDuAn, Gpmt, GpmtChatThai, GpmtXaThai, Vhtn
 from ..phan_tich import tach_giay_phep
@@ -69,14 +69,14 @@ def _lua_chon_loc():
 
 
 @bp.route("/")
-@login_required
+@can_xem
 def danh_sach():
     ds, loc = loc_danh_sach(request.args)
     return render_template("gpmt_danh_sach.html", ds=ds, loc=loc, **_lua_chon_loc())
 
 
 @bp.route("/<int:id>")
-@login_required
+@can_xem
 def chi_tiet(id):
     gp = db.get_or_404(Gpmt, id)
     kiem_co_so(gp.co_so)
@@ -170,7 +170,7 @@ def _duong_dan_pdf(gp):
 
 
 @bp.route("/<int:id>/pdf")
-@login_required
+@can_xem
 def pdf(id):
     gp = db.get_or_404(Gpmt, id)
     kiem_co_so(gp.co_so)

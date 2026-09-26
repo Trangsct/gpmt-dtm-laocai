@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Tạo tài khoản quản trị{% endblock %}
+{% block noi_dung %}
+<div class="the dang-nhap" style="max-width:460px">
+  <h1>Tạo tài khoản quản trị</h1>
+  <p>Hệ thống chưa có tài khoản nào. Tài khoản tạo ở đây là <b>quản trị viên</b>: được nhập, sửa dữ liệu và cấp tài khoản cho người khác. Trang này tự khóa ngay sau khi tạo xong.</p>
+  <form method="post">
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    <label>Họ tên<br><input type="text" name="ho_ten" required autofocus></label>
+    <label>Email (dùng để đăng nhập)<br><input type="email" name="email" required autocomplete="username"></label>
+    <label>Mật khẩu (ít nhất 10 ký tự)<br><input type="password" name="mat_khau" required minlength="10" autocomplete="new-password"></label>
+    <label>Nhập lại mật khẩu<br><input type="password" name="mat_khau_2" required minlength="10" autocomplete="new-password"></label>
+    <button type="submit">Tạo tài khoản</button>
+  </form>
+</div>
+{% endblock %}
