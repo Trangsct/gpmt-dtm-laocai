@@ -59,6 +59,11 @@ Cách chạy, triển khai: `README.md`.
   hạn). Kiểm ảnh ở 1366×768 và 390px. Biểu trưng `static/logo.svg` là hình chung, không phải logo chính thức.
 - **27/9/2026 — Tài khoản quản trị đơn giản**: trang `/cai-dat` tạo quản trị đầu tiên khi CSDL chưa có tài khoản
   nào, tạo xong tự khóa; không bắt đặt biến trên Vercel.
+- **28/9/2026 — Cấp lại mật khẩu / vào máy mới**: không làm nút "quên mật khẩu" trên trang công khai. Cấp lại bằng
+  biến `QUAN_TRI_EMAIL` + `QUAN_TRI_MAT_KHAU` trên Vercel → Redeploy (`cap_quan_tri_tu_bien_moi_truong`: email đã có
+  thì đặt lại mật khẩu + bật + nâng quản trị; email mới thì tạo). Vào được thì xóa biến và Redeploy lại. `/suc-khoe`
+  gợi nhớ tên đăng nhập quản trị dạng che (`tr•••@gmail.com`). Claude không đọc được CSDL Neon từ phiên nên không tự
+  đặt mật khẩu hộ được.
 
 - Người dùng: Sở + BQL các KCN + UBND xã. Tài khoản bên ngoài = vai trò `ben_ngoai`, giới hạn theo
   `pham_vi_xa` / `pham_vi_kcn`, không thấy thông tin nội bộ (hồ sơ, ghi chú, lý do rà soát, nhật ký).

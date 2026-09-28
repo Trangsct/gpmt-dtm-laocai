@@ -71,7 +71,8 @@ Hướng dẫn từng bước cho người không chuyên: **[`HUONG_DAN_TRIEN_K
    (tên đã có người dùng thì `gpmt-laocai`).
 2. Vercel → Storage → Neon (Free, Singapore) → Connect vào dự án: tự thêm `DATABASE_URL`.
 3. Mở `/cai-dat` để tạo tài khoản quản trị đầu tiên (chỉ mở khi CSDL chưa có tài khoản nào; tạo xong tự khóa).
-   Cách khác: đặt `QUAN_TRI_EMAIL`, `QUAN_TRI_MAT_KHAU` (≥ 10 ký tự), `QUAN_TRI_HO_TEN` → Redeploy.
+   Cách khác: đặt `QUAN_TRI_EMAIL`, `QUAN_TRI_MAT_KHAU` (≥ 10 ký tự), `QUAN_TRI_HO_TEN` → Redeploy. Cũng là cách cấp lại
+   mật khẩu khi quên / vào máy mới (email đã có thì đặt lại mật khẩu); vào được thì xóa biến và Redeploy lại.
    Ứng dụng tự tạo bảng ở lần chạy đầu. `/suc-khoe` tự chẩn đoán cấu hình bằng tiếng Việt.
 4. Đăng nhập → **Nhập dữ liệu** → tải sổ `.xls` lên (tự nhập kèm GP đã đối chiếu tay trong
    `gpmt/ban_ghi_doi_chieu/`).

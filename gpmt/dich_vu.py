@@ -22,23 +22,45 @@ THU_MUC_BAN_GHI = Path(__file__).resolve().parent / "ban_ghi_doi_chieu"
 # ---------------------------------------------------------------- Tự khởi tạo khi chạy lần đầu
 
 def khoi_tao_tu_dong(app):
-    """Tạo bảng còn thiếu; nếu chưa có tài khoản nào thì tạo quản trị viên đầu tiên từ biến môi trường
-    QUAN_TRI_EMAIL + QUAN_TRI_MAT_KHAU (đặt trên Vercel). Lỗi kết nối không làm sập ứng dụng."""
+    """Tạo bảng còn thiếu; tạo hoặc CẤP LẠI tài khoản quản trị từ biến môi trường QUAN_TRI_EMAIL +
+    QUAN_TRI_MAT_KHAU (đặt trên Vercel). Lỗi kết nối không làm sập ứng dụng."""
     try:
         with app.app_context():
             db.create_all()
-            email = os.environ.get("QUAN_TRI_EMAIL", "").strip().lower()
-            mk = os.environ.get("QUAN_TRI_MAT_KHAU", "")
-            if email and len(mk) >= 10 and not db.session.query(TaiKhoan.id).first():
-                tk = TaiKhoan(email=email, ho_ten=os.environ.get("QUAN_TRI_HO_TEN", "Quản trị viên"),
-                              vai_tro="quan_tri", hoat_dong=True)
-                tk.dat_mat_khau(mk)
-                db.session.add(tk)
-                db.session.commit()
-                log.warning("Đã tạo tài khoản quản trị đầu tiên: %s", email)
+            cap_quan_tri_tu_bien_moi_truong()
             dong_bo_ban_ghi_moi()
     except Exception:  # CSDL chưa sẵn sàng: vẫn cho ứng dụng chạy, trang /suc-khoe sẽ báo lỗi
         log.exception("Không khởi tạo được CSDL")
+
+
+def cap_quan_tri_tu_bien_moi_truong():
+    """Cấp lại quyền vào khi quên mật khẩu / đổi máy (Bạn yêu cầu 28/9/2026). Chỉ người giữ tài khoản Vercel
+    mới đặt được biến nên an toàn hơn mọi nút "quên mật khẩu" trên trang công khai.
+    - Chưa có tài khoản email đó: tạo mới, vai trò quản trị.
+    - Đã có: đặt lại mật khẩu, bật hoạt động, nâng lên quản trị (chỉ khi mật khẩu đang khác, để khởi động lại
+      không ghi CSDL vô ích). Vào được rồi thì xóa hai biến trên Vercel, nếu không mật khẩu đổi trên web sẽ bị
+      đặt lại ở lần khởi động sau. Trả "tao" / "dat-lai" / None."""
+    email = os.environ.get("QUAN_TRI_EMAIL", "").strip().lower()
+    mk = os.environ.get("QUAN_TRI_MAT_KHAU", "")
+    if not email or len(mk) < 10:
+        return None
+    tk = db.session.query(TaiKhoan).filter(db.func.lower(TaiKhoan.email) == email).first()
+    if tk is None:
+        tk = TaiKhoan(email=email, ho_ten=os.environ.get("QUAN_TRI_HO_TEN", "").strip() or "Quản trị viên",
+                      vai_tro="quan_tri", hoat_dong=True)
+        tk.dat_mat_khau(mk)
+        db.session.add(tk)
+        db.session.commit()
+        log.warning("Đã tạo tài khoản quản trị từ biến môi trường: %s", email)
+        return "tao"
+    if tk.kiem_mat_khau(mk) and tk.hoat_dong and tk.vai_tro == "quan_tri":
+        return None
+    tk.dat_mat_khau(mk)
+    tk.hoat_dong = True
+    tk.vai_tro = "quan_tri"
+    db.session.commit()
+    log.warning("Đã cấp lại mật khẩu quản trị từ biến môi trường: %s", email)
+    return "dat-lai"
 
 
 # ---------------------------------------------------------------- Nhập sổ Excel + bản ghi đối chiếu tay

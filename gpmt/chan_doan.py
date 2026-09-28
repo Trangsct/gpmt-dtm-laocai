@@ -84,7 +84,12 @@ def kiem_tra(app) -> list[KetQua]:
     from .models import Gpmt, TaiKhoan
     so_tk = db.session.query(TaiKhoan).count()
     if so_tk:
-        kq.append(KetQua("Tài khoản", True, f"Đã có {so_tk} tài khoản"))
+        qt = [che_email(e) for (e,) in db.session.query(TaiKhoan.email)
+              .filter(TaiKhoan.vai_tro == "quan_tri", TaiKhoan.hoat_dong.is_(True)).order_by(TaiKhoan.id)]
+        kq.append(KetQua("Tài khoản", True,
+                         f"Đã có {so_tk} tài khoản" + (f"; tên đăng nhập quản trị: {', '.join(qt)}" if qt else ""),
+                         "Quên mật khẩu / vào máy mới: đặt 2 biến QUAN_TRI_EMAIL và QUAN_TRI_MAT_KHAU trên Vercel → "
+                         "Redeploy → đăng nhập → xóa 2 biến đó (xem HUONG_DAN_TRIEN_KHAI.md)."))
     else:
         kq.append(KetQua("Tài khoản", None, "Chưa có tài khoản nào",
                          "Mở trang /cai-dat (hoặc bấm 'Cán bộ đăng nhập') để tạo tài khoản quản trị — không cần "
@@ -95,3 +100,9 @@ def kiem_tra(app) -> list[KetQua]:
                      f"Đã có {so_gp} giấy phép" if so_gp else "Chưa có giấy phép nào",
                      "" if so_gp else "Đăng nhập → menu Nhập dữ liệu → tải sổ Excel (.xls) lên."))
     return kq
+
+
+def che_email(email):
+    """Che bớt email để trang công khai /suc-khoe gợi nhớ tên đăng nhập mà không lộ nguyên địa chỉ."""
+    ten, _, mien = (email or "").partition("@")
+    return (ten[:2] + "•••" + ("@" + mien if mien else "")) if ten else ""
