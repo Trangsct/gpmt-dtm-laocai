@@ -147,6 +147,26 @@ Nhiều QĐ cùng lúc: gửi danh sách (Excel) hoặc các PDF cho Claude đ�
 Trên Vercel, nút **Mở PDF gốc** chưa hoạt động vì máy chủ Vercel không giữ tệp. Giai đoạn 2 sẽ thêm chức năng
 tải PDF lên và lưu vào kho tệp riêng tư (Vercel Blob hoặc kho GitHub riêng) — Claude làm khi bạn duyệt giai đoạn 2.
 
+## Quên mật khẩu hoặc đăng nhập trên máy mới 🙋
+
+Tên đăng nhập là **email** đã gõ khi tạo tài khoản. Không nhớ thì mở `…/suc-khoe`: dòng *Tài khoản* gợi ý tên đăng nhập
+quản trị (che bớt, vd `tr•••@gmail.com`). Mật khẩu chỉ lưu dạng mã hóa, không ai đọc lại được — chỉ **cấp lại** được.
+Việc cấp lại làm trên Vercel, vì chỉ người giữ tài khoản Vercel mới làm được (an toàn hơn nút "quên mật khẩu").
+
+1. Mở **https://vercel.com** → đăng nhập bằng GitHub → bấm dự án `gpmt-dtm-laocai` → thẻ **Settings** →
+   mục **Environment Variables**.
+2. Thêm 3 biến (mỗi biến: gõ *Key*, gõ *Value*, bấm **Save**):
+   - `QUAN_TRI_EMAIL` = email muốn dùng làm tên đăng nhập (email cũ thì đặt lại mật khẩu; email mới thì tạo thêm
+     tài khoản quản trị)
+   - `QUAN_TRI_MAT_KHAU` = mật khẩu mới, **ít nhất 10 ký tự**
+   - `QUAN_TRI_HO_TEN` = họ tên (chỉ dùng khi tạo tài khoản mới)
+3. Thẻ **Deployments** → bấm dấu **⋯** ở dòng trên cùng → **Redeploy** → **Redeploy**. Chờ 1–2 phút.
+4. Mở trang web → **Cán bộ đăng nhập** → gõ email và mật khẩu mới. Trình duyệt hỏi *Lưu mật khẩu?* thì bấm **Lưu**.
+5. **Vào được rồi thì dọn dẹp:** quay lại **Settings → Environment Variables**, xóa `QUAN_TRI_MAT_KHAU` (và 2 biến
+   kia) → **Redeploy** lần nữa. Không xóa thì mỗi lần máy chủ khởi động lại, mật khẩu bị đặt về giá trị trong biến.
+
+Đồng nghiệp quên mật khẩu thì không cần làm các bước trên: quản trị vào menu **Tài khoản** đặt lại cho họ.
+
 ## Bước 12. Triển khai chính thức (để sau, không chặn việc dùng thử)
 
 Khi Sở quyết định dùng lâu dài:
@@ -163,6 +183,6 @@ Khi Sở quyết định dùng lâu dài:
 |---|---|
 | Trang báo "Hệ thống gặp lỗi" / "Internal Server Error" | Mở `…/suc-khoe`, làm theo cột **Việc cần làm** ở dòng đỏ. Thường là chưa nối Neon (Bước 4) hoặc quên **Redeploy**. |
 | Không đăng nhập được lần đầu | Mở `…/suc-khoe`: dòng *Tài khoản* ghi “Chưa có tài khoản” thì mở `…/cai-dat` để tạo (Bước 5). |
-| Quên mật khẩu quản trị | Nhờ một quản trị khác đặt lại; nếu chỉ có một quản trị, nhắn Claude để được hướng dẫn. |
+| Quên mật khẩu quản trị / vào máy mới | Nhờ một quản trị khác đặt lại ở menu **Tài khoản**; hoặc làm theo mục **Quên mật khẩu hoặc đăng nhập trên máy mới** ở trên. |
 | Nhập sổ báo "đã có dữ liệu" | Đúng thiết kế (tránh nhập trùng). Muốn nhập lại: mục 3 trang **Nhập dữ liệu**. |
 | Neon báo CSDL "tạm dừng" | Gói miễn phí tự nghỉ khi lâu không dùng và tự thức dậy ở lần truy cập sau (chờ vài giây). |
