@@ -71,9 +71,11 @@ def da_co_du_lieu_so():
 
 
 def _mo_ta(obj):
-    from .models import Gpmt
+    from .models import Dtm, Gpmt
     if isinstance(obj, Gpmt):
         return f"GPMT {obj} — {obj.trang_thai}"
+    if isinstance(obj, Dtm):
+        return f"QĐ phê duyệt ĐTM {obj.so_qd}: {obj.co_so.ten if obj.co_so else ''}"
     return f"Hồ sơ {obj.loai}: {obj.co_so.ten if obj.co_so else ''} — {obj.trang_thai}"
 
 

@@ -31,3 +31,21 @@ def test_dong_bo_nap_ban_ghi_moi_mot_lan(db, du_lieu_that):
 def test_chua_nhap_so_thi_chua_dong_bo(db):
     assert dong_bo_ban_ghi_moi() == []
     assert db.session.query(Gpmt).count() == 0
+
+
+def test_nhap_qd_dtm_tu_json(app, db):
+    """QĐ phê duyệt ĐTM 3383/QĐ-UBND (văn bản đến Data360X) nạp được, chạy lại không sinh trùng."""
+    from gpmt.dich_vu import THU_MUC_BAN_GHI
+    from gpmt.models import Dtm
+    from gpmt.nhap_ban_ghi import da_co, doc_tep_json, nhap_mot
+    with app.app_context():
+        ds = doc_tep_json(THU_MUC_BAN_GHI / "data360x_dtm_2026-09.json")
+        for x in ds:
+            nhap_mot(x)
+        for x in ds:
+            assert da_co(x)
+            nhap_mot(x)
+        d = db.session.query(Dtm).filter_by(so_qd="3383/QĐ-UBND").one()
+        assert d.ngay_qd.isoformat() == "2026-09-18" and d.can_ra_soat
+        assert d.co_so.chu_the.ten == "Công ty TNHH xuất nhập khẩu thương mại Giang Sơn"
+        assert d.co_so.xa_phuong_moi == "Phường Âu Lâu"
