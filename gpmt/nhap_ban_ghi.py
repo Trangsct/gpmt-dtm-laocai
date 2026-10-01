@@ -8,7 +8,7 @@ import json
 from datetime import date
 
 from .extensions import db
-from .models import ChuThe, CoSoDuAn, Gpmt, GpmtChatThai, GpmtXaThai, HoSo, Vhtn
+from .models import ChuThe, CoSoDuAn, Dtm, Gpmt, GpmtChatThai, GpmtXaThai, HoSo, Vhtn
 from .phan_tich import chuan_ten
 
 
@@ -106,16 +106,22 @@ def nhap_tep_json(duong_dan):
 
 
 def nhap_mot(du_lieu: dict):
-    """Nhập một bản ghi theo trường "loai": gpmt (mặc định) / ho_so."""
-    if du_lieu.get("loai", "gpmt") == "ho_so":
+    """Nhập một bản ghi theo trường "loai": gpmt (mặc định) / ho_so / dtm."""
+    loai = du_lieu.get("loai", "gpmt")
+    if loai == "ho_so":
         return nhap_ho_so(du_lieu)
+    if loai == "dtm":
+        return nhap_dtm(du_lieu)
     return nhap_ban_ghi(du_lieu)
 
 
 def da_co(du_lieu: dict) -> bool:
     """Bản ghi đã có trong CSDL chưa (để đồng bộ tự động không ghi đè chỉnh sửa trên web)."""
-    if du_lieu.get("loai", "gpmt") == "ho_so":
+    loai = du_lieu.get("loai", "gpmt")
+    if loai == "ho_so":
         return tim_ho_so(du_lieu) is not None
+    if loai == "dtm":
+        return tim_dtm(du_lieu["so_qd"], _ngay(du_lieu.get("ngay_qd"))) is not None
     return bool(tim_gpmt(du_lieu["so_hieu"], _ngay(du_lieu["ngay_ky"])))
 
 
@@ -162,3 +168,33 @@ def nhap_ho_so(du_lieu: dict):
         h.ngay_tiep_nhan = _ngay(du_lieu["ngay_tiep_nhan"])
     db.session.commit()
     return h, []
+
+
+# ---------------------------------------------------------------- Quyết định phê duyệt ĐTM
+
+def tim_dtm(so_qd, ngay_qd=None):
+    q = db.session.query(Dtm).filter(Dtm.so_qd == so_qd)
+    if ngay_qd:
+        q = q.filter((Dtm.ngay_qd == ngay_qd) | (Dtm.ngay_qd.is_(None)))
+    return q.first()
+
+
+def nhap_dtm(du_lieu: dict):
+    """QĐ phê duyệt kết quả thẩm định báo cáo ĐTM lấy từ văn bản đến (Data360X). Chạy lại không sinh trùng."""
+    ngay = _ngay(du_lieu.get("ngay_qd"))
+    d = tim_dtm(du_lieu["so_qd"], ngay)
+    with db.session.no_autoflush:
+        cs = _lay_co_so(du_lieu["co_so"], du_lieu.get("chu_the"))
+    if d is None:
+        d = Dtm(so_qd=du_lieu["so_qd"], co_so=cs)
+        db.session.add(d)
+    d.co_so = cs
+    d.ngay_qd = ngay or d.ngay_qd
+    for k in ("co_quan_phe_duyet", "nhom_du_an", "qd_thanh_lap_hoi_dong", "tep_pdf", "ghi_chu"):
+        if du_lieu.get(k):
+            setattr(d, k, du_lieu[k])
+    if du_lieu.get("ly_do_ra_soat"):
+        d.can_ra_soat = True
+        d.ly_do_ra_soat = du_lieu["ly_do_ra_soat"]
+    db.session.commit()
+    return d, []

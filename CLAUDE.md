@@ -42,7 +42,7 @@ Cách chạy, triển khai: `README.md`.
 - **27/9/2026 — Nguồn Data360X** (Bạn yêu cầu): GPMT, ĐTM và hồ sơ đang giải quyết lấy từ văn bản đến Sở NN&MT gửi
   Sở Công Thương, qua bot Data360X (skill `data360x-sct-vn` ở kho skill-sct: tra `theo-doi/danh-muc-2026.json`
   của kho vlncn-laocai trước, thiếu bản gốc thì gọi workflow `lay-van-ban.yml`). Kết quả viết thành JSON trong
-  `gpmt/ban_ghi_doi_chieu/` (`"loai": "gpmt"` hoặc `"ho_so"`, nhiều bản ghi: `{"ban_ghi": [...]}`); ứng dụng tự
+  `gpmt/ban_ghi_doi_chieu/` (`"loai": "gpmt"`, `"ho_so"` hoặc `"dtm"` — QĐ phê duyệt ĐTM, từ 1/10/2026; nhiều bản ghi: `{"ban_ghi": [...]}`); ứng dụng tự
   nạp bản ghi CHƯA CÓ mỗi lần khởi động (`dong_bo_ban_ghi_moi`), không ghi đè chỉnh sửa trên web. Mới có mục lục
   (chưa bản gốc) thì gắn `ly_do_ra_soat`. Số/ngày lấy từ mục lục/đầu tệp `.md`, không từ lớp chữ PDF.
 - **27/9/2026 — Trang chủ giới thiệu, quảng bá Sở** (`/`, `trang_chu.html`; thống kê chuyển sang `/thong-ke`):
