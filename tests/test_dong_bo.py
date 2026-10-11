@@ -12,7 +12,7 @@ def test_dong_bo_nap_ban_ghi_moi_mot_lan(db, du_lieu_that):
     assert gp.ngay_ky == date(2026, 9, 8) and gp.co_quan_cap == "UBND tỉnh Lào Cai" and gp.can_ra_soat
     assert gp.co_so.chu_the.ten == "Công ty cổ phần Khai thác và Chế biến kim loại Thủ Đô"
     ho_so = db.session.query(HoSo).all()
-    assert len(ho_so) == 6
+    assert len(ho_so) == 7  # 6 hồ sơ tháng 9 + 1 hồ sơ lượt quét 10/10/2026
     dtm = [h for h in ho_so if h.loai == "ĐTM"]
     assert len(dtm) == 1 and "753/QĐ-SNNMT" in dtm[0].qd_doan_kiem_tra_hoac_hoi_dong
     assert db.session.query(BaoCaoNhapLuu).filter_by(loai="dong-bo").count() == 1
@@ -24,7 +24,7 @@ def test_dong_bo_nap_ban_ghi_moi_mot_lan(db, du_lieu_that):
     assert dong_bo_ban_ghi_moi() == []
     db.session.expire_all()
     assert db.session.query(Gpmt).filter_by(so_hieu="3216/GPMT-UBND").one().thoi_han_nam == 10
-    assert db.session.query(HoSo).count() == 6
+    assert db.session.query(HoSo).count() == 7
     assert db.session.get(HoSo, ho_so[0].id).trang_thai == "Sở trình (tờ trình)"
 
 
